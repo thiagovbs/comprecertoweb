@@ -2,6 +2,9 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { UsuarioService } from './usuario.service';
+import { JwtHelperService } from '@auth0/angular-jwt';
+import { Usuario } from '../models/usuario';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +15,9 @@ export class AuthenticationService {
   jwtPayload: any;
   tokensRenokeUrl = `${environment.urlSpring}/tokens/revoke`;
 
-  constructor(private http: HttpClient, private router: Router) { }
+  helper = new JwtHelperService();
+
+  constructor(private http: HttpClient, private router: Router, private usuarioService: UsuarioService) { }
 
   login(usuario: String, senha: String): void {
     const hds = new HttpHeaders({
@@ -25,7 +30,14 @@ export class AuthenticationService {
     this.http.post(this.oauthTokenUrl, body, { headers: hds, withCredentials: true }).subscribe(
       data => {
         this.armazenarToken(data['access_token']);
-        this.router.navigate(['/starter']);
+        console.log(data);
+
+        // tslint:disable-next-line:no-shadowed-variable
+        const usuario: Usuario = this.helper.decodeToken(data['access_token']).user;
+        console.log( this.helper.decodeToken(data['access_token']).user);
+        console.log(usuario);
+
+        this.router.navigate(['/secure/analytics']);
       }, error => {
         if (error.status === 400) {
           const responseJson = error.json();
@@ -45,7 +57,6 @@ export class AuthenticationService {
   }
 
   private getToken() {
-    console.log(localStorage.getItem('token'));
     return localStorage.getItem('token');
   }
 
