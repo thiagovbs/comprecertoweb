@@ -4,13 +4,17 @@ import { FullComponent } from './layouts/full/full.component';
 
 export const AppRoutes: Routes = [
   {
-    path: '',
+    path: 'secure',
     component: FullComponent,
     children: [
       {
         path: '',
-        redirectTo: '/starter',
+        redirectTo: '/analytics',
         pathMatch: 'full'
+      },
+      {
+        path: 'analytics',
+        loadChildren: './analytics/analytics.module#AnalyticsModule'
       },
       {
         path: 'material',
