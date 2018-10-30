@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { UsuarioService } from '../../services/usuario.service';
 
 export interface BadgeItem {
   type: string;
@@ -59,9 +60,61 @@ const MENUITEMS = [
   }
 ];
 
+const MERCADO_ADMIN_MENU_ITEMS = [
+  {
+    state: 'analytics',
+    name: 'Analytics',
+    type: 'link',
+    icon: 'add'
+  },
+  {
+    state: 'cadastro-supermercado',
+    name: 'Cadatro de Supermercados',
+    type: 'link',
+    icon: 'add'
+  },
+  {
+    state: 'cadastro-produto',
+    name: 'Cadastro de Produtos',
+    type: 'link',
+    icon: 'add'
+  },
+  {
+    state: 'categoria-e-subcategoria',
+    name: 'Categorias e Subcategorias',
+    type: 'link',
+    icon: 'add'
+  },
+  {
+    state: 'cadastro-faq',
+    name: 'Cadastro de FAQ',
+    type: 'link',
+    icon: 'add'
+  },
+  {
+    state: 'liberacao-push',
+    name: 'Liberação de PUSHs',
+    type: 'link',
+    icon: 'add'
+  },
+  {
+    state: 'perfil-supermercados',
+    name: 'Perfil dos Supermercados',
+    type: 'link',
+    icon: 'add'
+  }
+];
+
 @Injectable()
 export class MenuItems {
+
+  constructor(private usuarioService: UsuarioService) {}
+
   getMenuitem(): Menu[] {
+    if (this.usuarioService.getUsuarioLogged().permissoes.find(p => p.descricao == 'MERCADO_ADMIN')) {
+      return MERCADO_ADMIN_MENU_ITEMS;      
+    }
+
     return MENUITEMS;
   }
 }
