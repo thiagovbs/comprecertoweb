@@ -32,10 +32,10 @@ export class AuthenticationService {
         this.armazenarToken(data['access_token']);
         console.log(data);
 
-        // tslint:disable-next-line:no-shadowed-variable
-        const usuario: Usuario = this.helper.decodeToken(data['access_token']).user;
-        console.log( this.helper.decodeToken(data['access_token']).user);
-        console.log(usuario);
+        if (!this.usuarioService.hasPermissoes()) {
+          console.log('O usuário não possui nenhum permissão');
+          return;
+        }
 
         this.router.navigate(['/secure/analytics']);
       }, error => {
