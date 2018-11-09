@@ -69,4 +69,8 @@ export class AuthenticationService {
     localStorage.removeItem('token');
     this.jwtPayload = null;
   }
+
+  isTokenExpired() {
+    return new JwtHelperService().isTokenExpired(localStorage.getItem('token'));
+  }
 }

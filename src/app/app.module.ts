@@ -17,6 +17,8 @@ import { SharedModule } from './shared/shared.module';
 import { SpinnerComponent } from './shared/spinner.component';
 
 import { JwtModule } from '@auth0/angular-jwt';
+import { AppGuard } from './app.guard';
+import { MatButtonModule, MatFormFieldModule, MatCardModule, MatInputModule } from '@angular/material';
 
 export function tokenGetter() {
   return localStorage.getItem('access_token');
@@ -49,7 +51,7 @@ export function tokenGetter() {
       }
     })
   ],
-  providers: [],
+  providers: [AppGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

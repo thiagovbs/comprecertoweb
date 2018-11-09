@@ -1,11 +1,19 @@
 import { Routes } from '@angular/router';
 
 import { FullComponent } from './layouts/full/full.component';
+import { AppGuard } from './app.guard';
 
 export const AppRoutes: Routes = [
   {
+    path: '',
+    redirectTo: '/secure/interno/categorias',
+    pathMatch: 'full',
+    canActivate: [AppGuard]
+  },
+  {
     path: 'secure',
     component: FullComponent,
+    canActivate: [AppGuard],
     children: [
       {
         path: '',
@@ -17,17 +25,14 @@ export const AppRoutes: Routes = [
         loadChildren: './analytics/analytics.module#AnalyticsModule'
       },
       {
-        path: 'material',
+        path: 'cadastro-produtos',
         loadChildren:
-          './material-component/material.module#MaterialComponentsModule'
+          './sistema-interno/produtos/produtos.module#ProdutosModule'
       },
       {
-        path: 'starter',
-        loadChildren: './starter/starter.module#StarterModule'
-      },
-      {
-        path: 'icons',
-        loadChildren: './icons/mat-icon.module#IconsModule'
+        path: 'cadastro-categorias',
+        loadChildren:
+          './sistema-interno/categorias/categorias.module#CategoriasModule'
       }
     ]
   },

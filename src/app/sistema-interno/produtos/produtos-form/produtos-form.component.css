@@ -1,0 +1,24 @@
+.mat-card {
+    border: 1px solid grey !important; 
+    border-radius: 10px !important;
+}
+
+.mat-card-title {
+    margin: 10px !important;
+}
+
+.mat-card-title button {
+    width: 100% !important;
+}
+
+.mat-card-content {
+    margin-top: 0 !important; 
+    margin-bottom: 0 !important; 
+    padding-top: 0 !important; 
+    padding-bottom: 0 !important;
+}
+
+.mat-card-actions {
+    margin: 10px !important; 
+    text-align: right !important;
+}

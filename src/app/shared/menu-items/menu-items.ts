@@ -74,13 +74,13 @@ const MERCADO_ADMIN_MENU_ITEMS = [
     icon: 'add'
   },
   {
-    state: 'cadastro-produto',
+    state: 'cadastro-produtos',
     name: 'Cadastro de Produtos',
     type: 'link',
     icon: 'add'
   },
   {
-    state: 'categoria-e-subcategoria',
+    state: 'cadastro-categorias',
     name: 'Categorias e Subcategorias',
     type: 'link',
     icon: 'add'
