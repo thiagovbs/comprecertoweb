@@ -1,4 +1,6 @@
+import { CategoriaService } from './../../services/categoria.service';
 import { Component, OnInit } from '@angular/core';
+import { Categoria } from '../../models/categoria';
 
 @Component({
   selector: 'app-categorias',
@@ -7,9 +9,30 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CategoriasComponent implements OnInit {
 
-  constructor() { }
+  categorias: Categoria[] = [];
+
+  constructor(private categoriaService: CategoriaService) { }
 
   ngOnInit() {
+    this.getCategorias();
   }
 
+  getCategorias() {
+    this.categoriaService.getCategorias().subscribe(data => this.categorias = data.json(), error => console.log(error.json()));
+  }
+
+  adicionarCategoriaForm() {
+    this.categorias.push(new Categoria());
+  }
+
+  aoRemover(categoriaRemovida) {
+    console.log(categoriaRemovida)
+    this.categorias = this.categorias.filter(categoria => categoria != categoriaRemovida);
+  }
+
+  aoSalvar(salvo) {
+    if (salvo) {
+      this.getCategorias();
+    }
+  }
 }

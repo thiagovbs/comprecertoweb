@@ -1,12 +1,14 @@
+import { CategoriaService } from './../../services/categoria.service';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CategoriasComponent } from './categorias.component';
-import { MatSelectModule, MatCardModule, MatFormFieldModule, MatInputModule, MatButtonModule } from '@angular/material';
+import { MatSelectModule, MatCardModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatIconModule, MatToolbarModule, MatCheckboxModule } from '@angular/material';
 import { RouterModule } from '@angular/router';
 import { CategoriasRoutes } from './categorias.routing';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CategoriasFormComponent } from './categorias-form/categorias-form.component';
+import { HttpModule } from '@angular/http';
 
 @NgModule({
   imports: [
@@ -20,8 +22,16 @@ import { CategoriasFormComponent } from './categorias-form/categorias-form.compo
     FlexLayoutModule,
     MatFormFieldModule,
     FormsModule,
-    MatSelectModule
+    MatSelectModule,
+    ReactiveFormsModule,
+    MatIconModule,
+    MatToolbarModule,
+    MatCheckboxModule,
+    HttpModule
   ],
-  declarations: [CategoriasComponent, CategoriasFormComponent]
+  declarations: [CategoriasComponent, CategoriasFormComponent],
+  providers: [
+    CategoriaService
+  ]
 })
 export class CategoriasModule { }

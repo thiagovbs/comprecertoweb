@@ -1,62 +1,27 @@
-<div fxLayout="row" fxLayoutWrap="wrap">
-    <div fxFlex.gt-sm="33.33%" fxFlex="100">
-        <mat-card>
-            <mat-card-title>
-                <div style="height: 300px; width: 100%; background-color: black;"></div>
-                <button mat-raised-button color="primary">Adicionar Foto</button>
-            </mat-card-title>
-            <mat-card-content>
-                <div fxLayout="row" fxLayoutWrap="wrap">
-                    <div fxFlex.gt-sm="100" fxFlex="100">
-                        <mat-form-field>
-                            <mat-select placeholder="Selecione uma subcategoria">
-                                <mat-option value="option">Option</mat-option>
-                                <mat-option value="option">Option2</mat-option>
-                                <mat-option value="option">Option3</mat-option>
-                            </mat-select>
-                        </mat-form-field>
-                    </div>
-                    <div fxFlex.gt-sm="100" fxFlex.gt-xs="100">
-                        <mat-form-field class="example-full-width">
-                            <input matInput placeholder="Nome do produto">
-                        </mat-form-field>
-                    </div>
-                    <div fxFlex.gt-sm="100" fxFlex.gt-xs="100">
-                        <mat-form-field class="example-full-width">
-                            <input matInput placeholder="Marca do produto">
-                        </mat-form-field>
-                    </div>
-                    <div fxFlex.gt-sm="100" fxFlex.gt-xs="100">
-                        <mat-form-field class="example-full-width">
-                            <input matInput placeholder="Característica do produto">
-                        </mat-form-field>
-                    </div>
-                    <div fxFlex.gt-sm="80" fxFlex.gt-xs="80">
-                        <mat-form-field class="example-full-width">
-                            <input matInput placeholder="Quantidade">
-                            <!-- <mat-error *ngIf="emailFormControl.hasError('email') && !emailFormControl.hasError('required')">
-                              Please enter a valid email address
-                          </mat-error>
-                          <mat-error *ngIf="emailFormControl.hasError('required')">
-                              Email is <strong>required</strong>
-                          </mat-error> -->
-                        </mat-form-field>
-                    </div>
-                    <div fxFlex.gt-sm="20" fxFlex="20">
-                        <mat-form-field>
-                            <mat-select placeholder="Selecione uma característica">
-                                <mat-option value="option">Option</mat-option>
-                                <mat-option value="option">Option2</mat-option>
-                                <mat-option value="option">Option3</mat-option>
-                            </mat-select>
-                        </mat-form-field>
-                    </div>
+<mat-card>
+    <form [formGroup]="formulario">
+        <mat-card-title>
+            <h4>ID {{ categoria.idCategoria ? categoria.idCategoria : 'Indefinido' }}</h4>
+            <div style="height: 10px; width: 100%; background-color: black;"></div>
+            <!-- <button mat-raised-button color="primary">Adicionar Foto</button> -->
+        </mat-card-title>
+        <mat-card-content>
+            <div fxLayout="row" fxLayoutWrap="wrap">
+                <div fxFlex.gt-sm="100" fxFlex.gt-xs="100">
+                    <mat-form-field class="example-full-width">
+                        <input matInput placeholder="Nome" formControlName="nome" [(ngModel)]="categoria.nome">
+                        <mat-hint *ngIf="formulario.controls['nome'].hasError('required') && formulario.controls['nome'].touched"
+                            class="text-danger font-14">O nome é obrigatório.</mat-hint>
+                    </mat-form-field>
+                    <mat-checkbox class="example-margin" formControlName="fativo" [(ngModel)]="categoria.fativo">Ativo</mat-checkbox>
                 </div>
-            </mat-card-content>
-            <mat-card-actions>
-                <button mat-raised-button color="warn">DELETAR</button>
-                <button mat-raised-button color="primary">SALVAR</button>
-            </mat-card-actions>
-        </mat-card>
-    </div>
-</div>
+            </div>
+        </mat-card-content>
+        <mat-card-actions>
+            <button mat-raised-button color="warn" *ngIf="hasEdit" (click)="cancelar()">CANCELAR</button>
+            <button mat-raised-button color="warn" *ngIf="hasEdit && categoria.idCategoria">DELETAR</button>
+            <button mat-raised-button color="primary" *ngIf="hasEdit" [disabled]="formulario.invalid" (click)="salvar()">SALVAR</button>
+            <button mat-button color="primary" *ngIf="!hasEdit" (click)="formulario.enable(); hasEdit = true">EDITAR</button>
+        </mat-card-actions>
+    </form>
+</mat-card>
