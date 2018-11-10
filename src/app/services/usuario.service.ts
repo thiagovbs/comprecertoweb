@@ -1,16 +1,19 @@
 import { Injectable } from '@angular/core';
 import { HttpHeaders, HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
-import { JwtHelperService } from '@auth0/angular-jwt';
 import { Usuario } from '../models/usuario';
+import { JwtHelper } from 'angular2-jwt';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UsuarioService {
+
   hds = new HttpHeaders({
     'Authorization': `Bearer ${localStorage.getItem('token')}`
   });
+
+  jwtHelper: JwtHelper = new JwtHelper();
 
   constructor(private http: HttpClient) { }
 
@@ -19,13 +22,13 @@ export class UsuarioService {
   }
 
   hasPermissoes(): any {
-    const usuario: Usuario = new JwtHelperService().decodeToken(localStorage.getItem('token')).user;
+    const usuario: Usuario = this.jwtHelper.decodeToken(localStorage.getItem('token')).user;
     console.log(usuario);
     return usuario.permissoes.length != 0;
   }
 
   getUsuarioLogged() {
-    const usuario: Usuario = new JwtHelperService().decodeToken(localStorage.getItem('token')).user;
+    const usuario: Usuario = this.jwtHelper.decodeToken(localStorage.getItem('token')).user;
     return usuario;
   }
 }

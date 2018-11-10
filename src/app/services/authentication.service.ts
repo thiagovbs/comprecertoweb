@@ -3,8 +3,7 @@ import { environment } from '../../environments/environment';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { UsuarioService } from './usuario.service';
-import { JwtHelperService } from '@auth0/angular-jwt';
-import { Usuario } from '../models/usuario';
+import { JwtHelper } from 'angular2-jwt';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +14,7 @@ export class AuthenticationService {
   jwtPayload: any;
   tokensRenokeUrl = `${environment.urlSpring}/tokens/revoke`;
 
-  helper = new JwtHelperService();
+  jwtHelper: JwtHelper = new JwtHelper();
 
   constructor(private http: HttpClient, private router: Router, private usuarioService: UsuarioService) { }
 
@@ -56,9 +55,6 @@ export class AuthenticationService {
     localStorage.setItem('token', token);
   }
 
-  private getToken() {
-    return localStorage.getItem('token');
-  }
 
   logout() {
     this.limparAccessToken();
@@ -71,6 +67,6 @@ export class AuthenticationService {
   }
 
   isTokenExpired() {
-    return new JwtHelperService().isTokenExpired(localStorage.getItem('token'));
+    return this.jwtHelper.isTokenExpired(localStorage.getItem('token'));
   }
 }
