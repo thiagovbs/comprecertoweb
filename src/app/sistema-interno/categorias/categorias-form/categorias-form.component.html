@@ -1,5 +1,5 @@
 <mat-card>
-    <form [formGroup]="formulario">
+    <form [formGroup]="formulario" autocomplete="off">
         <mat-card-title>
             <h4>ID {{ categoria.idCategoria ? categoria.idCategoria : 'Indefinido' }}</h4>
             <div style="height: 10px; width: 100%; background-color: black;"></div>
@@ -19,7 +19,7 @@
         </mat-card-content>
         <mat-card-actions>
             <button mat-raised-button color="warn" *ngIf="hasEdit" (click)="cancelar()">CANCELAR</button>
-            <button mat-raised-button color="warn" *ngIf="hasEdit && categoria.idCategoria">DELETAR</button>
+            <button mat-raised-button color="warn" *ngIf="hasEdit && categoria.idCategoria" (click)="deletar()">DELETAR</button>
             <button mat-raised-button color="primary" *ngIf="hasEdit" [disabled]="formulario.invalid" (click)="salvar()">SALVAR</button>
             <button mat-button color="primary" *ngIf="!hasEdit" (click)="formulario.enable(); hasEdit = true">EDITAR</button>
         </mat-card-actions>

@@ -11,6 +11,6 @@
 
 <div fxLayout="row" fxLayoutWrap="wrap">
   <div fxFlex.gt-sm="33.33%" fxFlex="100" *ngFor="let categoria of categorias">
-    <app-categorias-form [categoria]="categoria" (removerCategoria)="aoRemover($event)" (salvarCategoria)="aoSalvar($event)"></app-categorias-form>
+    <app-categorias-form [categoria]="categoria" (removerCategoria)="aoRemover($event)" (salvarCategoria)="atualizaCategoria($event)"></app-categorias-form>
   </div>
 </div>

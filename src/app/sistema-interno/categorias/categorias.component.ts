@@ -30,7 +30,7 @@ export class CategoriasComponent implements OnInit {
     this.categorias = this.categorias.filter(categoria => categoria != categoriaRemovida);
   }
 
-  aoSalvar(salvo) {
+  atualizaCategoria(salvo) {
     if (salvo) {
       this.getCategorias();
     }

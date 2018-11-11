@@ -33,4 +33,12 @@ export class CategoriaService {
 
     return this.http.put(`${environment.urlSpring}/categorias/${categoria.idCategoria}`, categoria, { headers: hds, withCredentials: true })
   }
+
+  deleteCategoria(idCategoria: number) {
+    const hds = new Headers({
+      'Authorization': `Bearer ${localStorage.getItem('token')}`
+    });
+
+    return this.http.delete(`${environment.urlSpring}/categorias/${idCategoria}`, { headers: hds, withCredentials: true })
+  }
 }
