@@ -1,0 +1,27 @@
+<mat-card>
+  <form [formGroup]="formulario" autocomplete="off">
+    <mat-card-title>
+      <h4>ID {{ subcategoria.idSubcategoria ? subcategoria.idSubcategoria : 'Indefinido' }}</h4>
+      <div style="height: 10px; width: 100%; background-color: black;"></div>
+      <!-- <button mat-raised-button color="primary">Adicionar Foto</button> -->
+    </mat-card-title>
+    <mat-card-content>
+      <div fxLayout="row" fxLayoutWrap="wrap">
+        <div fxFlex.gt-sm="100" fxFlex.gt-xs="100">
+          <mat-form-field class="example-full-width">
+            <input matInput placeholder="Nome" formControlName="nome" [(ngModel)]="subcategoria.nome">
+            <mat-hint *ngIf="formulario.controls['nome'].hasError('required') && formulario.controls['nome'].touched"
+              class="text-danger font-14">O nome é obrigatório.</mat-hint>
+          </mat-form-field>
+          <mat-checkbox class="example-margin" formControlName="fativo" [(ngModel)]="subcategoria.fativo">Ativo</mat-checkbox>
+        </div>
+      </div>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-raised-button color="warn" *ngIf="hasEdit" (click)="cancelar()">CANCELAR</button>
+      <button mat-raised-button color="warn" *ngIf="hasEdit && subcategoria.idSubcategoria" (click)="deletar()">DELETAR</button>
+      <button mat-raised-button color="primary" *ngIf="hasEdit" [disabled]="formulario.invalid" (click)="salvar()">SALVAR</button>
+      <button mat-button color="primary" *ngIf="!hasEdit" (click)="formulario.enable(); hasEdit = true">EDITAR</button>
+    </mat-card-actions>
+  </form>
+</mat-card>
