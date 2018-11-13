@@ -6,7 +6,7 @@ import { AppGuard } from './app.guard';
 export const AppRoutes: Routes = [
   {
     path: '',
-    redirectTo: '/secure/interno/categorias',
+    redirectTo: '/secure/analytics',
     pathMatch: 'full',
     canActivate: [AppGuard]
   },
@@ -33,6 +33,11 @@ export const AppRoutes: Routes = [
         path: 'cadastro-categorias',
         loadChildren:
           './sistema-interno/categorias/categorias.module#CategoriasModule'
+      },
+      {
+        path: 'cadastro-subcategorias',
+        loadChildren:
+          './sistema-interno/subcategorias/subcategorias.module#SubcategoriasModule'
       }
     ]
   },

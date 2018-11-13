@@ -81,7 +81,13 @@ const MERCADO_ADMIN_MENU_ITEMS = [
   },
   {
     state: 'cadastro-categorias',
-    name: 'Categorias e Subcategorias',
+    name: 'Cadastro de Categorias',
+    type: 'link',
+    icon: 'add'
+  },
+  {
+    state: 'cadastro-subcategorias',
+    name: 'Cadastro de Subcategorias',
     type: 'link',
     icon: 'add'
   },
