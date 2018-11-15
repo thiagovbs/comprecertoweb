@@ -7,7 +7,15 @@
     </mat-card-title>
     <mat-card-content>
       <div fxLayout="row" fxLayoutWrap="wrap">
-        <div fxFlex.gt-sm="100" fxFlex.gt-xs="100">
+        <div fxFlex.gt-sm="100" fxFlex="100">
+          <mat-form-field>
+            <mat-select placeholder="Categorias" formControlName="categoria" [(ngModel)]="subcategoria.categoria.idCategoria"
+              (selectionChange)="atualizaCategoriaSelect($event.value)">
+              <mat-option *ngFor="let categoria of categorias" [value]="categoria.idCategoria" [disabled]="!categoria.fativo">{{ categoria.nome }}</mat-option>
+            </mat-select>
+            <mat-hint *ngIf="formulario.controls['categoria'].hasError('required') && formulario.controls['categoria'].touched"
+              class="text-danger font-14">A categoria é obrigatória.</mat-hint>
+          </mat-form-field>
           <mat-form-field class="example-full-width">
             <input matInput placeholder="Nome" formControlName="nome" [(ngModel)]="subcategoria.nome">
             <mat-hint *ngIf="formulario.controls['nome'].hasError('required') && formulario.controls['nome'].touched"

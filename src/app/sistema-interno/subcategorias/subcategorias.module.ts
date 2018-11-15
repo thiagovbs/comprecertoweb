@@ -9,6 +9,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { SubcategoriaService } from '../../services/subcategoria.service';
+import { CategoriaService } from '../../services/categoria.service';
 
 @NgModule({
   imports: [
@@ -31,7 +32,8 @@ import { SubcategoriaService } from '../../services/subcategoria.service';
   ],
   declarations: [SubcategoriasComponent, SubcategoriasFormComponent],
   providers: [
-    SubcategoriaService
+    SubcategoriaService,
+    CategoriaService
   ]
 })
 export class SubcategoriasModule { }

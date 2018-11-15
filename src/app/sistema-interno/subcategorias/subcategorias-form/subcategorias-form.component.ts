@@ -3,7 +3,11 @@ import { Subcategoria } from '../../../models/subcategoria';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { SubcategoriaService } from '../../../services/subcategoria.service';
 
+import { CategoriaService } from '../../../services/categoria.service';
+import { Categoria } from '../../../models/categoria';
+
 import Swal from 'sweetalert2';
+import * as Lodash from 'lodash';
 
 @Component({
   selector: 'app-subcategorias-form',
@@ -14,6 +18,7 @@ export class SubcategoriasFormComponent implements OnInit {
 
   @Input("subcategoria")
   subcategoria: Subcategoria = new Subcategoria();
+  categorias: Categoria[] = [];
 
   @Output("removerSubcategoria")
   subcategoriaRemovida = new EventEmitter();
@@ -24,17 +29,18 @@ export class SubcategoriasFormComponent implements OnInit {
   formulario: FormGroup;
   hasEdit: boolean = true;
 
-  constructor(private formBuilder: FormBuilder, private subcategoriaService: SubcategoriaService) {
+  constructor(private formBuilder: FormBuilder, private subcategoriaService: SubcategoriaService, private categoriaService: CategoriaService) {
 
     this.formulario = this.formBuilder.group({
       fativo: ['', [Validators.required]],
-      nome: ['', [Validators.required]]
+      nome: ['', [Validators.required]],
+      categoria: ['', [Validators.required]]
     });
   }
 
   ngOnInit() {
+    this.getCategorias();
     if (this.subcategoria.idSubcategoria) {
-      console.log('teste')
       this.formulario.disable();
       this.hasEdit = false;
     }
@@ -98,5 +104,15 @@ export class SubcategoriasFormComponent implements OnInit {
         })
       }
     })
+  }
+
+  getCategorias() {
+    this.categoriaService.getCategorias().subscribe(data => {
+      this.categorias = Lodash.orderBy(data.json(), 'nome', 'asc');
+    }, error => console.log(error));
+  }
+
+  atualizaCategoriaSelect(value) {
+    this.subcategoria.categoria = this.categorias.filter(categoria => categoria.idCategoria = value)[0];
   }
 }

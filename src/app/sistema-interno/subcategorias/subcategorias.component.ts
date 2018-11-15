@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Subcategoria } from '../../models/subcategoria';
 import { SubcategoriaService } from '../../services/subcategoria.service';
 
+import * as Lodash from "lodash";
+
 @Component({
   selector: 'app-subcategorias',
   templateUrl: './subcategorias.component.html',
@@ -9,7 +11,7 @@ import { SubcategoriaService } from '../../services/subcategoria.service';
 })
 export class SubcategoriasComponent implements OnInit {
 
-  subcategoria: Subcategoria[] = [];
+  subcategorias: Subcategoria[] = [];
 
   constructor(private categoriaService: SubcategoriaService) { }
 
@@ -18,19 +20,22 @@ export class SubcategoriasComponent implements OnInit {
   }
 
   getSubcategorias() {
-    this.categoriaService.getSubcategorias().subscribe(data => this.subcategoria = data.json(), error => console.log(error.json()));
+    this.categoriaService.getSubcategorias().subscribe(data => {
+      this.subcategorias = Lodash.orderBy(data.json(), 'idSubcategoria', 'desc');
+      console.log(this.subcategorias)
+    }, error => console.log(error.json()))
   }
 
   adicionarSubcategoriaForm() {
-    this.subcategoria.push(new Subcategoria());
+    this.subcategorias.unshift(new Subcategoria());
   }
 
   aoRemover(subcategoriaRemovida) {
     console.log(subcategoriaRemovida)
-    this.subcategoria = this.subcategoria.filter(subcategoria => subcategoria != subcategoriaRemovida);
+    this.subcategorias = this.subcategorias.filter(subcategoria => subcategoria != subcategoriaRemovida);
   }
 
-  atualizaSubcategoria(salvo) {
+  aoSalvar(salvo) {
     if (salvo) {
       this.getSubcategorias();
     }

@@ -1,7 +1,7 @@
 <mat-toolbar color="primary" class="little">
   <span>Cadastros de subcategorias</span>
   <span fxFlex></span>
-  <button mat-button href="#" mat-icon-button (click)="adicionarCategoriaForm()">
+  <button mat-button href="#" mat-icon-button (click)="adicionarSubcategoriaForm()">
     <mat-icon>add</mat-icon>
   </button>
   <button mat-button href="#" mat-icon-button>
@@ -11,6 +11,6 @@
 
 <div fxLayout="row" fxLayoutWrap="wrap">
   <div fxFlex.gt-sm="33.33%" fxFlex="100" *ngFor="let subcategoria of subcategorias">
-    <app-subcategorias-form [subcategoria]="subcategoria" (removerCategoria)="aoRemover($event)" (salvarCategoria)="atualizaCategoria($event)"></app-subcategorias-form>
+    <app-subcategorias-form [subcategoria]="subcategoria" (removerCategoria)="aoRemover($event)" (atualizaSubcategoria)="aoSalvar($event)"></app-subcategorias-form>
   </div>
 </div>
