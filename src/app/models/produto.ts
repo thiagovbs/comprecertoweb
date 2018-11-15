@@ -8,5 +8,5 @@ export class Produto {
     marca: string;
     nome: string;
     quantidade: number;
-    subcategoria: Subcategoria;
+    subcategoria: Subcategoria = new Subcategoria();
 }
