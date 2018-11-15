@@ -34,7 +34,6 @@ export class CategoriasFormComponent implements OnInit {
 
   ngOnInit() {
     if (this.categoria.idCategoria) {
-      console.log('teste')
       this.formulario.disable();
       this.hasEdit = false;
     }

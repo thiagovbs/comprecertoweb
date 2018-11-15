@@ -2,6 +2,8 @@ import { CategoriaService } from './../../services/categoria.service';
 import { Component, OnInit } from '@angular/core';
 import { Categoria } from '../../models/categoria';
 
+import * as Lodash from "lodash";
+
 @Component({
   selector: 'app-categorias',
   templateUrl: './categorias.component.html',
@@ -18,11 +20,11 @@ export class CategoriasComponent implements OnInit {
   }
 
   getCategorias() {
-    this.categoriaService.getCategorias().subscribe(data => this.categorias = data.json(), error => console.log(error.json()));
+    this.categoriaService.getCategorias().subscribe(data => this.categorias = Lodash.orderBy(data.json(), 'idCategoria', 'desc'), error => console.log(error.json()));
   }
 
   adicionarCategoriaForm() {
-    this.categorias.push(new Categoria());
+    this.categorias.unshift(new Categoria());
   }
 
   aoRemover(categoriaRemovida) {
@@ -30,7 +32,7 @@ export class CategoriasComponent implements OnInit {
     this.categorias = this.categorias.filter(categoria => categoria != categoriaRemovida);
   }
 
-  atualizaCategoria(salvo) {
+  aoSalvar(salvo) {
     if (salvo) {
       this.getCategorias();
     }
