@@ -69,31 +69,31 @@ const MERCADO_ADMIN_MENU_ITEMS = [
   },
   {
     state: 'cadastro-categorias',
-    name: 'Cadastro de Categorias',
+    name: 'Categorias',
     type: 'link',
     icon: 'add'
   },
   {
-    state: 'cadastro-subcategorias',
-    name: 'Cadastro de Subcategorias',
+    state: 'cadastro-unidades-medida',
+    name: 'Unidades de Medida',
     type: 'link',
     icon: 'add'
   },
   {
     state: 'cadastro-produtos',
-    name: 'Cadastro de Produtos',
+    name: 'Produtos',
     type: 'link',
     icon: 'add'
   },
   {
     state: 'cadastro-supermercado',
-    name: 'Cadatro de Supermercados',
+    name: 'Supermercados',
     type: 'link',
     icon: 'add'
   },
   {
     state: 'cadastro-faq',
-    name: 'Cadastro de FAQ',
+    name: 'FAQ',
     type: 'link',
     icon: 'add'
   },
@@ -114,11 +114,11 @@ const MERCADO_ADMIN_MENU_ITEMS = [
 @Injectable()
 export class MenuItems {
 
-  constructor(private usuarioService: UsuarioService) {}
+  constructor(private usuarioService: UsuarioService) { }
 
   getMenuitem(): Menu[] {
     if (this.usuarioService.getUsuarioLogged().permissoes.find(p => p.descricao == 'MERCADO_ADMIN')) {
-      return MERCADO_ADMIN_MENU_ITEMS;      
+      return MERCADO_ADMIN_MENU_ITEMS;
     }
 
     return MENUITEMS;
