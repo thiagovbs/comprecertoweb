@@ -67,7 +67,7 @@ export class SubcategoriasFormComponent implements OnInit {
         }, () => {
           this.formulario.disable();
           this.hasEdit = false;
-          Swal('Atualização', `A subcategoria ${this.subcategoria.nome} foi atualizada!`)
+          Swal('Atualização', `A subcategoria ${this.subcategoria.nome} foi atualizada!`, "success")
         })
       } else {
         this.subcategoriaService.postSubcategoria(this.subcategoria).subscribe(data => {
@@ -78,13 +78,13 @@ export class SubcategoriasFormComponent implements OnInit {
         }, () => {
           this.formulario.disable();
           this.hasEdit = false;
-          Swal('Inclusão', `A subcategoria ${this.subcategoria.nome} foi salva!`)
+          Swal('Inclusão', `A subcategoria ${this.subcategoria.nome} foi salva!`, "success")
         })
       }
     }
   }
 
-  deletar() {
+  excluir() {
     Swal({
       title: 'Exclusão de subcategoria',
       text: `Deseja excluir a subcategoria: ${this.subcategoria.nome}?`,
@@ -100,7 +100,7 @@ export class SubcategoriasFormComponent implements OnInit {
           console.log(error.json())
         }, () => {
           this.atualizaSubcategoria.emit(true);
-          Swal('Exclusão', 'A subcategoria foi deletada!')
+          Swal('Exclusão', 'A subcategoria foi deletada!', "success")
         })
       }
     })
@@ -113,6 +113,6 @@ export class SubcategoriasFormComponent implements OnInit {
   }
 
   atualizaCategoriaSelect(value) {
-    this.subcategoria.categoria = this.categorias.filter(categoria => categoria.idCategoria = value)[0];
+    // this.subcategoria.categoria = this.categorias.filter(categoria => categoria.idCategoria = value)[0];
   }
 }
