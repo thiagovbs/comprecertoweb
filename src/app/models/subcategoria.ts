@@ -3,7 +3,7 @@ import { Categoria } from "./categoria";
 export class Subcategoria {
 
     idSubcategoria: number;
-    fAtivo: boolean;
+    fativo: boolean;
     nome: string;
-    categoria: Categoria = new Categoria();
+    // categoria: Categoria = new Categoria();
 }
