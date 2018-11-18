@@ -1,0 +1,17 @@
+<mat-toolbar color="primary" class="little">
+  <span>Cadastros de unidades de medida</span>
+  <span fxFlex></span>
+  <button mat-button href="#" mat-icon-button (click)="adicionarUnidadeMedidaForm()">
+    <mat-icon>add</mat-icon>
+  </button>
+  <button mat-button href="#" mat-icon-button>
+    <mat-icon>more_vert</mat-icon>
+  </button>
+</mat-toolbar>
+
+<div fxLayout="row" fxLayoutWrap="wrap">
+  <div fxFlex.gt-sm="33.33%" fxFlex="100" *ngFor="let unidadeMedida of unidadesMedida">
+    <app-unidades-medida-form [unidadeMedida]="unidadeMedida" (removerUnidadeMedida)="aoRemover($event)"
+      (atualizaUnidadeMedida)="aoSalvar($event)"></app-unidades-medida-form>
+  </div>
+</div>

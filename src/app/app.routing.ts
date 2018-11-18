@@ -38,6 +38,11 @@ export const AppRoutes: Routes = [
         path: 'cadastro-subcategorias',
         loadChildren:
           './sistema-interno/subcategorias/subcategorias.module#SubcategoriasModule'
+      },
+      {
+        path: 'cadastro-unidades-medida',
+        loadChildren:
+          './sistema-interno/unidades-medida/unidades-medida.module#UnidadesMedidaModule'
       }
     ]
   },
