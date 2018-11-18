@@ -20,7 +20,9 @@ export class CategoriasComponent implements OnInit {
   }
 
   getCategorias() {
-    this.categoriaService.getCategorias().subscribe(data => this.categorias = Lodash.orderBy(data.json(), 'idCategoria', 'desc'), error => console.log(error.json()));
+    this.categoriaService.getCategorias().subscribe(data => {
+      this.categorias = Lodash.orderBy(data.json(), 'idCategoria', 'desc')
+    }, error => console.log(error.json()));
   }
 
   adicionarCategoriaForm() {
@@ -28,8 +30,7 @@ export class CategoriasComponent implements OnInit {
   }
 
   aoRemover(categoriaRemovida) {
-    console.log(categoriaRemovida)
-    this.categorias = this.categorias.filter(categoria => categoria != categoriaRemovida);
+    this.getCategorias();
   }
 
   aoSalvar(salvo) {

@@ -16,10 +16,63 @@
                     <mat-checkbox class="example-margin" formControlName="fativo" [(ngModel)]="categoria.fativo">Ativo</mat-checkbox>
                 </div>
             </div>
+            <br>
+            <div fxLayout="row" fxLayoutWrap="wrap">
+                <div fxFlex.gt-sm="100" fxFlex.gt-xs="100">
+                    <mat-form-field class="demo-chip-list">
+                        <mat-chip-list #chipList>
+                            <mat-chip *ngFor="let subcategoria of categoria.subcategorias" [disabled]="formulario.disabled">
+                                {{subcategoria.nome}}
+                                <mat-icon matChipRemove (click)="formulario.enabled && removeSubcategoria(subcategoria)">cancel</mat-icon>
+                            </mat-chip>
+                            <input [matChipInputFor]="chipList" [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                                matChipInputAddOnBlur="true" (matChipInputTokenEnd)="addSubcategoria($event)"
+                                [disabled]="formulario.disabled" />
+                        </mat-chip-list>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div fxLayout="row" fxLayoutWrap="wrap">
+                <div fxFlex.gt-sm="90" fxFlex.gt-xs="90" *ngIf="formulario.enabled">
+                    <mat-form-field>
+                        <mat-select placeholder="Selecione uma medida" [(ngModel)]="unidadeMedidaSelecionada"
+                            [ngModelOptions]="{standalone: true}" [disabled]="formulario.disabled">
+                            <mat-option *ngFor="let unidadeMedida of unidadesMedida" [value]="unidadeMedida" [disabled]="!unidadeMedida.fativo">{{
+                                unidadeMedida.nome }} ({{unidadeMedida.sigla}})</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div fxFlex.gt-sm="10" fxFlex.gt-xs="10" *ngIf="formulario.enabled">
+                    <button mat-icon-button color="primary" [disabled]="formulario.disabled" (click)="addUnidadeMedida()">
+                        <mat-icon>add</mat-icon>
+                    </button>
+                </div>
+                <mat-form-field class="demo-chip-list">
+                    <mat-chip-list #chipList>
+                        <mat-chip *ngFor="let unidadeMedida of categoria.unidadesMedida" [disabled]="formulario.disabled">
+                            {{unidadeMedida.nome}}
+                            <mat-icon matChipRemove (click)="formulario.enabled && removeUnidadeMedida(unidadeMedida)">cancel</mat-icon>
+                        </mat-chip>
+                        <input [matChipInputFor]="chipList" [disabled]="formulario.disabled" />
+                    </mat-chip-list>
+                </mat-form-field>
+            </div>
+            <!-- <br>
+            <mat-form-field class="demo-chip-list">
+                <mat-chip-list #chipList>
+                    <mat-chip *ngFor="let unidadeMedida of categoria.unidadesMedida" [disabled]="formulario.disabled">
+                        {{unidadeMedida.nome}}({{unidadeMedida.sigla}})
+                        <mat-icon matChipRemove (click)="formulario.enabled && removeUnidadeMedida(unidadeMedida)">cancel</mat-icon>
+                    </mat-chip>
+                    <input placeholder="Unidades de medida" [matChipInputFor]="chipList"
+                        [matChipInputSeparatorKeyCodes]="separatorKeysCodes" matChipInputAddOnBlur="true"
+                        (matChipInputTokenEnd)="addUnidadeMedida($event)" [disabled]="formulario.disabled" />
+                </mat-chip-list>
+            </mat-form-field> -->
         </mat-card-content>
         <mat-card-actions>
             <button mat-raised-button color="warn" *ngIf="hasEdit" (click)="cancelar()">CANCELAR</button>
-            <button mat-raised-button color="warn" *ngIf="hasEdit && categoria.idCategoria" (click)="deletar()">DELETAR</button>
+            <button mat-raised-button color="warn" *ngIf="hasEdit && categoria.idCategoria" (click)="excluir()">EXCLUIR</button>
             <button mat-raised-button color="primary" *ngIf="hasEdit" [disabled]="formulario.invalid" (click)="salvar()">SALVAR</button>
             <button mat-button color="primary" *ngIf="!hasEdit" (click)="formulario.enable(); hasEdit = true">EDITAR</button>
         </mat-card-actions>

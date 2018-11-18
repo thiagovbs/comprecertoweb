@@ -1,4 +1,5 @@
 import { UnidadeMedida } from './unidade-medida';
+import { Subcategoria } from './subcategoria';
 
 export class Categoria {
 
@@ -6,6 +7,6 @@ export class Categoria {
     fativo: boolean;
     nome: string;
     unidadesMedida: UnidadeMedida[] = [];
-    // subcategorias: Subcategoria[] = [];
+    subcategorias: Subcategoria[] = [];
 
 }
