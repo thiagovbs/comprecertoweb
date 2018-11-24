@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Produto } from '../../models/produto';
 import { ProdutoService } from '../../services/produto.service';
 
+import * as Lodash from "lodash";
+
 @Component({
   selector: 'app-produtos',
   templateUrl: './produtos.component.html',
@@ -18,11 +20,13 @@ export class ProdutosComponent implements OnInit {
   }
 
   getProdutos() {
-    this.produtoService.getProdutos().subscribe(data => this.produtos = data.json(), error => console.log(error.json()));
+    this.produtoService.getProdutos().subscribe(data => {
+      this.produtos = Lodash.orderBy(data.json(), 'idProduto', 'desc');
+    }, error => console.log(error.json()));
   }
 
   adicionarProdutoForm() {
-    this.produtos.push(new Produto());
+    this.produtos.unshift(new Produto());
   }
 
   aoRemover(produtoRemovida) {

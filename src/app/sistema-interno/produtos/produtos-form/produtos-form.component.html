@@ -2,18 +2,21 @@
     <form [formGroup]="formulario" autocomplete="off">
         <mat-card-title>
             <h4>ID {{ produto.idProduto ? produto.idProduto : 'Indefinido' }}</h4>
-            <div style="height: 250px; width: 100%; background-color: black;"></div>
+            <div style="height: 150px; width: 100%; background-color: black;"></div>
             <!-- <button mat-raised-button color="primary">Adicionar Foto</button> -->
         </mat-card-title>
         <mat-card-content>
             <div fxLayout="row" fxLayoutWrap="wrap">
                 <div fxFlex.gt-sm="100" fxFlex.gt-xs="100">
                     <mat-form-field>
-                        <mat-select placeholder="Subcategoria">
-                            <mat-option value="option">Option</mat-option>
-                            <mat-option value="option">Option2</mat-option>
-                            <mat-option value="option">Option3</mat-option>
+                        <mat-select placeholder="Subcategorias" formControlName="subcategoria" [(ngModel)]="produto.subcategoria.idSubcategoria"
+                            (selectionChange)="atualizaSubcategoriaSelect($event.value)">
+                            <mat-option *ngFor="let subcategoria of subcategorias" [value]="subcategoria.idSubcategoria"
+                                [disabled]="!subcategoria.fativo">{{
+                                subcategoria.nome }}</mat-option>
                         </mat-select>
+                        <mat-hint *ngIf="formulario.controls['subcategoria'].hasError('required') && formulario.controls['subcategoria'].touched"
+                            class="text-danger font-14">A subcategoria é obrigatória.</mat-hint>
                     </mat-form-field>
                     <mat-form-field class="example-full-width">
                         <input matInput placeholder="Nome" formControlName="nome" [(ngModel)]="produto.nome">
@@ -40,10 +43,10 @@
                 </div>
                 <div fxFlex.gt-sm="20" fxFlex.gt-xs="20">
                     <mat-form-field>
-                        <mat-select placeholder="UM">
-                            <mat-option value="option">Option</mat-option>
-                            <mat-option value="option">Option2</mat-option>
-                            <mat-option value="option">Option3</mat-option>
+                        <mat-select placeholder="UM" formControlName="unidadeMedida" [(ngModel)]="produto.unidadeMedida.idUnidade"
+                            (selectionChange)="atualizaUnidadeMedidaSelect($event.value)">
+                            <mat-option *ngFor="let unidadeMedida of unidadesMedida" [value]="unidadeMedida.idUnidade">{{unidadeMedida.nome}}
+                                ({{unidadeMedida.sigla}})</mat-option>
                         </mat-select>
                     </mat-form-field>
                 </div>
@@ -52,7 +55,7 @@
         </mat-card-content>
         <mat-card-actions>
             <button mat-raised-button color="warn" *ngIf="hasEdit" (click)="cancelar()">CANCELAR</button>
-            <button mat-raised-button color="warn" *ngIf="hasEdit && produto.idProduto" (click)="deletar()">DELETAR</button>
+            <button mat-raised-button color="warn" *ngIf="hasEdit && produto.idProduto" (click)="excluir()">EXCLUIR</button>
             <button mat-raised-button color="primary" *ngIf="hasEdit" [disabled]="formulario.invalid" (click)="salvar()">SALVAR</button>
             <button mat-button color="primary" *ngIf="!hasEdit" (click)="formulario.enable(); hasEdit = true">EDITAR</button>
         </mat-card-actions>

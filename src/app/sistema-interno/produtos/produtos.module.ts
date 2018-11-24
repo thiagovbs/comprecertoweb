@@ -9,6 +9,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ProdutosFormComponent } from './produtos-form/produtos-form.component';
 import { HttpModule } from '@angular/http';
 import { ProdutoService } from '../../services/produto.service';
+import { SubcategoriaService } from '../../services/subcategoria.service';
+import { UnidadeMedidaService } from '../../services/unidade-medida.service';
 
 @NgModule({
   imports: [
@@ -31,7 +33,9 @@ import { ProdutoService } from '../../services/produto.service';
   ],
   declarations: [ProdutosComponent, ProdutosFormComponent],
   providers: [
-    ProdutoService
+    ProdutoService,
+    SubcategoriaService,
+    UnidadeMedidaService
   ]
 })
 export class ProdutosModule { }
