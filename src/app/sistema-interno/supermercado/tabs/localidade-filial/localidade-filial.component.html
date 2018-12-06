@@ -1,0 +1,58 @@
+<mat-card>
+  <mat-card-content>
+    <h4>Localização</h4>
+    <div fxLayout="row" fxLayoutWrap="wrap">
+      <div fxFlex.gt-sm="30" fxFlex.gt-xs="30">
+        <mat-form-field class="example-full-width">
+          <input matInput type="text" placeholder="CEP" name="cep" [(ngModel)]="cep" autocomplete="off">
+        </mat-form-field>
+      </div>
+      <div fxFlex.gt-sm="70" fxFlex.gt-xs="70">
+        <button mat-button color="primary" (click)="buscarCep()">BUSCAR</button>
+        <button mat-raised-button color="primary" (click)="addEndereco()" *ngIf="enderecoTemp">ADICIONAR</button>
+      </div>
+      <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" *ngIf="enderecoTemp">
+        <div fxLayout="row" fxLayoutWrap="wrap">
+          <div fxFlex.gt-sm="100" fxFlex.gt-md="43" fxFlex.gt-xs="43">
+            <strong>Bairro: </strong>
+            {{ enderecoTemp.nome }}
+          </div>
+          <div fxFlex.gt-sm="100" fxFlex.gt-md="43" fxFlex.gt-xs="43">
+            <strong>Cidade: </strong>
+            {{ enderecoTemp.cidade.nome }}
+          </div>
+          <div fxFlex.gt-sm="100" fxFlex.gt-md="13" fxFlex.gt-xs="13">
+            <strong>UF: </strong>
+            {{ enderecoTemp.cidade.estado.sigla }}
+          </div>
+        </div>
+      </div>
+    </div>
+    <hr>
+    <h4>Filiais</h4>
+    <div fxLayout="row" fxLayoutWrap="wrap">
+      <div fxFlex.gt-sm="100" fxFlex.gt-xs="100">
+
+        <mat-tab-group class="demo-tab-group">
+          <mat-tab *ngFor="let localidade of supermercadoComponent.mercado.mercadoLocalidades; let localidadeIndex = index">
+            <ng-template mat-tab-label>
+              {{ localidade.bairro.cidade.nome }} - {{ localidade.bairro.nome }}
+              <mat-icon (click)="removeLocalidade(localidade)" style="margin-left: 10px">cancel</mat-icon>
+            </ng-template>
+            <div class="demo-tab-content">
+              <mat-form-field class="example-full-width" *ngFor="let link of localidade.googlemapsLinks; let linkIndex = index">
+                <!-- <input matInput type="text" placeholder="CEP" name="link[i]" autocomplete="off" [value]="link[i]"
+                  (input)="atualizaGoogleMapsLink($event.target.value, localidadeIndex, linkIndex)"> -->
+                <input matInput type="text" name="link" [(ngModel)]="link.value" [placeholder]="'Link Google Maps ' + (linkIndex + 1)">
+              </mat-form-field>
+            </div>
+          </mat-tab>
+        </mat-tab-group>
+      </div>
+    </div>
+  </mat-card-content>
+  <mat-card-actions>
+    <button mat-button color="warn">ANTERIOR</button>
+    <button mat-button color="primary" (click)="proximaTab()">SEGUINTE</button>
+  </mat-card-actions>
+</mat-card>

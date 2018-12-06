@@ -7,7 +7,6 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DemoMaterialModule } from './demo-material-module';
 import { SharedModule } from './shared/shared.module';
-import { AuthHttp, AuthConfig } from 'angular2-jwt';
 
 import { SpinnerComponent } from './shared/spinner.component';
 import { AppSidebarComponent } from './layouts/full/sidebar/sidebar.component';
@@ -17,7 +16,6 @@ import { AppComponent } from './app.component';
 
 import { AppRoutes } from './app.routing';
 import { AppGuard } from './app.guard';
-import { Http, RequestOptions } from '@angular/http';
 
 @NgModule({
   declarations: [

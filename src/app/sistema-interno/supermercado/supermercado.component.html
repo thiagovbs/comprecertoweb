@@ -1,0 +1,34 @@
+<mat-toolbar color="primary" class="little">
+  <span>Cadastro de supermercado</span>
+</mat-toolbar>
+
+<mat-card>
+  <mat-card-content>
+    <mat-sidenav-container class="email-box" [ngClass]="{ 'side-panel-opened': sidePanelOpened, 'side-panel-closed': !sidePanelOpened }">
+      <mat-sidenav #supermercadonav [mode]="isOver() ? 'over' : 'side'" [opened]="!isOver()" (open)="sidePanelOpened = true"
+        (close)="sidePanelOpened = false" class="mail-sidebar" [perfectScrollbar]="config" [disabled]="isOver()" class="email-sidebar">
+
+        <div *ngFor="let tab of tabs; let i = index" [class.selected]="selectedTab == tab">
+          <div (click)="selectedTab = tab">
+            <div class="d-flex">
+              <div>
+                <div class="mail-title" fxShow="false" fxShow.gt-xs style="min-width: 120px;">
+                  <span>{{ tab.nome }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </mat-sidenav>
+
+      <div #supermercadocontent class="main-content" fxLayout="row" fxLayoutAlign="center start">
+        <div class="messages-list" fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100">
+          <div class="card-body">
+            <app-cadastro-supermercado *ngIf="selectedTab.key === 'dados'"></app-cadastro-supermercado>
+            <app-localidade-filial *ngIf="selectedTab.key === 'localidade-filial'"></app-localidade-filial>
+          </div>
+        </div>
+      </div>
+    </mat-sidenav-container>
+  </mat-card-content>
+</mat-card>
