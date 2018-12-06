@@ -68,14 +68,14 @@ const MERCADO_ADMIN_MENU_ITEMS = [
     icon: 'add'
   },
   {
-    state: 'cadastro-categorias',
-    name: 'Categorias',
+    state: 'cadastro-unidades-medida',
+    name: 'Unidades de Medida',
     type: 'link',
     icon: 'add'
   },
   {
-    state: 'cadastro-unidades-medida',
-    name: 'Unidades de Medida',
+    state: 'cadastro-categorias',
+    name: 'Categorias',
     type: 'link',
     icon: 'add'
   },
