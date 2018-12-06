@@ -77,6 +77,7 @@ export class CategoriasFormComponent implements OnInit {
     if (!this.categoria.unidadesMedida.includes(this.unidadeMedidaSelecionada)) {
       this.categoria.unidadesMedida.push(this.unidadeMedidaSelecionada);
     }
+    this.unidadeMedidaSelecionada = undefined
   }
 
   removeSubcategoria(subcategoria: any): void {
@@ -108,29 +109,29 @@ export class CategoriasFormComponent implements OnInit {
 
   salvar() {
     if (this.formulario.valid) {
-      if (this.categoria.idCategoria) {
-        console.log(this.categoria)
-        this.categoriaService.putCategoria(this.categoria).subscribe(data => {
-          console.log(data.json())
-          this.atualizaCategoria.emit(true);
-        }, error => {
-          console.log(error.json());
-        }, () => {
-          this.formulario.disable();
-          this.hasEdit = false;
-          Swal('Atualização', `A categoria ${this.categoria.nome} foi atualizada!`, "success")
-        })
-      } else {
-        this.categoriaService.postCategoria(this.categoria).subscribe(data => {
-          console.log(data.json())
-          this.atualizaCategoria.emit(true);
-        }, error => {
-          console.log(error.json());
-        }, () => {
-          this.formulario.disable();
-          this.hasEdit = false;
-          Swal('Inclusão', `A categoria ${this.categoria.nome} foi salva!`, "success")
-        })
+      if (this.listsValid()) {
+        if (this.categoria.idCategoria) {
+          console.log(this.categoria)
+          this.categoriaService.putCategoria(this.categoria).subscribe(data => {
+            this.atualizaCategoria.emit(true);
+          }, error => {
+            console.log(error.json());
+          }, () => {
+            this.formulario.disable();
+            this.hasEdit = false;
+            Swal('Atualização', `A categoria ${this.categoria.nome} foi atualizada!`, "success")
+          })
+        } else {
+          this.categoriaService.postCategoria(this.categoria).subscribe(data => {
+            this.atualizaCategoria.emit(true);
+          }, error => {
+            console.log(error);
+          }, () => {
+            this.formulario.disable();
+            this.hasEdit = false;
+            Swal('Inclusão', `A categoria ${this.categoria.nome} foi salva!`, "success")
+          })
+        }
       }
     }
   }
@@ -173,5 +174,17 @@ export class CategoriasFormComponent implements OnInit {
         '<i class="fa fa-thumbs-down"></i>',
       cancelButtonAriaLabel: 'Thumbs down',
     });
+  }
+
+  listsValid() {
+    if (this.categoria.subcategorias.length === 0) {
+      Swal('Erro', 'A categoria deve ter ao menos 1 subcategoria', 'error');
+      return false;
+    } else if (this.categoria.unidadesMedida.length === 0) {
+      Swal('Erro', 'A categoria deve ter ao menos 1 unidade de medida', 'error');
+      return false;
+    }
+
+    return true;
   }
 }
