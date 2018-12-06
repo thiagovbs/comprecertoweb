@@ -89,7 +89,6 @@ export class UnidadesMedidaFormComponent implements OnInit {
     }).then((result) => {
       if (result.value) {
         this.unidadeMedidaService.deleteUnidadeMedida(this.unidadeMedida.idUnidade).subscribe(data => {
-          console.log(data.json());
         }, error => {
           console.log(error.json())
         }, () => {

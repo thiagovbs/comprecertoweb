@@ -105,7 +105,6 @@ export class ProdutosFormComponent implements OnInit {
     }).then((result) => {
       if (result.value) {
         this.produtoService.deleteProduto(this.produto.idProduto).subscribe(data => {
-          console.log(data.json());
         }, error => {
           console.log(error.json())
         }, () => {
@@ -118,7 +117,7 @@ export class ProdutosFormComponent implements OnInit {
 
   getSubcategorias() {
     this.subcategoriaService.getSubcategorias().subscribe(data => {
-      this.subcategorias = Lodash.orderBy(data.json(), 'idSubcategoria', 'desc');
+      this.subcategorias = Lodash.orderBy(data.json(), 'nome', 'asc');
     }, error => console.log(error))
   }
 

@@ -20,7 +20,9 @@ export class UnidadesMedidaComponent implements OnInit {
   }
 
   getUnidadesMedida() {
-    this.unidadeMedidaService.getUnidadesMedida().subscribe(data => this.unidadesMedida = Lodash.orderBy(data.json(), 'idUnidade', 'desc'), error => console.log(error.json()));
+    this.unidadeMedidaService.getUnidadesMedida().subscribe(data => {
+      this.unidadesMedida = Lodash.orderBy(data.json(), 'idUnidade', 'desc')
+    }, error => console.log(error.json()));
   }
 
   adicionarUnidadeMedidaForm() {

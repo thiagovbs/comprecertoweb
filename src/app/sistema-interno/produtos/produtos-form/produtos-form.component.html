@@ -45,8 +45,7 @@
                     <mat-form-field>
                         <mat-select placeholder="UM" formControlName="unidadeMedida" [(ngModel)]="produto.unidadeMedida.idUnidade"
                             (selectionChange)="atualizaUnidadeMedidaSelect($event.value)">
-                            <mat-option *ngFor="let unidadeMedida of unidadesMedida" [value]="unidadeMedida.idUnidade">{{unidadeMedida.nome}}
-                                ({{unidadeMedida.sigla}})</mat-option>
+                            <mat-option *ngFor="let unidadeMedida of unidadesMedida" [value]="unidadeMedida.idUnidade">{{unidadeMedida.sigla}}</mat-option>
                         </mat-select>
                     </mat-form-field>
                 </div>
