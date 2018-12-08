@@ -1,3 +1,5 @@
+import { MercadoService } from './../../services/mercado.service';
+import { HttpModule } from '@angular/http';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SupermercadoComponent } from './supermercado.component';
@@ -31,8 +33,12 @@ import { TextMaskModule } from 'angular2-text-mask';
     NgxViacepModule,
     TextMaskModule,
     MatChipsModule,
-    MatTabsModule
+    MatTabsModule,
+    HttpModule
   ],
   declarations: [SupermercadoComponent, CadastroSupermercadoComponent, LocalidadeFilialComponent]
+  , providers: [
+    MercadoService
+  ]
 })
 export class SupermercadoModule { }

@@ -30,5 +30,6 @@ export class CadastroSupermercadoComponent implements OnInit {
 
   proximaTab() {
     console.log(this.supermercadoComponent.mercado)
+    this.supermercadoComponent.salvar();
   }
 }
