@@ -5,11 +5,11 @@ import { ProdutoService } from '../../../services/produto.service';
 
 import { Subcategoria } from '../../../models/subcategoria';
 import { SubcategoriaService } from '../../../services/subcategoria.service';
+import { UnidadeMedidaService } from '../../../services/unidade-medida.service';
+import { UnidadeMedida } from '../../../models/unidade-medida';
 
 import Swal from 'sweetalert2';
 import * as Lodash from 'lodash';
-import { UnidadeMedidaService } from '../../../services/unidade-medida.service';
-import { UnidadeMedida } from '../../../models/unidade-medida';
 
 @Component({
   selector: 'app-produtos-form',
