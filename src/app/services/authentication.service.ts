@@ -67,6 +67,7 @@ export class AuthenticationService {
   }
 
   isTokenExpired() {
-    return this.jwtHelper.isTokenExpired(localStorage.getItem('token'));
+    if (localStorage.getItem('token') !== null)
+      return this.jwtHelper.isTokenExpired(localStorage.getItem('token'));
   }
 }

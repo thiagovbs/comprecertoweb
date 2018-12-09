@@ -5,10 +5,10 @@ import { AuthenticationService } from "./services/authentication.service";
 @Injectable()
 export class AppGuard implements CanActivate {
 
-    constructor(private authenticationService: AuthenticationService, private router: Router) {}
+    constructor(private authenticationService: AuthenticationService, private router: Router) { }
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-        if (this.authenticationService.isTokenExpired()) {
+        if (localStorage.getItem('token') === null || this.authenticationService.isTokenExpired()) {
             this.router.navigate(['/auth/login']);
             return false;
         }

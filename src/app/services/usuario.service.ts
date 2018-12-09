@@ -28,7 +28,9 @@ export class UsuarioService {
   }
 
   getUsuarioLogged() {
-    const usuario: Usuario = this.jwtHelper.decodeToken(localStorage.getItem('token')).user;
-    return usuario;
+    if (localStorage.getItem('token') !== null) {
+      const usuario: Usuario = this.jwtHelper.decodeToken(localStorage.getItem('token')).user;
+      return usuario;
+    }
   }
 }
