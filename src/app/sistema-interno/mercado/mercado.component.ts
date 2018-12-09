@@ -1,4 +1,4 @@
-import { MercadoService } from './../../services/mercado.service';
+import { MercadoService } from '../../services/mercado.service';
 import { Component, OnInit } from '@angular/core';
 import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
 import { Mercado } from '../../models/mercado';
@@ -6,11 +6,11 @@ import { Mercado } from '../../models/mercado';
 import Swal from 'sweetalert2';
 
 @Component({
-  selector: 'app-supermercado',
-  templateUrl: './supermercado.component.html',
-  styleUrls: ['./supermercado.component.css']
+  selector: 'app-mercado',
+  templateUrl: './mercado.component.html',
+  styleUrls: ['./mercado.component.css']
 })
-export class SupermercadoComponent implements OnInit {
+export class MercadoComponent implements OnInit {
 
   private mediaMatcher: MediaQueryList = matchMedia(`(max-width: 960px)`);
 
@@ -21,7 +21,7 @@ export class SupermercadoComponent implements OnInit {
   tabs: any = [
     {
       key: 'dados',
-      nome: 'Cadastro Supermercado'
+      nome: 'Cadastro Mercado'
     },
     {
       key: 'localidade-filial',

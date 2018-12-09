@@ -34,7 +34,7 @@
       <div fxFlex.gt-sm="100" fxFlex.gt-xs="100">
 
         <mat-tab-group class="demo-tab-group">
-          <mat-tab *ngFor="let localidade of supermercadoComponent.mercado.mercadoLocalidades; let localidadeIndex = index">
+          <mat-tab *ngFor="let localidade of mercadoComponent.mercado.mercadoLocalidades; let localidadeIndex = index">
             <ng-template mat-tab-label>
               {{ localidade.bairro.cidade.nome }} - {{ localidade.bairro.nome }}
               <mat-icon (click)="removeLocalidade(localidade)" style="margin-left: 10px">cancel</mat-icon>

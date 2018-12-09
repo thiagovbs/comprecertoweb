@@ -1,13 +1,13 @@
-import { MercadoService } from './../../services/mercado.service';
+import { MercadoService } from '../../services/mercado.service';
 import { HttpModule } from '@angular/http';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { SupermercadoComponent } from './supermercado.component';
+import { MercadoComponent } from './mercado.component';
 import { RouterModule } from '@angular/router';
-import { SupermercadoRoutes } from './supermercado.routing';
+import { MercadoRoutes } from './mercado.routing';
 import { MatIconModule, MatToolbarModule, MatSidenavModule, MatCardModule, MatButtonModule, MatFormFieldModule, MatInputModule, MatChipsModule, MatTabsModule } from '@angular/material';
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
-import { CadastroSupermercadoComponent } from './tabs/cadastro-supermercado/cadastro-supermercado.component';
+import { CadastroMercadoComponent } from './tabs/cadastro-mercado/cadastro-mercado.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { LocalidadeFilialComponent } from './tabs/localidade-filial/localidade-filial.component';
@@ -17,7 +17,7 @@ import { TextMaskModule } from 'angular2-text-mask';
 @NgModule({
   imports: [
     CommonModule,
-    RouterModule.forChild(SupermercadoRoutes),
+    RouterModule.forChild(MercadoRoutes),
 
     MatIconModule,
     MatToolbarModule,
@@ -36,9 +36,9 @@ import { TextMaskModule } from 'angular2-text-mask';
     MatTabsModule,
     HttpModule
   ],
-  declarations: [SupermercadoComponent, CadastroSupermercadoComponent, LocalidadeFilialComponent]
+  declarations: [MercadoComponent, CadastroMercadoComponent, LocalidadeFilialComponent]
   , providers: [
     MercadoService
   ]
 })
-export class SupermercadoModule { }
+export class MercadoModule { }

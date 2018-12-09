@@ -86,8 +86,8 @@ const MERCADO_ADMIN_MENU_ITEMS = [
     icon: 'add'
   },
   {
-    state: 'cadastro-supermercado',
-    name: 'Supermercados',
+    state: 'cadastro-mercado',
+    name: 'Mercado',
     type: 'link',
     icon: 'add'
   },
@@ -104,8 +104,8 @@ const MERCADO_ADMIN_MENU_ITEMS = [
     icon: 'add'
   },
   {
-    state: 'perfil-supermercados',
-    name: 'Perfil dos Supermercados',
+    state: 'perfil-mercado',
+    name: 'Perfil dos Mercados',
     type: 'link',
     icon: 'add'
   }

@@ -4,29 +4,29 @@
       <div fxLayout="row" fxLayoutWrap="wrap">
         <div fxFlex.gt-sm="50" fxFlex.gt-xs="50">
           <mat-form-field class="example-full-width">
-            <input matInput placeholder="Razão Social" formControlName="razaoSocial" [(ngModel)]="supermercadoComponent.mercado.razaoSocial">
+            <input matInput placeholder="Razão Social" formControlName="razaoSocial" [(ngModel)]="mercadoComponent.mercado.razaoSocial">
             <mat-hint *ngIf="formulario.controls['razaoSocial'].hasError('required') && formulario.controls['razaoSocial'].touched"
               class="text-danger font-14">A Razão Social é obrigatória.</mat-hint>
           </mat-form-field>
           <mat-form-field class="example-full-width">
-            <input matInput placeholder="Nome Fantasia" formControlName="nomeFantasia" [(ngModel)]="supermercadoComponent.mercado.nomeFantasia">
+            <input matInput placeholder="Nome Fantasia" formControlName="nomeFantasia" [(ngModel)]="mercadoComponent.mercado.nomeFantasia">
             <mat-hint *ngIf="formulario.controls['nomeFantasia'].hasError('required') && formulario.controls['nomeFantasia'].touched"
               class="text-danger font-14">O Nome Fantasia é obrigatória.</mat-hint>
           </mat-form-field>
           <mat-form-field class="example-full-width">
-            <input matInput placeholder="CNPJ" formControlName="cnpj" [(ngModel)]="supermercadoComponent.mercado.cnpj"
+            <input matInput placeholder="CNPJ" formControlName="cnpj" [(ngModel)]="mercadoComponent.mercado.cnpj"
               [textMask]="{mask: maskCnpj}">
             <mat-hint *ngIf="formulario.controls['cnpj'].hasError('required') && formulario.controls['cnpj'].touched"
               class="text-danger font-14">O CNPJ é obrigatória.</mat-hint>
           </mat-form-field>
           <mat-form-field class="example-full-width">
-            <input matInput placeholder="Telefone" formControlName="telefone" [(ngModel)]="supermercadoComponent.mercado.telefone"
+            <input matInput placeholder="Telefone" formControlName="telefone" [(ngModel)]="mercadoComponent.mercado.telefone"
               [textMask]="{mask: maskTelefone}">
             <mat-hint *ngIf="formulario.controls['telefone'].hasError('required') && formulario.controls['telefone'].touched"
               class="text-danger font-14">O Telefone é obrigatória.</mat-hint>
           </mat-form-field>
           <mat-form-field class="example-full-width">
-            <input matInput type="email" placeholder="E-mail" formControlName="email" [(ngModel)]="supermercadoComponent.mercado.email">
+            <input matInput type="email" placeholder="E-mail" formControlName="email" [(ngModel)]="mercadoComponent.mercado.email">
             <mat-hint *ngIf="formulario.controls['email'].hasError('required') && formulario.controls['email'].touched"
               class="text-danger font-14">O Email é obrigatória.</mat-hint>
           </mat-form-field>

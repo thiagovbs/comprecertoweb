@@ -1,21 +1,21 @@
-import { MaskUtil } from './../../../../util/mask.util';
+import { MaskUtil } from '../../../../util/mask.util';
 import { Component, OnInit, Inject } from '@angular/core';
-import { SupermercadoComponent } from '../../supermercado.component';
+import { MercadoComponent } from '../../mercado.component';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 @Component({
-  selector: 'app-cadastro-supermercado',
-  templateUrl: './cadastro-supermercado.component.html',
-  styleUrls: ['./cadastro-supermercado.component.css']
+  selector: 'app-cadastro-mercado',
+  templateUrl: './cadastro-mercado.component.html',
+  styleUrls: ['./cadastro-mercado.component.css']
 })
-export class CadastroSupermercadoComponent implements OnInit {
+export class CadastroMercadoComponent implements OnInit {
 
   private formulario: FormGroup;
   maskUtil: MaskUtil = new MaskUtil();
   public maskCnpj = [/\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '\/', /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/]
   public maskTelefone = ['(', /\d/, /\d/, ')', /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]
 
-  constructor(@Inject(SupermercadoComponent) private supermercadoComponent: SupermercadoComponent, private formBuilder: FormBuilder) {
+  constructor(@Inject(MercadoComponent) private mercadoComponent: MercadoComponent, private formBuilder: FormBuilder) {
     this.formulario = formBuilder.group({
       razaoSocial: ['', [Validators.required]],
       nomeFantasia: ['', [Validators.required]],
@@ -29,7 +29,7 @@ export class CadastroSupermercadoComponent implements OnInit {
   }
 
   proximaTab() {
-    console.log(this.supermercadoComponent.mercado)
-    this.supermercadoComponent.salvar();
+    console.log(this.mercadoComponent.mercado)
+    this.mercadoComponent.salvar();
   }
 }

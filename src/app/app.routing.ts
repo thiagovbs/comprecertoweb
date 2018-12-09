@@ -45,9 +45,9 @@ export const AppRoutes: Routes = [
           './sistema-interno/unidades-medida/unidades-medida.module#UnidadesMedidaModule'
       },
       {
-        path: 'cadastro-supermercado',
+        path: 'cadastro-mercado',
         loadChildren:
-          './sistema-interno/supermercado/supermercado.module#SupermercadoModule'
+          './sistema-interno/mercado/mercado.module#MercadoModule'
       }
     ]
   },

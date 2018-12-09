@@ -1,7 +1,7 @@
 import { Estado } from './../../../../models/estado';
 import { Cidade } from './../../../../models/cidade';
 import { Component, OnInit, Inject } from '@angular/core';
-import { SupermercadoComponent } from '../../supermercado.component';
+import { MercadoComponent } from '../../mercado.component';
 import { NgxViacepService, Endereco, ErroCep } from '@brunoc/ngx-viacep';
 import { Bairro } from '../../../../models/bairro';
 import { Pais } from '../../../../models/pais';
@@ -18,10 +18,10 @@ export class LocalidadeFilialComponent implements OnInit {
 
   static cepMask = [/\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/];
 
-  constructor(@Inject(SupermercadoComponent) private supermercadoComponent: SupermercadoComponent, private viacep: NgxViacepService) { }
+  constructor(@Inject(MercadoComponent) private mercadoComponent: MercadoComponent, private viacep: NgxViacepService) { }
 
   ngOnInit() {
-    this.supermercadoComponent.mercado.mercadoLocalidades.forEach(localidade => {
+    this.mercadoComponent.mercado.mercadoLocalidades.forEach(localidade => {
       if (localidade.googlemapsLinks.length === 0) {
         ['', ''].map((value, index) => ({ value: value, id: index }));
       }
@@ -37,10 +37,10 @@ export class LocalidadeFilialComponent implements OnInit {
   }
 
   removeLocalidade(localidade: any): void {
-    const index = this.supermercadoComponent.mercado.mercadoLocalidades.indexOf(localidade);
+    const index = this.mercadoComponent.mercado.mercadoLocalidades.indexOf(localidade);
 
     if (index >= 0) {
-      this.supermercadoComponent.mercado.mercadoLocalidades.splice(index, 1);
+      this.mercadoComponent.mercado.mercadoLocalidades.splice(index, 1);
     }
   }
 
@@ -67,7 +67,7 @@ export class LocalidadeFilialComponent implements OnInit {
   }
 
   addEndereco() {
-    this.supermercadoComponent.mercado.mercadoLocalidades.push({
+    this.mercadoComponent.mercado.mercadoLocalidades.push({
       idMercadoLocalidade: undefined,
       googlemapsLinks: [{ id: 0, value: '' }, { id: 1, value: '' }],
       mercadoServicos: [],
@@ -78,11 +78,11 @@ export class LocalidadeFilialComponent implements OnInit {
   }
 
   proximaTab() {
-    console.log(this.supermercadoComponent.mercado)
-    this.supermercadoComponent.salvar();
+    console.log(this.mercadoComponent.mercado)
+    this.mercadoComponent.salvar();
   }
 
   atualizaGoogleMapsLink(event, localidadeIndex, linkIndex) {
-    this.supermercadoComponent.mercado.mercadoLocalidades[localidadeIndex].googlemapsLinks[linkIndex] = event
+    this.mercadoComponent.mercado.mercadoLocalidades[localidadeIndex].googlemapsLinks[linkIndex] = event
   }
 }
