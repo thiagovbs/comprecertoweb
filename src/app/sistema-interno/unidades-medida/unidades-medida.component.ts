@@ -30,7 +30,6 @@ export class UnidadesMedidaComponent implements OnInit {
   }
 
   aoRemover(unidadeMedidaRemovida) {
-    console.log(unidadeMedidaRemovida)
     this.unidadesMedida = this.unidadesMedida.filter(unidadeMedida => unidadeMedida != unidadeMedidaRemovida);
   }
 

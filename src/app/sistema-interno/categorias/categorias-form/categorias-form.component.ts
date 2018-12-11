@@ -102,7 +102,6 @@ export class CategoriasFormComponent implements OnInit {
       this.hasEdit = false
       this.atualizaCategoria.emit(true);
     } else {
-      console.log(this.categoria)
       this.categoriaRemovida.emit(this.categoria);
     }
   }
@@ -111,7 +110,6 @@ export class CategoriasFormComponent implements OnInit {
     if (this.formulario.valid) {
       if (this.listsValid()) {
         if (this.categoria.idCategoria) {
-          console.log(this.categoria)
           this.categoriaService.putCategoria(this.categoria).subscribe(data => {
             this.atualizaCategoria.emit(true);
           }, error => {
@@ -147,7 +145,6 @@ export class CategoriasFormComponent implements OnInit {
     }).then((result) => {
       if (result.value) {
         this.categoriaService.deleteCategoria(this.categoria.idCategoria).subscribe(data => {
-          console.log(data.json());
         }, error => {
           console.log(error.json())
         }, () => {

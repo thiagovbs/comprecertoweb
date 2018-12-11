@@ -30,7 +30,6 @@ export class ProdutosComponent implements OnInit {
   }
 
   aoRemover(produtoRemovida) {
-    console.log(produtoRemovida)
     this.produtos = this.produtos.filter(produto => produto != produtoRemovida);
   }
 

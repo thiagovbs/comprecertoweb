@@ -51,7 +51,6 @@ export class SubcategoriasFormComponent implements OnInit {
       this.formulario.disable();
       this.hasEdit = false
     } else {
-      console.log(this.subcategoria)
       this.subcategoriaRemovida.emit(this.subcategoria);
     }
   }
@@ -60,7 +59,6 @@ export class SubcategoriasFormComponent implements OnInit {
     if (this.formulario.valid) {
       if (this.subcategoria.idSubcategoria) {
         this.subcategoriaService.putSubcategoria(this.subcategoria).subscribe(data => {
-          console.log(data.json())
           this.atualizaSubcategoria.emit(true);
         }, error => {
           console.log(error.json());
@@ -71,7 +69,6 @@ export class SubcategoriasFormComponent implements OnInit {
         })
       } else {
         this.subcategoriaService.postSubcategoria(this.subcategoria).subscribe(data => {
-          console.log(data.json())
           this.atualizaSubcategoria.emit(true);
         }, error => {
           console.log(error.json());

@@ -29,7 +29,6 @@ export class AuthenticationService {
     this.http.post(this.oauthTokenUrl, body, { headers: hds, withCredentials: true }).subscribe(
       data => {
         this.armazenarToken(data['access_token']);
-        console.log(data);
 
         if (!this.usuarioService.hasPermissoes()) {
           console.log('O usuário não possui nenhum permissão');

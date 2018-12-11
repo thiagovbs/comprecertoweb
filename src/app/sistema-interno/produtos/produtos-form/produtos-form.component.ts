@@ -60,7 +60,6 @@ export class ProdutosFormComponent implements OnInit {
       this.formulario.disable();
       this.hasEdit = false
     } else {
-      console.log(this.produto)
       this.produtoRemovida.emit(this.produto);
     }
   }
@@ -70,7 +69,6 @@ export class ProdutosFormComponent implements OnInit {
       this.produto.imagem = 'teste';
       if (this.produto.idProduto) {
         this.produtoService.putProduto(this.produto).subscribe(data => {
-          console.log(data.json())
           this.atualizaProduto.emit(true);
         }, error => {
           console.log(error.json());
@@ -81,7 +79,6 @@ export class ProdutosFormComponent implements OnInit {
         })
       } else {
         this.produtoService.postProduto(this.produto).subscribe(data => {
-          console.log(data.json())
           this.atualizaProduto.emit(true);
         }, error => {
           console.log(error.json());

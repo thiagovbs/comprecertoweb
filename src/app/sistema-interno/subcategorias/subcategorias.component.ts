@@ -22,7 +22,6 @@ export class SubcategoriasComponent implements OnInit {
   getSubcategorias() {
     this.categoriaService.getSubcategorias().subscribe(data => {
       this.subcategorias = Lodash.orderBy(data.json(), 'idSubcategoria', 'desc');
-      console.log(this.subcategorias)
     }, error => console.log(error.json()))
   }
 
@@ -31,7 +30,6 @@ export class SubcategoriasComponent implements OnInit {
   }
 
   aoRemover(subcategoriaRemovida) {
-    console.log(subcategoriaRemovida)
     this.subcategorias = this.subcategorias.filter(subcategoria => subcategoria != subcategoriaRemovida);
   }
 

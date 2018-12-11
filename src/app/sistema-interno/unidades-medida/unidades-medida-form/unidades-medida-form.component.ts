@@ -45,7 +45,6 @@ export class UnidadesMedidaFormComponent implements OnInit {
       this.formulario.disable();
       this.hasEdit = false
     } else {
-      console.log(this.unidadeMedida)
       this.unidadeMedidaRemovida.emit(this.unidadeMedida);
     }
   }
@@ -54,7 +53,6 @@ export class UnidadesMedidaFormComponent implements OnInit {
     if (this.formulario.valid) {
       if (this.unidadeMedida.idUnidade) {
         this.unidadeMedidaService.putUnidadeMedida(this.unidadeMedida).subscribe(data => {
-          console.log(data.json())
           this.atualizaUnidadeMedida.emit(true);
         }, error => {
           console.log(error.json());
@@ -65,7 +63,6 @@ export class UnidadesMedidaFormComponent implements OnInit {
         })
       } else {
         this.unidadeMedidaService.postUnidadeMedida(this.unidadeMedida).subscribe(data => {
-          console.log(data.json())
           this.atualizaUnidadeMedida.emit(true);
         }, error => {
           console.log(error.json());

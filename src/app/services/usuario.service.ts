@@ -23,7 +23,6 @@ export class UsuarioService {
 
   hasPermissoes(): any {
     const usuario: Usuario = this.jwtHelper.decodeToken(localStorage.getItem('token')).user;
-    console.log(usuario);
     return usuario.permissoes.length != 0;
   }
 
