@@ -1,0 +1,26 @@
+.mat-card-actions {
+    margin: 10px !important; 
+    text-align: right !important;
+}
+
+.demo-tab-content {
+    padding: 10px !important;
+}
+
+.mat-slide-toggle {
+    float: right !important;
+    margin: auto !important;
+    text-align: right !important;
+}
+
+p.subtitle {
+    margin-top: 1% !important; 
+    margin-bottom: 0 !important;
+    font-size: 12px !important;
+}
+
+div.toggle {
+    display: flex !important;
+    margin: auto !important;
+}
+

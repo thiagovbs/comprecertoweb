@@ -26,6 +26,8 @@
           <div class="card-body">
             <app-cadastro-mercado *ngIf="selectedTab.key === 'dados'"></app-cadastro-mercado>
             <app-localidade-filial *ngIf="selectedTab.key === 'localidade-filial'"></app-localidade-filial>
+            <app-pacote-servicos *ngIf="selectedTab.key === 'servicos'"></app-pacote-servicos>
+            <app-pre-visualizacao *ngIf="selectedTab.key === 'finalizacao'"></app-pre-visualizacao>
           </div>
         </div>
       </div>
