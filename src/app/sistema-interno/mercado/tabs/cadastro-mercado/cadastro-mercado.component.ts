@@ -30,6 +30,6 @@ export class CadastroMercadoComponent implements OnInit {
 
   proximaTab() {
     console.log(this.mercadoComponent.mercado)
-    this.mercadoComponent.salvar();
+    this.mercadoComponent.selectedTab = this.mercadoComponent.tabs.filter(tab => tab.key === 'localidade-filial')[0];
   }
 }

@@ -79,7 +79,7 @@ export class LocalidadeFilialComponent implements OnInit {
 
   proximaTab() {
     console.log(this.mercadoComponent.mercado)
-    this.mercadoComponent.salvar();
+    this.mercadoComponent.selectedTab = this.mercadoComponent.tabs.filter(tab => tab.key === 'servicos')[0];
   }
 
   atualizaGoogleMapsLink(event, localidadeIndex, linkIndex) {
