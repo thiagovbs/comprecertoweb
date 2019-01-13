@@ -53,7 +53,8 @@ export class MercadoComponent implements OnInit {
   }
 
   salvar() {
-    this.mercado.mercadoLocalidades.forEach(localidade => localidade.googlemapsLinks = localidade.googlemapsLinks.map(googleMaps => googleMaps.value));
+    console.log(this.mercado);
+    console.log(JSON.stringify(this.mercado));
 
     if (this.mercado.idMercado) {
       this.mercadoService.putMercado(this.mercado).subscribe(data => {

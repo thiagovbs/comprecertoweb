@@ -40,9 +40,7 @@
               <mat-icon (click)="removeLocalidade(localidade)" style="margin-left: 10px">cancel</mat-icon>
             </ng-template>
             <div class="demo-tab-content">
-              <mat-form-field class="example-full-width" *ngFor="let link of localidade.googlemapsLinks; let linkIndex = index">
-                <!-- <input matInput type="text" placeholder="CEP" name="link[i]" autocomplete="off" [value]="link[i]"
-                  (input)="atualizaGoogleMapsLink($event.target.value, localidadeIndex, linkIndex)"> -->
+              <mat-form-field class="example-full-width" *ngFor="let link of localidade.googlemapsLinksTemp; let linkIndex = index">
                 <input matInput type="text" name="link" [(ngModel)]="link.value" [placeholder]="'Link Google Maps ' + (linkIndex + 1)">
               </mat-form-field>
             </div>

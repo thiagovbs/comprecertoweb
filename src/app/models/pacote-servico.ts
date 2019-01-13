@@ -2,5 +2,8 @@ export class PacoteServico {
 
     idPacoteServico: number;
     nome: string;
-    pacoteServicocol: string;
+    descricao: string;
+    valor: number;
+    acrescimo: number;
+    desconto: number;
 }

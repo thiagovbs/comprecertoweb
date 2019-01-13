@@ -5,10 +5,11 @@ import { Servico } from './servico';
 export class MercadoLocalidade {
 
     idMercadoLocalidade: number;
-    googlemapsLinks: any[] = [];
+    googlemapsLinks: string;
 
     mercadoServicos: MercadoServico[] = [];
     bairro: Bairro = new Bairro();
 
     servicosTemp?: Servico[] = [];
+    googlemapsLinksTemp?: any[] = [];
 }

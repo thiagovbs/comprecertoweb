@@ -7,4 +7,5 @@ export class MercadoServico {
     dtFimServico: Date;
     pacoteServico: PacoteServico;
 
+    saldo: number;
 }

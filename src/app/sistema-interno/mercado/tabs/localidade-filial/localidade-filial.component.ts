@@ -21,15 +21,11 @@ export class LocalidadeFilialComponent implements OnInit {
   constructor(@Inject(MercadoComponent) private mercadoComponent: MercadoComponent, private viacep: NgxViacepService) { }
 
   ngOnInit() {
-    this.mercadoComponent.mercado.mercadoLocalidades.forEach(localidade => {
-      if (localidade.googlemapsLinks.length === 0) {
-        ['', ''].map((value, index) => ({ value: value, id: index }));
-      }
-    })
   }
 
   buscarCep() {
     this.viacep.buscarPorCep(this.cep).then((endereco) => {
+      console.log(endereco);
       this.enderecoTemp = this.parseEndereco(endereco);
     }).catch((error: ErroCep) => {
       console.log(error.message);
@@ -54,7 +50,7 @@ export class LocalidadeFilialComponent implements OnInit {
     pais.sigla = 'BR';
 
     estado.pais = pais;
-    estado.nome = 'Rio de Janeiro';
+    estado.nome = this.getNomeEstado(endereco.uf);
     estado.sigla = endereco.uf;
 
     cidade.estado = estado;
@@ -66,10 +62,68 @@ export class LocalidadeFilialComponent implements OnInit {
     return bairro;
   }
 
+  getNomeEstado(uf) {
+    switch (uf) {
+      case 'AC':
+        return 'Acre'
+      case 'AL':
+        return 'Alagoas'
+      case 'AP':
+        return 'Amapá'
+      case 'AM':
+        return 'Amazonas'
+      case 'BA':
+        return 'Bahia'
+      case 'CE':
+        return 'Ceará'
+      case 'DF':
+        return 'Distrito Federal'
+      case 'GO':
+        return 'Goiás'
+      case 'MA':
+        return 'Maranhão'
+      case 'MT':
+        return 'Mato Grosso'
+      case 'MS':
+        return 'Mato Grosso do Sul'
+      case 'MG':
+        return 'Minas Gerais'
+      case 'PA':
+        return 'Pará'
+      case 'PB':
+        return 'Paraíba'
+      case 'PR':
+        return 'Paraná'
+      case 'PE':
+        return 'Pernambuco'
+      case 'PI':
+        return 'Piauí'
+      case 'RJ':
+        return 'Rio de Janeiro'
+      case 'RN':
+        return 'Rio Grande do Norte'
+      case 'RS':
+        return 'Rio Grande do Sul'
+      case 'RO':
+        return 'Maranhão'
+      case 'RR':
+        return 'Roraima'
+      case 'SC':
+        return 'Santa Catarina'
+      case 'SP':
+        return 'São Paulo'
+      case 'SE':
+        return 'Sergipe'
+      case 'TO':
+        return 'Tocantins'
+    }
+  }
+
   addEndereco() {
     this.mercadoComponent.mercado.mercadoLocalidades.push({
       idMercadoLocalidade: undefined,
-      googlemapsLinks: [{ id: 0, value: '' }, { id: 1, value: '' }],
+      googlemapsLinks: '',
+      googlemapsLinksTemp: [{ id: 0, value: '' }, { id: 1, value: '' }],
       mercadoServicos: [],
       bairro: this.enderecoTemp
     });
@@ -78,11 +132,12 @@ export class LocalidadeFilialComponent implements OnInit {
   }
 
   proximaTab() {
+    this.mercadoComponent.mercado.mercadoLocalidades.forEach(localidade => localidade.googlemapsLinks = localidade.googlemapsLinksTemp.map(link => link.value).join(','));
     console.log(this.mercadoComponent.mercado)
     this.mercadoComponent.selectedTab = this.mercadoComponent.tabs.filter(tab => tab.key === 'servicos')[0];
   }
 
-  atualizaGoogleMapsLink(event, localidadeIndex, linkIndex) {
-    this.mercadoComponent.mercado.mercadoLocalidades[localidadeIndex].googlemapsLinks[linkIndex] = event
-  }
+  // atualizaGoogleMapsLink(event, localidadeIndex, linkIndex) {
+  //   this.mercadoComponent.mercado.mercadoLocalidades[localidadeIndex].googlemapsLinksTemp[linkIndex] = event
+  // }
 }

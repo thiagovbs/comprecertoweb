@@ -30,6 +30,11 @@
             <mat-hint *ngIf="formulario.controls['email'].hasError('required') && formulario.controls['email'].touched"
               class="text-danger font-14">O Email é obrigatória.</mat-hint>
           </mat-form-field>
+          <mat-form-field class="example-full-width">
+            <input matInput type="senha" placeholder="Senha" formControlName="senha" [(ngModel)]="mercadoComponent.mercado.senha">
+            <mat-hint *ngIf="formulario.controls['senha'].hasError('required') && formulario.controls['senha'].touched"
+              class="text-danger font-14">A senha é obrigatória.</mat-hint>
+          </mat-form-field>
         </div>
         <div fxFlex.gt-sm="50" fxFlex.gt-xs="50">
         </div>

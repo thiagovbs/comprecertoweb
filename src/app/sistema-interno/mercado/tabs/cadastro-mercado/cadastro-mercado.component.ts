@@ -21,7 +21,8 @@ export class CadastroMercadoComponent implements OnInit {
       nomeFantasia: ['', [Validators.required]],
       cnpj: ['', [Validators.required]],
       telefone: ['', [Validators.required]],
-      email: ['', [Validators.required]]
+      email: ['', [Validators.required]],
+      senha: ['', [Validators.required]]
     })
   }
 
@@ -29,7 +30,7 @@ export class CadastroMercadoComponent implements OnInit {
   }
 
   proximaTab() {
-    console.log(this.mercadoComponent.mercado)
+    // console.log(this.mercadoComponent.mercado)
     this.mercadoComponent.selectedTab = this.mercadoComponent.tabs.filter(tab => tab.key === 'localidade-filial')[0];
   }
 }
