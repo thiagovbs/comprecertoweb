@@ -17,13 +17,15 @@ import { AppComponent } from './app.component';
 import { AppRoutes } from './app.routing';
 import { AppGuard } from './app.guard';
 
+
 @NgModule({
   declarations: [
     AppComponent,
     FullComponent,
     AppHeaderComponent,
     SpinnerComponent,
-    AppSidebarComponent
+    AppSidebarComponent,
+    
   ],
   imports: [
     BrowserModule,

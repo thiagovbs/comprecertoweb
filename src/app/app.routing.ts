@@ -48,6 +48,11 @@ export const AppRoutes: Routes = [
         path: 'cadastro-mercado',
         loadChildren:
           './sistema-interno/mercado/mercado.module#MercadoModule'
+      },
+      {
+        path: 'cadastro-faq',
+        loadChildren:
+        './sistema-interno/faq/faq.module#FaqModule'
       }
     ]
   },
