@@ -6,3 +6,13 @@
 .demo-tab-content {
     padding: 10px !important;
 }
+
+.icon-add-align-center {
+    margin-top: 35% !important;
+}
+
+@media(min-width:1024px) {
+    .icon-add-align-center {
+        margin-top: 15% !important;
+    }
+}

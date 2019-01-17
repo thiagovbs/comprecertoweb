@@ -47,8 +47,8 @@
         <div class="demo-tab-content">
           <div fxLayout="row" fxLayoutWrap="wrap">
             <div fxFlex.gt-sm="50" fxFlex.gt-xs="50">
-              {{ localidade.googlemapsLinks === 1 ? '- 1 Filial' :
-              ('- ' + localidade.googlemapsLinks.length + ' filiais') }}
+              {{ localidade.googlemapsLinks.split(',').length === 1 ? '- 1 Filial' :
+              ('- ' + localidade.googlemapsLinks.split(',').length + ' filiais') }}
             </div>
             <div fxFlex.gt-sm="50" fxFlex.gt-xs="50" *ngFor="let servico of localidade.mercadoServicos">
               {{ '- ' + servico.pacoteServico.nome }}

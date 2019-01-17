@@ -5,6 +5,7 @@ import { MercadoComponent } from '../../mercado.component';
 import { NgxViacepService, Endereco, ErroCep } from '@brunoc/ngx-viacep';
 import { Bairro } from '../../../../models/bairro';
 import { Pais } from '../../../../models/pais';
+import { MercadoLocalidade } from '../../../../models/mercado-localidade';
 
 @Component({
   selector: 'app-localidade-filial',
@@ -132,12 +133,21 @@ export class LocalidadeFilialComponent implements OnInit {
   }
 
   proximaTab() {
-    this.mercadoComponent.mercado.mercadoLocalidades.forEach(localidade => localidade.googlemapsLinks = localidade.googlemapsLinksTemp.map(link => link.value).join(','));
-    console.log(this.mercadoComponent.mercado)
+    this.mercadoComponent.mercado.mercadoLocalidades.forEach(localidade =>
+      localidade.googlemapsLinks = localidade.googlemapsLinksTemp.filter(link => link.value && link.value !== '').map(link => link.value).join(','));
     this.mercadoComponent.selectedTab = this.mercadoComponent.tabs.filter(tab => tab.key === 'servicos')[0];
   }
 
   // atualizaGoogleMapsLink(event, localidadeIndex, linkIndex) {
   //   this.mercadoComponent.mercado.mercadoLocalidades[localidadeIndex].googlemapsLinksTemp[linkIndex] = event
   // }
+
+  removeGoogleMapsLink(localidade: MercadoLocalidade, link: any) {
+    const indexLink: number = localidade.googlemapsLinksTemp.indexOf(link, 0);
+    localidade.googlemapsLinksTemp.splice(indexLink, 1);
+  }
+
+  addGoogleMapsLink(localidade: MercadoLocalidade) {
+    localidade.googlemapsLinksTemp.push({ id: localidade.googlemapsLinksTemp.length - 1, value: '' });
+  }
 }

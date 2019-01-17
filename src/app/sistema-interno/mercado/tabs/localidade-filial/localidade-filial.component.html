@@ -40,9 +40,21 @@
               <mat-icon (click)="removeLocalidade(localidade)" style="margin-left: 10px">cancel</mat-icon>
             </ng-template>
             <div class="demo-tab-content">
-              <mat-form-field class="example-full-width" *ngFor="let link of localidade.googlemapsLinksTemp; let linkIndex = index">
-                <input matInput type="text" name="link" [(ngModel)]="link.value" [placeholder]="'Link Google Maps ' + (linkIndex + 1)">
-              </mat-form-field>
+              <div fxLayout="row" fxLayoutWrap="wrap" *ngFor="let link of localidade.googlemapsLinksTemp; let linkIndex = index">
+                <div fxFlex.gt-sm="90" fxFlex.gt-xs="90">
+                  <mat-form-field class="example-full-width">
+                    <input matInput type="text" name="link" [(ngModel)]="link.value" [placeholder]="'Link Google Maps ' + (linkIndex + 1)">
+                  </mat-form-field>
+                </div>
+                <div fxFlex.gt-sm="10" fxFlex.gt-xs="10">
+                  <mat-icon class="icon-add-align-center pointer" (click)="removeGoogleMapsLink(localidade, link)">remove</mat-icon>
+                </div>
+              </div>
+              <div fxLayout="row" fxLayoutWrap="wrap">
+                <div fxFlex.gt-sm="100" fxFlex.gt-xs="100">
+                  <mat-icon class="pointer" (click)="addGoogleMapsLink(localidade)">add</mat-icon>
+                </div>
+              </div>
             </div>
           </mat-tab>
         </mat-tab-group>
