@@ -48,6 +48,11 @@ export const AppRoutes: Routes = [
         path: 'cadastro-mercado',
         loadChildren:
           './sistema-interno/mercado/mercado.module#MercadoModule'
+      },
+      {
+        path: 'perfil-mercado',
+        loadChildren:
+          './sistema-interno/lista-perfil-mercado/lista-perfil-mercado.module#ListaPerfilMercadoModule'
       }
     ]
   },

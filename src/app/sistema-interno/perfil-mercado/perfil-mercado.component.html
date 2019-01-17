@@ -1,0 +1,71 @@
+<mat-card>
+  <mat-card-content>
+    <!-- <h4>Pré visualização</h4> -->
+    <div fxLayout="row" fxLayoutWrap="wrap">
+      <div fxFlex.lt-md="20" fxFlex.gt-sm="10">
+        <div style="height: 100px; width: 100px; background-color: black; border-radius: 50px"></div>
+      </div>
+      <div fxFlex.lt-md="60" fxFlex.gt-sm="70">
+        <p style="font-weight: 500">{{ mercado.nomeFantasia }}</p>
+        <span class="label label-success">Editar</span>
+        <span class="label label-danger">Apagar</span>
+      </div>
+      <div fxFlex.lt-md="20" fxFlex.gt-sm="20">
+        <p>Valor da conta total: {{ getValorTotal() | currency:'BRL':true }}</p>
+      </div>
+    </div>
+    <hr>
+    <div fxLayout="row" fxLayoutWrap="wrap">
+      <div fxFlex.gt-sm="50" fxFlex.gt-xs="50">
+        <span style="font-weight: 500; padding-right: 10px">Razão social: </span>
+        {{ mercado.razaoSocial }}
+      </div>
+      <div fxFlex.gt-sm="50" fxFlex.gt-xs="50">
+        <span style="font-weight: 500; padding-right: 10px">Senha: </span>
+        {{ mercado.senha }}
+      </div>
+      <div fxFlex.gt-sm="50" fxFlex.gt-xs="50">
+        <span style="font-weight: 500; padding-right: 10px">Nome fantasia:
+        </span>
+        {{ mercado.nomeFantasia }}
+      </div>
+      <div fxFlex.gt-sm="50" fxFlex.gt-xs="50">
+        <span style="font-weight: 500; padding-right: 10px">Telefone: </span>
+        {{ mercado.telefone }}
+      </div>
+      <div fxFlex.gt-sm="50" fxFlex.gt-xs="50">
+        <span style="font-weight: 500; padding-right: 10px">CNPJ: </span>
+        {{ mercado.cnpj }}
+      </div>
+      <div fxFlex.gt-sm="50" fxFlex.gt-xs="50">
+        <span style="font-weight: 500; padding-right: 10px">E-mail: </span>
+        {{ mercado.email }}
+      </div>
+    </div>
+    <hr>
+    <mat-tab-group class="demo-tab-group">
+      <mat-tab *ngFor="let localidade of mercado.mercadoLocalidades">
+        <ng-template mat-tab-label>
+          {{ localidade.bairro.cidade.nome }} - {{ localidade.bairro.nome }}
+        </ng-template>
+        <div class="demo-tab-content">
+          <div fxLayout="row" fxLayoutWrap="wrap">
+            <div fxFlex.gt-sm="50" fxFlex.gt-xs="50">
+              {{ localidade.googlemapsLinks.split(',').length === 1 ? '- 1 Filial' :
+              ('- ' + localidade.googlemapsLinks.split(',').length + ' filiais') }}
+            </div>
+            <div fxFlex.gt-sm="50" fxFlex.gt-xs="50" *ngFor="let servico of localidade.mercadoServicos">
+              {{ '- ' + servico.pacoteServico.nome }}
+            </div>
+          </div>
+          <br>
+          <div fxLayout="row" fxLayoutWrap="wrap">
+            <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" style="text-align:right">
+              Valor da conta regional: {{ getValorRegional(localidade) | currency:'BRL':true }}
+            </div>
+          </div>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+  </mat-card-content>
+</mat-card>

@@ -92,6 +92,12 @@ const MERCADO_ADMIN_MENU_ITEMS = [
     icon: 'add'
   },
   {
+    state: 'perfil-mercado',
+    name: 'Perfil dos Mercados',
+    type: 'link',
+    icon: 'add'
+  },
+  {
     state: 'cadastro-faq',
     name: 'FAQ',
     type: 'link',
@@ -100,12 +106,6 @@ const MERCADO_ADMIN_MENU_ITEMS = [
   {
     state: 'liberacao-push',
     name: 'Liberação de PUSHs',
-    type: 'link',
-    icon: 'add'
-  },
-  {
-    state: 'perfil-mercado',
-    name: 'Perfil dos Mercados',
     type: 'link',
     icon: 'add'
   }

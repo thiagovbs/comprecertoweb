@@ -1,0 +1,33 @@
+@import 'variable';
+
+/*
+Custom Compre Certo
+*/
+
+.pointer {
+	cursor: pointer;
+}
+
+.cc-green-light-color {
+    color: $cc-green-light;
+}
+
+.cc-green-medium-color {
+    color: $cc-green-medium;
+}
+
+.cc-green-strong-color {
+    color: $cc-green-strong;
+}
+
+.cc-green-light-backgroundcolor {
+    background-color: $cc-green-light;
+}
+
+.cc-green-medium-backgroundcolor {
+    background-color: $cc-green-medium;
+}
+
+.cc-green-strong-backgroundcolor {
+    background-color: $cc-green-strong;
+}
