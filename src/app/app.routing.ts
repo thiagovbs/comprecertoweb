@@ -53,6 +53,10 @@ export const AppRoutes: Routes = [
         path: 'perfil-mercado',
         loadChildren:
           './sistema-interno/lista-perfil-mercado/lista-perfil-mercado.module#ListaPerfilMercadoModule'
+      }, {
+        path: 'cadastro-faq',
+        loadChildren:
+          './sistema-interno/faq/faq.module#FaqModule'
       }
     ]
   },
