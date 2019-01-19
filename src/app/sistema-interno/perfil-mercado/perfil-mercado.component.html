@@ -2,15 +2,15 @@
   <mat-card-content>
     <!-- <h4>Pré visualização</h4> -->
     <div fxLayout="row" fxLayoutWrap="wrap">
-      <div fxFlex.lt-md="20" fxFlex.gt-sm="10">
+      <div fxFlex.gt-sm="20" fxFlex.gt-xs="20">
         <div style="height: 100px; width: 100px; background-color: black; border-radius: 50px"></div>
       </div>
-      <div fxFlex.lt-md="60" fxFlex.gt-sm="70">
+      <div fxFlex.gt-sm="50" fxFlex.gt-xs="50">
         <p style="font-weight: 500">{{ mercado.nomeFantasia }}</p>
         <span class="label label-success">Editar</span>
         <span class="label label-danger">Apagar</span>
       </div>
-      <div fxFlex.lt-md="20" fxFlex.gt-sm="20">
+      <div fxFlex.gt-sm="30" fxFlex.gt-xs="30" class="text-right">
         <p>Valor da conta total: {{ getValorTotal() | currency:'BRL':true }}</p>
       </div>
     </div>
@@ -60,7 +60,7 @@
           </div>
           <br>
           <div fxLayout="row" fxLayoutWrap="wrap">
-            <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" style="text-align:right">
+            <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" class="text-right">
               Valor da conta regional: {{ getValorRegional(localidade) | currency:'BRL':true }}
             </div>
           </div>
