@@ -15,7 +15,6 @@ export class PerfilMercadoComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    console.log(this.mercado);
   }
 
   getValorRegional(localidade: MercadoLocalidade) {

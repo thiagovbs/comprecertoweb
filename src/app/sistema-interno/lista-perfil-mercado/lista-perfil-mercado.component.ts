@@ -21,7 +21,6 @@ export class ListaPerfilMercadoComponent implements OnInit {
 
   getMercados() {
     this.observable = this.mercadoService.getMercados().subscribe(data => {
-      console.log(data.json());
       this.mercados = data.json();
     }, error => console.log(error));
   }

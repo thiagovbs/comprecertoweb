@@ -36,7 +36,7 @@
                   </div>
                   <div fxFlex.gt-sm="20" fxFlex.gt-xs="20" class="toggle">
                     <mat-slide-toggle (change)="adicionaRemoveServico($event, localidade, servico.pacoteSelecionado)"
-                      [disabled]="!servico.pacoteSelecionado"></mat-slide-toggle>
+                      [disabled]="!servico.pacoteSelecionado" [checked]="mercadoComponent.mercado.idMercado && servico.pacoteSelecionado"></mat-slide-toggle>
                   </div>
                 </div>
                 <hr>

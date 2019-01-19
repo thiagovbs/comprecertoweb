@@ -87,7 +87,7 @@ const MERCADO_ADMIN_MENU_ITEMS = [
   },
   {
     state: 'cadastro-mercado',
-    name: 'Mercado',
+    name: 'Cadastro de Mercado',
     type: 'link',
     icon: 'add'
   },

@@ -1,7 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MercadoComponent } from '../../mercado.component';
 import { ServicoService } from '../../../../services/servico.service';
-import { Servico } from '../../../../models/servico';
 import { MercadoLocalidade } from '../../../../models/mercado-localidade';
 import { PacoteServico } from '../../../../models/pacote-servico';
 import { MercadoServico } from '../../../../models/mercado-servico';
@@ -19,7 +18,8 @@ export class PacoteServicosComponent implements OnInit {
   constructor(@Inject(MercadoComponent) private mercadoComponent: MercadoComponent, private servicoService: ServicoService) { }
 
   ngOnInit() {
-    this.getServicos();
+    if (!this.mercadoComponent.mercado.idMercado)
+      this.getServicos();
   }
 
   getServicos() {
@@ -29,7 +29,7 @@ export class PacoteServicosComponent implements OnInit {
       })
     }, error => {
       console.log(error);
-    }, () => console.log(this.mercadoComponent.mercado.mercadoLocalidades))
+    })
   }
 
   adicionaRemoveServico(event, localidade: MercadoLocalidade, pacoteServico: PacoteServico) {

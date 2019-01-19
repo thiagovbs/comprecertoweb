@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { PerfilMercadoComponent } from './perfil-mercado.component';
 import { MatTabsModule, MatCardModule, MatButtonModule } from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   imports: [
@@ -11,7 +12,8 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     MatTabsModule,
     MatCardModule,
     MatButtonModule,
-    FlexLayoutModule
+    FlexLayoutModule,
+    RouterModule
   ],
   declarations: [PerfilMercadoComponent],
   exports: [PerfilMercadoComponent]

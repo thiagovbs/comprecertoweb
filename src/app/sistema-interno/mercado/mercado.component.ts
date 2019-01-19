@@ -4,6 +4,7 @@ import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
 import { Mercado } from '../../models/mercado';
 
 import Swal from 'sweetalert2';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-mercado',
@@ -42,9 +43,15 @@ export class MercadoComponent implements OnInit {
 
   mercado: Mercado = new Mercado();
 
-  constructor(private mercadoService: MercadoService) { }
+  constructor(private mercadoService: MercadoService, private activeRoute: ActivatedRoute) { }
 
   ngOnInit() {
+    this.activeRoute.params.subscribe(params => {
+      if (params['idMercado'] !== undefined) {
+        this.mercado.idMercado = params['idMercado'];
+        this.getMercadoPorId();
+      }
+    });
     this.selectedTab = this.tabs[0];
   }
 
@@ -79,5 +86,19 @@ export class MercadoComponent implements OnInit {
         Swal('Inclusão', `O mercado ${this.mercado.nomeFantasia} foi salvo!`, "success")
       })
     }
+  }
+
+  getMercadoPorId() {
+    this.mercadoService.getMercadoPorId(this.mercado.idMercado).subscribe(data => {
+      this.mercado = data.json();
+      console.log(data.json())
+    }, error => {
+      console.log(error.json());
+    }, () => {
+      this.mercado.mercadoLocalidades.forEach(localidade => {
+        let localidades = localidade.googlemapsLinks.split(',');
+        localidade.googlemapsLinksTemp = localidades.map((loc, index) => ({ id: index, value: loc }));
+      })
+    })
   }
 }

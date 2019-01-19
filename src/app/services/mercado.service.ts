@@ -33,4 +33,12 @@ export class MercadoService {
 
     return this.http.get(`${environment.urlSpring}/mercados`, { headers: hds, withCredentials: true })
   }
+
+  getMercadoPorId(idMercado: number) {
+    const hds = new Headers({
+      'Authorization': `Bearer ${localStorage.getItem('token')}`
+    });
+
+    return this.http.get(`${environment.urlSpring}/mercados/${idMercado}`, { headers: hds, withCredentials: true })
+  }
 }

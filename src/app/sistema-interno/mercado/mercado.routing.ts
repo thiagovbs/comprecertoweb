@@ -5,5 +5,9 @@ export const MercadoRoutes: Routes = [
   {
     path: '',
     component: MercadoComponent
+  },
+  {
+    path: ':idMercado',
+    component: MercadoComponent
   }
 ];

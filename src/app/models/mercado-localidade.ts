@@ -10,6 +10,6 @@ export class MercadoLocalidade {
     mercadoServicos: MercadoServico[] = [];
     bairro: Bairro = new Bairro();
 
-    servicosTemp?: Servico[] = [];
+    servicosTemp?: any[] = [];
     googlemapsLinksTemp?: any[] = [];
 }

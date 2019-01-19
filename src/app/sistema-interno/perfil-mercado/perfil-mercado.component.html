@@ -7,8 +7,12 @@
       </div>
       <div fxFlex.gt-sm="50" fxFlex.gt-xs="50">
         <p style="font-weight: 500">{{ mercado.nomeFantasia }}</p>
-        <span class="label label-success">Editar</span>
-        <span class="label label-danger">Apagar</span>
+        <a [routerLink]="['/secure/cadastro-mercado', mercado.idMercado]">
+          <span class="label label-success">Editar</span>
+        </a>
+        <a [routerLink]="['/secure/cadastro-mercado', mercado.idMercado]">
+          <span class="label label-danger">Apagar</span>
+        </a>
       </div>
       <div fxFlex.gt-sm="30" fxFlex.gt-xs="30" class="text-right">
         <p>Valor da conta total: {{ getValorTotal() | currency:'BRL':true }}</p>
