@@ -68,14 +68,8 @@ const MERCADO_ADMIN_MENU_ITEMS = [
     icon: 'add'
   },
   {
-    state: 'cadastro-unidades-medida',
-    name: 'Unidades de Medida',
-    type: 'link',
-    icon: 'add'
-  },
-  {
-    state: 'cadastro-categorias',
-    name: 'Categorias',
+    state: 'cadastro-mercado',
+    name: 'Cadastro de Supermercado',
     type: 'link',
     icon: 'add'
   },
@@ -86,14 +80,8 @@ const MERCADO_ADMIN_MENU_ITEMS = [
     icon: 'add'
   },
   {
-    state: 'cadastro-mercado',
-    name: 'Cadastro de Mercado',
-    type: 'link',
-    icon: 'add'
-  },
-  {
-    state: 'perfil-mercado',
-    name: 'Perfil dos Mercados',
+    state: 'cadastro-categorias',
+    name: 'Categorias e Subcategorias',
     type: 'link',
     icon: 'add'
   },
@@ -106,6 +94,18 @@ const MERCADO_ADMIN_MENU_ITEMS = [
   {
     state: 'liberacao-push',
     name: 'Liberação de PUSHs',
+    type: 'link',
+    icon: 'add'
+  },
+  {
+    state: 'perfil-mercado',
+    name: 'Perfil dos Mercados',
+    type: 'link',
+    icon: 'add'
+  },
+  {
+    state: 'cadastro-unidades-medida',
+    name: 'Unidades de Medida',
     type: 'link',
     icon: 'add'
   }
