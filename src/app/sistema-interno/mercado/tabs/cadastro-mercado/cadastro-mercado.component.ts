@@ -17,11 +17,11 @@ export class CadastroMercadoComponent implements OnInit {
 
   constructor(@Inject(MercadoComponent) private mercadoComponent: MercadoComponent, private formBuilder: FormBuilder) {
     this.formulario = formBuilder.group({
-      razaoSocial: ['', [Validators.required]],
-      nomeFantasia: ['', [Validators.required]],
-      cnpj: ['', [Validators.required]],
-      telefone: ['', [Validators.required]],
-      email: ['', [Validators.required]],
+      razaoSocial: ['', [Validators.required, Validators.maxLength(150)]],
+      nomeFantasia: ['', [Validators.required, Validators.maxLength(150)]],
+      cnpj: ['', [Validators.required, Validators.pattern(/^\d{2}.\d{3}.\d{3}\/\d{4}-\d{2}$/)]],
+      telefone: ['', [Validators.required, Validators.pattern(/^\(\d{2}\)\d{4}-\d{4}$/)]],
+      email: ['', [Validators.required, Validators.email]],
       senha: ['', [Validators.required]]
     })
   }
