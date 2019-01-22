@@ -26,9 +26,10 @@
                   </div>
                   <div fxFlex.gt-sm="30" fxFlex.gt-xs="30">
                     <mat-form-field>
-                      <mat-select placeholder="Selecione um pacote" [(ngModel)]="servico.pacoteSelecionado"
+                      <mat-select placeholder="Selecione um pacote" [(ngModel)]="servico.pacoteSelecionado.idPacoteServico"
                         [ngModelOptions]="{standalone: true}">
-                        <mat-option *ngFor="let pacote of servico.pacoteServicos" [value]="pacote" [disabled]="!pacote.fativo">
+                        <mat-option *ngFor="let pacote of servico.pacoteServicos" [value]="pacote.idPacoteServico"
+                          [disabled]="!pacote.fativo">
                           {{ pacote.nome }}
                         </mat-option>
                       </mat-select>

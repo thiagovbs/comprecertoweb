@@ -5,6 +5,7 @@ import { Mercado } from '../../models/mercado';
 
 import Swal from 'sweetalert2';
 import { ActivatedRoute } from '@angular/router';
+import { PacoteServico } from '../../models/pacote-servico';
 
 @Component({
   selector: 'app-mercado',
@@ -103,6 +104,12 @@ export class MercadoComponent implements OnInit {
       this.mercado.mercadoLocalidades.forEach(localidade => {
         let localidades = localidade.googlemapsLinks.split(',');
         localidade.googlemapsLinksTemp = localidades.map((loc, index) => ({ id: index, value: loc }));
+
+        localidade.servicosTemp.forEach(servicoTemp => {
+          if (!servicoTemp.pacoteSelecionado || servicoTemp.pacoteSelecionado === null) {
+            servicoTemp.pacoteSelecionado = new PacoteServico();
+          }
+        })
       })
     })
   }

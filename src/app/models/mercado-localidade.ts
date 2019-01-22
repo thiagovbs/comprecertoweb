@@ -1,6 +1,5 @@
 import { Bairro } from './bairro';
 import { MercadoServico } from "./mercado-servico";
-import { Servico } from './servico';
 
 export class MercadoLocalidade {
 
