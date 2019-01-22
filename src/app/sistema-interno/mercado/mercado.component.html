@@ -9,10 +9,10 @@
         (close)="sidePanelOpened = false" class="mail-sidebar" [perfectScrollbar]="config" [disabled]="isOver()" class="email-sidebar">
 
         <div *ngFor="let tab of tabs; let i = index" [class.selected]="selectedTab == tab">
-          <div (click)="selectedTab = tab">
+          <div (click)="!tab.disabled && selectedTab = tab">
             <div class="d-flex">
               <div>
-                <div class="mail-title" fxShow="false" fxShow.gt-xs style="min-width: 120px;">
+                <div class="mail-title" fxShow="false" fxShow.gt-xs style="min-width: 120px;" [ngStyle]="{'opacity' : tab.disabled ? '0.5' : '1'}">
                   <span>{{ tab.nome }}</span>
                 </div>
               </div>

@@ -16,6 +16,7 @@ export class LocalidadeFilialComponent implements OnInit {
 
   cep: string;
   enderecoTemp: Bairro;
+  cepNotFound: string;
 
   static cepMask = [/\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/];
 
@@ -30,6 +31,8 @@ export class LocalidadeFilialComponent implements OnInit {
       this.enderecoTemp = this.parseEndereco(endereco);
     }).catch((error: ErroCep) => {
       console.log(error.message);
+      this.cepNotFound = error.message;
+      setTimeout(() => this.cepNotFound = undefined, 3000);
     });
   }
 
@@ -136,11 +139,8 @@ export class LocalidadeFilialComponent implements OnInit {
     this.mercadoComponent.mercado.mercadoLocalidades.forEach(localidade =>
       localidade.googlemapsLinks = localidade.googlemapsLinksTemp.filter(link => link.value && link.value !== '').map(link => link.value).join(','));
     this.mercadoComponent.selectedTab = this.mercadoComponent.tabs.filter(tab => tab.key === 'servicos')[0];
+    this.mercadoComponent.tabs.find(tab => tab.key === 'servicos').disabled = false;
   }
-
-  // atualizaGoogleMapsLink(event, localidadeIndex, linkIndex) {
-  //   this.mercadoComponent.mercado.mercadoLocalidades[localidadeIndex].googlemapsLinksTemp[linkIndex] = event
-  // }
 
   removeGoogleMapsLink(localidade: MercadoLocalidade, link: any) {
     const indexLink: number = localidade.googlemapsLinksTemp.indexOf(link, 0);

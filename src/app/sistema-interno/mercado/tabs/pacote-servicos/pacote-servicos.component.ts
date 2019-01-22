@@ -47,5 +47,6 @@ export class PacoteServicosComponent implements OnInit {
   proximaTab() {
     // console.log(this.mercadoComponent.mercado)
     this.mercadoComponent.selectedTab = this.mercadoComponent.tabs.filter(tab => tab.key === 'finalizacao')[0];
+    this.mercadoComponent.tabs.find(tab => tab.key === 'finalizacao').disabled = false;
   }
 }

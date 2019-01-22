@@ -4,12 +4,15 @@
     <div fxLayout="row" fxLayoutWrap="wrap">
       <div fxFlex.gt-sm="30" fxFlex.gt-xs="30">
         <mat-form-field class="example-full-width">
-          <input matInput type="text" placeholder="CEP" name="cep" [(ngModel)]="cep" autocomplete="off">
+          <input matInput placeholder="CEP" name="cep" [(ngModel)]="cep" autocomplete="off" maxlength="8">
         </mat-form-field>
       </div>
       <div fxFlex.gt-sm="70" fxFlex.gt-xs="70">
         <button mat-button color="primary" (click)="buscarCep()">BUSCAR</button>
         <button mat-raised-button color="primary" (click)="addEndereco()" *ngIf="enderecoTemp">ADICIONAR</button>
+      </div>
+      <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" *ngIf="cepNotFound">
+        <span class="label label-danger">{{ cepNotFound }}</span>
       </div>
       <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" *ngIf="enderecoTemp">
         <div fxLayout="row" fxLayoutWrap="wrap">
@@ -63,6 +66,6 @@
   </mat-card-content>
   <mat-card-actions>
     <button mat-button color="warn">ANTERIOR</button>
-    <button mat-button color="primary" (click)="proximaTab()">SEGUINTE</button>
+    <button mat-button color="primary" (click)="proximaTab()" [disabled]="mercadoComponent.mercado.mercadoLocalidades.length === 0">SEGUINTE</button>
   </mat-card-actions>
 </mat-card>
