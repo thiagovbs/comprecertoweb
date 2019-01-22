@@ -54,6 +54,7 @@ export class MercadoComponent implements OnInit {
       if (params['idMercado'] !== undefined) {
         this.mercado.idMercado = params['idMercado'];
         this.getMercadoPorId();
+        this.tabs.forEach(tab => tab.disabled = false);
       }
     });
     this.selectedTab = this.tabs[0];
