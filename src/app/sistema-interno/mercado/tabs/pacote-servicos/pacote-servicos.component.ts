@@ -34,7 +34,11 @@ export class PacoteServicosComponent implements OnInit {
 
   adicionaRemoveServico(event, localidade: MercadoLocalidade, pacoteServico: PacoteServico) {
     let mercadoServico: MercadoServico = new MercadoServico();
-    mercadoServico.pacoteServico = pacoteServico;
+    localidade.servicosTemp.forEach(servicos => {
+      const pacote = servicos.pacoteServicos.find(pacote => pacote.idPacoteServico === pacoteServico.idPacoteServico);
+      if (pacote)
+        mercadoServico.pacoteServico = pacote;
+    })
 
     if (event.checked) {
       localidade.mercadoServicos.push(mercadoServico);
@@ -45,7 +49,6 @@ export class PacoteServicosComponent implements OnInit {
   }
 
   proximaTab() {
-    // console.log(this.mercadoComponent.mercado)
     this.mercadoComponent.selectedTab = this.mercadoComponent.tabs.filter(tab => tab.key === 'finalizacao')[0];
     this.mercadoComponent.tabs.find(tab => tab.key === 'finalizacao').disabled = false;
   }
