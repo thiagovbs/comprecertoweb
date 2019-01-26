@@ -1,8 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Produto } from '../../models/produto';
 import { ProdutoService } from '../../services/produto.service';
+import { CategoriaService } from '../../services/categoria.service';
+import { Categoria } from '../../models/categoria';
 
 import * as Lodash from "lodash";
+import { SubcategoriaService } from '../../services/subcategoria.service';
+import { Subcategoria } from '../../models/subcategoria';
 
 @Component({
   selector: 'app-produtos',
@@ -13,10 +17,17 @@ export class ProdutosComponent implements OnInit {
 
   produtos: Produto[] = [];
 
-  constructor(private produtoService: ProdutoService) { }
+  filterShow: boolean = false;
+  filter: ProdutoFilter = new ProdutoFilter();
+  categorias: Categoria[];
+  subcategorias: Subcategoria[];
+
+  constructor(private produtoService: ProdutoService, private categoriaService: CategoriaService,
+    private subcategoriaService: SubcategoriaService) { }
 
   ngOnInit() {
     this.getProdutos();
+    this.getcategorias();
   }
 
   getProdutos() {
@@ -38,4 +49,25 @@ export class ProdutosComponent implements OnInit {
       this.getProdutos();
     }
   }
+
+  getcategorias() {
+    this.categoriaService.getCategorias().subscribe(data => {
+      this.categorias = Lodash.orderBy(data.json(), 'nome', 'asc');
+    }, error => console.log(error))
+  }
+
+  carregaSubcategorias(categoria: Categoria) {
+    console.log(categoria)
+    this.subcategoriaService.getSubcategoriasByCategoria(categoria.idCategoria).subscribe(data => {
+      console.log(data.json())
+      this.subcategorias = Lodash.orderBy(data.json(), 'nome', 'asc');
+    }, error => console.log(error))
+  }
+}
+
+export class ProdutoFilter {
+
+  categoria: Categoria;
+  subcategoria: Subcategoria;
+  marca: string;
 }

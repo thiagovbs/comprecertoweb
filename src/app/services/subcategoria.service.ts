@@ -41,4 +41,12 @@ export class SubcategoriaService {
 
     return this.http.delete(`${environment.urlSpring}/subcategorias/${idSubcategoria}`, { headers: hds, withCredentials: true })
   }
+
+  getSubcategoriasByCategoria(idCategoria) {
+    const hds = new Headers({
+      'Authorization': `Bearer ${localStorage.getItem('token')}`
+    });
+
+    return this.http.get(`${environment.urlSpring}/subcategorias/categoria/${idCategoria}`, { headers: hds, withCredentials: true })
+  }
 }

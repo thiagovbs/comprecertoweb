@@ -7,10 +7,53 @@
     <button mat-button href="#" mat-icon-button (click)="getProdutos()">
         <mat-icon>refresh</mat-icon>
     </button>
-    <button mat-button href="#" mat-icon-button>
-        <mat-icon>more_vert</mat-icon>
+    <button mat-button href="#" mat-icon-button (click)="filterShow = !filterShow">
+        <mat-icon>filter_list</mat-icon>
     </button>
 </mat-toolbar>
+<form *ngIf="filterShow" style="padding: 10px">
+    <div fxLayout="row" fxLayoutWrap="wrap">
+        <div fxFlex.gt-sm="20" fxFlex.gt-xs="20">
+            <mat-form-field>
+                <mat-select placeholder="Selecione uma categoria" name="categoria" [(ngModel)]="filter.categoria"
+                    (selectionChange)="carregaSubcategorias($event.value)">
+                    <mat-option *ngFor="let categoria of categorias" [value]="categoria" [disabled]="!categoria.fativo">
+                        {{ categoria.nome }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div fxFlex.gt-sm="20" fxFlex.gt-xs="20">
+            <mat-form-field>
+                <mat-select placeholder="Selecione uma subcategoria" name="subcategoria" [(ngModel)]="filter.subcategoria">
+                    <mat-option *ngFor="let subcategoria of subcategorias" [value]="subcategoria" [disabled]="!subcategoria.fativo">
+                        {{ subcategoria.nome }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div fxFlex.gt-sm="20" fxFlex.gt-xs="20">
+            <mat-form-field>
+                <mat-select placeholder="Selecione uma marca" name="marca" [(ngModel)]="filter.marca">
+                    <mat-option *ngFor="let marca of marcas" [value]="marca">
+                        {{ marca }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <!-- <div fxFlex.gt-sm="20" fxFlex.gt-xs="20">
+            <mat-form-field>
+                <mat-select placeholder="Selecione uma subcategoria" name="subcategoria" [(ngModel)]="filter.subcategoria">
+                    <mat-option *ngFor="let subcategoria of subcategorias" [value]="subcategoria.idSubcategoria"
+                        [disabled]="!subcategoria.fativo">
+                        {{ subcategoria.nome }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div> -->
+    </div>
+    <hr>
+</form>
 
 <div fxLayout="row" fxLayoutWrap="wrap">
     <div fxFlex.gt-sm="33.33%" fxFlex="100" *ngFor="let produto of produtos">

@@ -11,6 +11,7 @@ import { HttpModule } from '@angular/http';
 import { ProdutoService } from '../../services/produto.service';
 import { SubcategoriaService } from '../../services/subcategoria.service';
 import { UnidadeMedidaService } from '../../services/unidade-medida.service';
+import { CategoriaService } from '../../services/categoria.service';
 
 @NgModule({
   imports: [
@@ -35,7 +36,8 @@ import { UnidadeMedidaService } from '../../services/unidade-medida.service';
   providers: [
     ProdutoService,
     SubcategoriaService,
-    UnidadeMedidaService
+    UnidadeMedidaService,
+    CategoriaService
   ]
 })
 export class ProdutosModule { }
