@@ -8,6 +8,7 @@ export class Mercado {
     cnpj: number;
     telefone: string;
     email: string;
+    fativo: boolean;
 
     mercadoLocalidades: MercadoLocalidade[] = [];
 }

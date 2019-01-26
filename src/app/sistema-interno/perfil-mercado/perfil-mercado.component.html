@@ -1,4 +1,4 @@
-<mat-card>
+<mat-card [ngStyle]="{ 'opacity': mercado.fativo === false ? '0.5' : '1' }">
   <mat-card-content>
     <!-- <h4>Pré visualização</h4> -->
     <div fxLayout="row" fxLayoutWrap="wrap">
@@ -6,12 +6,12 @@
         <div style="height: 100px; width: 100px; background-color: black; border-radius: 50px"></div>
       </div>
       <div fxFlex.gt-sm="50" fxFlex.gt-xs="50">
-        <p style="font-weight: 500">{{ mercado.nomeFantasia }}</p>
-        <a [routerLink]="['/secure/cadastro-mercado', mercado.idMercado]">
+        <p style="font-weight: 500">{{ mercado.nomeFantasia }} <span *ngIf="mercado.fativo === false">(Inativo)</span></p>
+        <a [routerLink]="['/secure/cadastro-mercado', mercado.idMercado]" *ngIf="mercado.fativo === true">
           <span class="label label-success">Editar</span>
         </a>
-        <a [routerLink]="['/secure/cadastro-mercado', mercado.idMercado]">
-          <span class="label label-danger">Apagar</span>
+        <a (click)="desativar()" *ngIf="mercado.fativo === true">
+          <span class="label label-danger pointer">Desativar</span>
         </a>
       </div>
       <div fxFlex.gt-sm="30" fxFlex.gt-xs="30" class="text-right">

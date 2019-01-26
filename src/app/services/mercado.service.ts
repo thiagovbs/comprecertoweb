@@ -41,4 +41,12 @@ export class MercadoService {
 
     return this.http.get(`${environment.urlSpring}/mercados/${idMercado}`, { headers: hds, withCredentials: true })
   }
+
+  deleteMercado(idMercado: number) {
+    const hds = new Headers({
+      'Authorization': `Bearer ${localStorage.getItem('token')}`
+    });
+
+    return this.http.delete(`${environment.urlSpring}/mercados/${idMercado}`, { headers: hds, withCredentials: true })
+  }
 }

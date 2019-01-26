@@ -1,6 +1,8 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Mercado } from '../../models/mercado';
 import { MercadoLocalidade } from '../../models/mercado-localidade';
+import swal from 'sweetalert2';
+import { MercadoService } from '../../services/mercado.service';
 
 @Component({
   selector: 'app-perfil-mercado',
@@ -12,7 +14,10 @@ export class PerfilMercadoComponent implements OnInit {
   @Input('mercado')
   mercado: Mercado = new Mercado();
 
-  constructor() { }
+  @Output('atualiza')
+  atualizaMercado = new EventEmitter();
+
+  constructor(private mercadoService: MercadoService) { }
 
   ngOnInit() {
   }
@@ -23,6 +28,27 @@ export class PerfilMercadoComponent implements OnInit {
 
   getValorTotal() {
     return this.mercado.mercadoLocalidades.map(localidade => this.getValorRegional(localidade)).reduce((total, valor) => total += valor);
+  }
+
+  desativar() {
+    swal({
+      title: 'Desativação de mercado',
+      text: `Deseja desativar o mercado: ${this.mercado.nomeFantasia}?`,
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Sim',
+      cancelButtonText: 'Não'
+    }).then((result) => {
+      if (result.value) {
+        this.mercadoService.deleteMercado(this.mercado.idMercado).subscribe(data => {
+        }, error => {
+          console.log(error.json())
+        }, () => {
+          this.atualizaMercado.emit(true);
+          swal('Desativação', 'O mercado foi desativado!', "success")
+        })
+      }
+    })
   }
 
 }
