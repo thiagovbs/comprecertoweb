@@ -5,9 +5,10 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ENTER, COMMA } from '@angular/cdk/keycodes';
 import { MatChipInputEvent } from '@angular/material';
 import { UnidadeMedida } from '../../../models/unidade-medida';
+import { UnidadeMedidaService } from '../../../services/unidade-medida.service';
 
 import Swal from 'sweetalert2';
-import { UnidadeMedidaService } from '../../../services/unidade-medida.service';
+import * as Lodash from 'lodash';
 
 @Component({
   selector: 'app-categorias-form',
@@ -76,6 +77,9 @@ export class CategoriasFormComponent implements OnInit {
   addUnidadeMedida(): void {
     if (!this.categoria.unidadesMedida.includes(this.unidadeMedidaSelecionada)) {
       this.categoria.unidadesMedida.push(this.unidadeMedidaSelecionada);
+      let index = this.unidadesMedida.indexOf(this.unidadeMedidaSelecionada);
+      if (index != 0)
+        this.unidadesMedida.splice(index, 1);
     }
     this.unidadeMedidaSelecionada = undefined
   }
@@ -93,6 +97,8 @@ export class CategoriasFormComponent implements OnInit {
 
     if (index >= 0) {
       this.categoria.unidadesMedida.splice(index, 1);
+      this.unidadesMedida.push(unidadeMedida);
+      this.unidadesMedida = Lodash.orderBy(this.unidadesMedida, 'nome', 'asc');
     }
   }
 
