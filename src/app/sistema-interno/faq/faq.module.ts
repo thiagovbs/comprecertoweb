@@ -13,6 +13,7 @@ import { HttpModule } from "@angular/http";
 import { FaqComponent } from "./faq.component";
 import { FAQRoutes } from "./faq.routing";
 import { FaqFormComponent } from './faq-form/faq-form.component';
+import { FaqService } from "../../services/faq.service";
 
 @NgModule({
     imports:[
@@ -25,7 +26,6 @@ import { FaqFormComponent } from './faq-form/faq-form.component';
         FlexLayoutModule,
         MatFormFieldModule,
         FormsModule,
-        MatSelectModule,
         ReactiveFormsModule,
         MatIconModule,
         MatToolbarModule,
@@ -33,6 +33,8 @@ import { FaqFormComponent } from './faq-form/faq-form.component';
         HttpModule
     ],
     declarations:[FaqComponent, FaqFormComponent],
-    providers:[]
+    providers:[
+        FaqService
+    ]
 })
 export class FaqModule{}

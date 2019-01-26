@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Faq } from '../../models/faq';
+import { FaqService } from '../../services/faq.service';
+
+import * as Lodash from 'lodash';
 
 @Component({
   selector: 'app-faq',
@@ -8,24 +11,32 @@ import { Faq } from '../../models/faq';
 })
 export class FaqComponent implements OnInit {
 
+  faqs: Faq[] = []
 
-  faqs:Faq[] =[]
-
-  constructor() { }
+  constructor(private faqService: FaqService) { }
 
   ngOnInit() {
+    this.getFaqs();
   }
 
-  adicionarFaqForm(){
+  getFaqs() {
+    this.faqService.getFaqs().subscribe(data => {
+      this.faqs = Lodash.orderBy(data.json(), 'idFaq', 'desc')
+    }, error => console.log(error.json()));
+  }
+
+  adicionarFaqForm() {
     this.faqs.unshift(new Faq());
   }
 
-  aoRemover(valor){
-    console.log(valor)
+  aoRemover(faqRemovida) {
+    this.getFaqs();
   }
 
-  aoSalvar(valor){
-    console.log(valor)
+  aoSalvar(salvo) {
+    if (salvo) {
+      this.getFaqs();
+    }
   }
 
 }

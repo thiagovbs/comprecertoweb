@@ -4,15 +4,16 @@
   <button mat-button href="#" mat-icon-button (click)="adicionarFaqForm()">
     <mat-icon>add</mat-icon>
   </button>
-  <button mat-button href="#" mat-icon-button>
+  <button mat-button href="#" mat-icon-button (click)="getFaqs()">
     <mat-icon>refresh</mat-icon>
   </button>
   <button mat-button href="#" mat-icon-button>
     <mat-icon>more_vert</mat-icon>
   </button>
 </mat-toolbar>
+
 <div fxLayout="row" fxLayoutWrap="wrap">
-  <div fxFlex.gt-sm="100%" fxFlex="100" *ngFor="let faq of faqs">
-    <app-faq-form [faqItem]="faq" (removerCategoria)="aoRemover($event)" (atualizaCategoria)="aoSalvar($event)"></app-faq-form>
+  <div fxFlex.gt-sm="50%" fxFlex="100" *ngFor="let faq of faqs">
+    <app-faq-form [faq]="faq" (removerFaq)="aoRemover($event)" (atualizaFaq)="aoSalvar($event)"></app-faq-form>
   </div>
 </div>
