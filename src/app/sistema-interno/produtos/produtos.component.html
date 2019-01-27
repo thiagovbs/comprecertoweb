@@ -15,8 +15,7 @@
     <div fxLayout="row" fxLayoutWrap="wrap">
         <div fxFlex.gt-sm="20" fxFlex.gt-xs="20">
             <mat-form-field>
-                <mat-select placeholder="Selecione uma categoria" name="categoria" [(ngModel)]="filter.categoria"
-                    (selectionChange)="carregaSubcategorias($event.value)">
+                <mat-select placeholder="Selecione" name="categoria" [(ngModel)]="filter.categoria" (selectionChange)="carregaSubcategorias($event.value)">
                     <mat-option *ngFor="let categoria of categorias" [value]="categoria" [disabled]="!categoria.fativo">
                         {{ categoria.nome }}
                     </mat-option>
@@ -25,7 +24,8 @@
         </div>
         <div fxFlex.gt-sm="20" fxFlex.gt-xs="20">
             <mat-form-field>
-                <mat-select placeholder="Selecione uma subcategoria" name="subcategoria" [(ngModel)]="filter.subcategoria">
+                <mat-select placeholder="Selecione" name="subcategoria" [(ngModel)]="filter.subcategoria"
+                    (selectionChange)="carregaMarcas($event.value)" [disabled]="subcategorias.length === 0">
                     <mat-option *ngFor="let subcategoria of subcategorias" [value]="subcategoria" [disabled]="!subcategoria.fativo">
                         {{ subcategoria.nome }}
                     </mat-option>
@@ -34,7 +34,7 @@
         </div>
         <div fxFlex.gt-sm="20" fxFlex.gt-xs="20">
             <mat-form-field>
-                <mat-select placeholder="Selecione uma marca" name="marca" [(ngModel)]="filter.marca">
+                <mat-select placeholder="Selecione" name="marca" [(ngModel)]="filter.marca" [disabled]="marcas.length === 0">
                     <mat-option *ngFor="let marca of marcas" [value]="marca">
                         {{ marca }}
                     </mat-option>

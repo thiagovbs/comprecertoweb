@@ -41,4 +41,12 @@ export class ProdutoService {
 
     return this.http.delete(`${environment.urlSpring}/produtos/${idProduto}`, { headers: hds, withCredentials: true })
   }
+
+  getMarcasPorSubcategoria(idSubcategoria: number) {
+    const hds = new Headers({
+      'Authorization': `Bearer ${localStorage.getItem('token')}`
+    });
+
+    return this.http.get(`${environment.urlSpring}/produtos/marcas/subcategoria/${idSubcategoria}`, { headers: hds, withCredentials: true })
+  }
 }

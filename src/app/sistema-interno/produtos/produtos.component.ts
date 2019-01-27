@@ -19,8 +19,9 @@ export class ProdutosComponent implements OnInit {
 
   filterShow: boolean = false;
   filter: ProdutoFilter = new ProdutoFilter();
-  categorias: Categoria[];
-  subcategorias: Subcategoria[];
+  categorias: Categoria[] = [];
+  subcategorias: Subcategoria[] = [];
+  marcas: any[] = [];
 
   constructor(private produtoService: ProdutoService, private categoriaService: CategoriaService,
     private subcategoriaService: SubcategoriaService) { }
@@ -57,10 +58,14 @@ export class ProdutosComponent implements OnInit {
   }
 
   carregaSubcategorias(categoria: Categoria) {
-    console.log(categoria)
     this.subcategoriaService.getSubcategoriasByCategoria(categoria.idCategoria).subscribe(data => {
-      console.log(data.json())
       this.subcategorias = Lodash.orderBy(data.json(), 'nome', 'asc');
+    }, error => console.log(error))
+  }
+
+  carregaMarcas(subcategoria: Subcategoria) {
+    this.produtoService.getMarcasPorSubcategoria(subcategoria.idSubcategoria).subscribe(data => {
+      this.marcas = Lodash.orderBy(data.json(), 'nome', 'asc');
     }, error => console.log(error))
   }
 }
