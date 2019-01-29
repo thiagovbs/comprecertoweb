@@ -20,6 +20,15 @@
           </mat-form-field>
         </div>
         <div fxFlex.gt-sm="100" fxFlex.gt-xs="100">
+          <mat-form-field>
+            <mat-select placeholder="Selecione uma plataforma" formControlName="plataforma" [(ngModel)]="faq.plataforma">
+              <mat-option *ngFor="let plataforma of plataformas" [value]="plataforma.id">
+                {{ plataforma.value }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div fxFlex.gt-sm="100" fxFlex.gt-xs="100">
           <mat-checkbox class="example-margin" formControlName="fativo" [(ngModel)]="faq.fativo">Ativo</mat-checkbox>
         </div>
       </div>

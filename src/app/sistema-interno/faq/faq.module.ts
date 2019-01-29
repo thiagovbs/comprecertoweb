@@ -30,7 +30,8 @@ import { FaqService } from "../../services/faq.service";
         MatIconModule,
         MatToolbarModule,
         MatCheckboxModule,
-        HttpModule
+        HttpModule,
+        MatSelectModule
     ],
     declarations:[FaqComponent, FaqFormComponent],
     providers:[

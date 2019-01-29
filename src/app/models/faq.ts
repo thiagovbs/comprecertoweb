@@ -4,4 +4,5 @@ export class Faq {
     fativo: boolean;
     titulo: string;
     descricao: string;
+    plataforma: string;
 }

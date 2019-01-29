@@ -14,6 +14,7 @@ export class FaqFormComponent implements OnInit {
 
   @Input('faq')
   faq: Faq = new Faq();
+  plataformas: any[] = [{ id: 'APP', value: 'App' }, { id: 'SISTEMA', value: 'Sistema' }]
 
   @Output("removerFaq")
   faqRemovida = new EventEmitter();
@@ -32,7 +33,8 @@ export class FaqFormComponent implements OnInit {
     this.formulario = this.formBuilder.group({
       fativo: ['', [Validators.required]],
       titulo: ['', [Validators.required, Validators.maxLength(100)]],
-      descricao: ['', [Validators.required, Validators.maxLength(255)]]
+      descricao: ['', [Validators.required, Validators.maxLength(255)]],
+      plataforma: ['', [Validators.required]]
     });
   }
 

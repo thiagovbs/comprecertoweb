@@ -114,6 +114,12 @@ const MERCADO_ADMIN_MENU_ITEMS = [
     name: 'Perfil e Ferramentas',
     type: 'link',
     icon: 'add'
+  },
+  {
+    state: 'faqs',
+    name: 'FAQ',
+    type: 'link',
+    icon: 'add'
   }
 ];
 
