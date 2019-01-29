@@ -57,6 +57,10 @@ export const AppRoutes: Routes = [
         path: 'cadastro-faq',
         loadChildren:
           './sistema-interno/faq/faq.module#FaqModule'
+      }, {
+        path: 'perfil-ferramentas',
+        loadChildren:
+          './sistema-mercado/perfil-ferramentas/perfil-ferramentas.module#PerfilFerramentasModule'
       }
     ]
   },

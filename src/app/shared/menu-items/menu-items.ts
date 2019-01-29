@@ -108,6 +108,12 @@ const MERCADO_ADMIN_MENU_ITEMS = [
     name: 'Unidades de Medida',
     type: 'link',
     icon: 'add'
+  },
+  {
+    state: 'perfil-ferramentas',
+    name: 'Perfil e Ferramentas',
+    type: 'link',
+    icon: 'add'
   }
 ];
 
