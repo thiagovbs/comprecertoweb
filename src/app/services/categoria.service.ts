@@ -2,13 +2,15 @@ import { Categoria } from './../models/categoria';
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { Http, RequestOptions, Headers } from '@angular/http';
+import { ImageUtilService } from './image-util.service';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CategoriaService {
 
-  constructor(private http: Http) { }
+  constructor(private http: Http, public imageUtilService: ImageUtilService) { }
 
   getCategorias() {
     const hds = new Headers({
@@ -41,4 +43,21 @@ export class CategoriaService {
 
     return this.http.delete(`${environment.urlSpring}/categorias/${idCategoria}`, { headers: hds, withCredentials: true })
   }
+
+  postUploadFile(file) {
+
+    let pictureBlog = this.imageUtilService.dataUriToBlob(file);
+    let formData: FormData = new FormData();
+    formData.set('file', pictureBlog, 'file.png');
+
+    const hds = new Headers({
+      'Authorization': `Bearer ${localStorage.getItem('token')}`
+    });
+    return this.http.post(`${environment.urlSpring}/categorias/picture`, formData, { headers: hds, withCredentials: true });
+  }
+
+/*   getImageFromBucket(id:number):Observable<any>{
+    let url =`${environment.urlS3}/cat${id}.jpg`;
+    return this.http.get(url, {responseType: });
+  } */
 }

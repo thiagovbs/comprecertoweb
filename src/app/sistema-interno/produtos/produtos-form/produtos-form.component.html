@@ -2,10 +2,31 @@
     <form [formGroup]="formulario" autocomplete="off">
         <mat-card-title>
             <h4>ID {{ produto.idProduto ? produto.idProduto : 'Indefinido' }}</h4>
-            <div style="height: 150px; width: 100%; background-color: black;"></div>
+
             <!-- <button mat-raised-button color="primary">Adicionar Foto</button> -->
         </mat-card-title>
         <mat-card-content>
+            <div fxLayout="row" fxLayoutWrap="wrap">
+                <div *ngIf="!hasEdit">
+                    <div *ngIf="produto.imagem">
+                        <img height="200" width="320" [src]="produto.imagem" alt="">
+                    </div>
+                </div>
+                <div *ngIf="hasEdit">
+                    <div class="form-field form-field-file wrap">
+                        <div class="upload-btn-wrapper">
+                            <button mat-raised-button color="primary">Adicionar Imagem</button>
+                            <input type="file" name="myfile" (change)="fileChangeEvent($event)" />
+                        </div>
+                    </div>
+                    <image-cropper style="width:240px;" [imageChangedEvent]="imageChangedEvent" [maintainAspectRatio]="true"
+                        [aspectRatio]=" 1 / 1 " [resizeToWidth]="180" format="png" (imageCropped)="imageCropped($event)"
+                        (loadImageFailed)="loadImageFailed()">
+                    </image-cropper>
+                    <img [src]="croppedImage" />
+
+                </div>
+            </div>
             <div fxLayout="row" fxLayoutWrap="wrap">
                 <div fxFlex.gt-sm="100" fxFlex.gt-xs="100">
                     <mat-form-field>

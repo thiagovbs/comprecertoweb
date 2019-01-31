@@ -10,6 +10,8 @@ import { UnidadeMedida } from '../../../models/unidade-medida';
 
 import Swal from 'sweetalert2';
 import * as Lodash from 'lodash';
+import { ImageCroppedEvent } from 'ngx-image-cropper';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-produtos-form',
@@ -32,6 +34,11 @@ export class ProdutosFormComponent implements OnInit {
   formulario: FormGroup;
   hasEdit: boolean = true;
 
+  //upload file
+  imageChangedEvent: File = null;
+  croppedImage: any = '';
+  fileToUpload: File
+
   constructor(private formBuilder: FormBuilder, private produtoService: ProdutoService, private subcategoriaService: SubcategoriaService,
     private unidadeMedidaService: UnidadeMedidaService) {
 
@@ -53,6 +60,8 @@ export class ProdutosFormComponent implements OnInit {
       this.formulario.disable();
       this.hasEdit = false;
     }
+
+    this.produto.imagem = `${environment.urlS3}/prod${this.produto.idProduto}.jpg`;
   }
 
   cancelar() {
@@ -69,6 +78,7 @@ export class ProdutosFormComponent implements OnInit {
       this.produto.imagem = 'teste';
       if (this.produto.idProduto) {
         this.produtoService.putProduto(this.produto).subscribe(data => {
+          this.sendImage();
           this.atualizaProduto.emit(true);
         }, error => {
           console.log(error.json());
@@ -79,6 +89,7 @@ export class ProdutosFormComponent implements OnInit {
         })
       } else {
         this.produtoService.postProduto(this.produto).subscribe(data => {
+          this.sendImage();
           this.atualizaProduto.emit(true);
         }, error => {
           console.log(error.json());
@@ -134,5 +145,25 @@ export class ProdutosFormComponent implements OnInit {
 
   atualizaUnidadeMedidaSelect(value) {
     this.produto.unidadeMedida = this.unidadesMedida.filter(unidadeMedida => unidadeMedida.idUnidade = value)[0];
+  }
+
+  fileChangeEvent(event: any): void {
+    this.imageChangedEvent = event;
+  }
+
+  imageCropped(event: ImageCroppedEvent) {
+    console.log(event)
+    this.croppedImage = event.base64;
+  }
+
+  //envia upload da imagem
+  private sendImage() {
+    if (this.croppedImage) {
+      this.produtoService.postUploadFile(this.croppedImage).subscribe(resp => {
+        console.log(resp)
+      }, erro => {
+
+      });
+    }
   }
 }

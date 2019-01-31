@@ -12,6 +12,8 @@ import { ProdutoService } from '../../services/produto.service';
 import { SubcategoriaService } from '../../services/subcategoria.service';
 import { UnidadeMedidaService } from '../../services/unidade-medida.service';
 import { CategoriaService } from '../../services/categoria.service';
+import { ImageUtilService } from '../../services/image-util.service';
+import { ImageCropperModule } from 'ngx-image-cropper';
 
 @NgModule({
   imports: [
@@ -30,14 +32,16 @@ import { CategoriaService } from '../../services/categoria.service';
     MatIconModule,
     MatToolbarModule,
     MatCheckboxModule,
-    HttpModule
+    HttpModule,
+    ImageCropperModule
   ],
   declarations: [ProdutosComponent, ProdutosFormComponent],
   providers: [
     ProdutoService,
     SubcategoriaService,
     UnidadeMedidaService,
-    CategoriaService
+    CategoriaService,
+    ImageUtilService
   ]
 })
 export class ProdutosModule { }
