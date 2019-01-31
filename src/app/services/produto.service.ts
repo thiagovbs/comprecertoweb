@@ -2,13 +2,14 @@ import { Injectable } from '@angular/core';
 import { Http, Headers } from '@angular/http';
 import { environment } from '../../environments/environment';
 import { Produto } from '../models/produto';
+import { ImageUtilService } from './image-util.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProdutoService {
 
-  constructor(private http: Http) { }
+  constructor(private http: Http, public imageUtilService: ImageUtilService) { }
 
   getProdutos() {
     const hds = new Headers({
@@ -48,5 +49,17 @@ export class ProdutoService {
     });
 
     return this.http.get(`${environment.urlSpring}/produtos/marcas/subcategoria/${idSubcategoria}`, { headers: hds, withCredentials: true })
+  }
+
+  postUploadFile(file) {
+
+    let pictureBlog = this.imageUtilService.dataUriToBlob(file);
+    let formData: FormData = new FormData();
+    formData.set('file', pictureBlog, 'file.png');
+
+    const hds = new Headers({
+      'Authorization': `Bearer ${localStorage.getItem('token')}`
+    });
+    return this.http.post(`${environment.urlSpring}/produtos/picture`, formData, { headers: hds, withCredentials: true });
   }
 }

@@ -13,7 +13,7 @@ import { AppSidebarComponent } from './layouts/full/sidebar/sidebar.component';
 import { AppHeaderComponent } from './layouts/full/header/header.component';
 import { FullComponent } from './layouts/full/full.component';
 import { AppComponent } from './app.component';
-
+import { ImageCropperModule } from 'ngx-image-cropper';
 import { AppRoutes } from './app.routing';
 import { AppGuard } from './app.guard';
 
@@ -36,8 +36,7 @@ import { AppGuard } from './app.guard';
     HttpClientModule,
     SharedModule,
     RouterModule.forRoot(AppRoutes),
-
-    HttpClientModule
+    ImageCropperModule
   ],
   providers: [
     AppGuard

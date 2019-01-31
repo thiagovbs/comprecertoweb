@@ -10,7 +10,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CategoriasFormComponent } from './categorias-form/categorias-form.component';
 import { HttpModule } from '@angular/http';
 import { UnidadeMedidaService } from '../../services/unidade-medida.service';
-
+import { ImageCropperModule } from 'ngx-image-cropper';
+import { ImageUtilService } from '../../services/image-util.service';
 @NgModule({
   imports: [
     CommonModule,
@@ -30,12 +31,14 @@ import { UnidadeMedidaService } from '../../services/unidade-medida.service';
     MatCheckboxModule,
     HttpModule,
     MatChipsModule,
-    MatIconModule
+    MatIconModule,
+    ImageCropperModule
   ],
   declarations: [CategoriasComponent, CategoriasFormComponent],
   providers: [
     CategoriaService,
-    UnidadeMedidaService
+    UnidadeMedidaService,
+    ImageUtilService
   ]
 })
 export class CategoriasModule { }

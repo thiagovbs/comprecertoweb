@@ -9,6 +9,8 @@ import { UnidadeMedidaService } from '../../../services/unidade-medida.service';
 
 import Swal from 'sweetalert2';
 import * as Lodash from 'lodash';
+import { ImageCroppedEvent } from 'ngx-image-cropper';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-categorias-form',
@@ -31,6 +33,11 @@ export class CategoriasFormComponent implements OnInit {
   formulario: FormGroup;
   hasEdit: boolean = true;
 
+  //upload file
+  imageChangedEvent: File = null;
+  croppedImage: any = '';
+  fileToUpload: File
+
   // Enter, comma
   separatorKeysCodes = [ENTER, COMMA];
 
@@ -47,6 +54,9 @@ export class CategoriasFormComponent implements OnInit {
       this.formulario.disable();
       this.hasEdit = false;
     }
+
+    this.categoria.image = `${environment.urlS3}/cat${this.categoria.idCategoria}.jpg`;
+    console.log("minha imagem é :" + this.categoria.image)
 
     this.getUnidadesMedida();
   }
@@ -113,10 +123,13 @@ export class CategoriasFormComponent implements OnInit {
   }
 
   salvar() {
+
     if (this.formulario.valid) {
       if (this.listsValid()) {
         if (this.categoria.idCategoria) {
           this.categoriaService.putCategoria(this.categoria).subscribe(data => {
+
+            this.sendImage()
             this.atualizaCategoria.emit(true);
           }, error => {
             console.log(error.json());
@@ -127,7 +140,11 @@ export class CategoriasFormComponent implements OnInit {
           })
         } else {
           this.categoriaService.postCategoria(this.categoria).subscribe(data => {
+
             this.atualizaCategoria.emit(true);
+
+            this.sendImage();
+
           }, error => {
             console.log(error);
           }, () => {
@@ -187,7 +204,26 @@ export class CategoriasFormComponent implements OnInit {
       Swal('Erro', 'A categoria deve ter ao menos 1 unidade de medida', 'error');
       return false;
     }
-
     return true;
   }
+
+  fileChangeEvent(event: any): void {
+    this.imageChangedEvent = event;
+  }
+
+  imageCropped(event: ImageCroppedEvent) {
+    this.croppedImage = event.base64;
+  }
+
+  //envia upload da imagem
+  private sendImage() {
+    if (this.croppedImage) {
+      this.categoriaService.postUploadFile(this.croppedImage).subscribe(resp => {
+        console.log(resp)
+      }, erro => {
+
+      });
+    }
+  }
+
 }
