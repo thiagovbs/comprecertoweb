@@ -34,12 +34,25 @@
         </div>
         <div fxFlex.gt-sm="20" fxFlex.gt-xs="20">
             <mat-form-field>
-                <mat-select placeholder="Selecione" name="marca" [(ngModel)]="filter.marca" [disabled]="marcas.length === 0">
+                <mat-select placeholder="Selecione" name="marca" [(ngModel)]="filter.marca" [disabled]="marcas.length === 0"
+                    (selectionChange)="carregaUnidadesMedida(filter.subcategoria, $event.value)">
                     <mat-option *ngFor="let marca of marcas" [value]="marca">
                         {{ marca }}
                     </mat-option>
                 </mat-select>
             </mat-form-field>
+        </div>
+        <div fxFlex.gt-sm="20" fxFlex.gt-xs="20">
+            <mat-form-field>
+                <mat-select placeholder="Selecione" name="unidadeMedida" [(ngModel)]="filter.unidadeMedida" [disabled]="unidadesMedida.length === 0">
+                    <mat-option *ngFor="let unidadeMedida of unidadesMedida" [value]="unidadeMedida">
+                        {{ unidadeMedida.quantidade + ' ' + unidadeMedida.unidadeMedida }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div fxFlex.gt-sm="20" fxFlex.gt-xs="20">
+            <button mat-raised-button color="primary" (click)="filtrar()">PESQUISAR</button>
         </div>
         <!-- <div fxFlex.gt-sm="20" fxFlex.gt-xs="20">
             <mat-form-field>
