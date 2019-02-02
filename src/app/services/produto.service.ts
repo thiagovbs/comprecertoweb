@@ -51,6 +51,22 @@ export class ProdutoService {
     return this.http.get(`${environment.urlSpring}/produtos/marcas/subcategoria/${idSubcategoria}`, { headers: hds, withCredentials: true })
   }
 
+  getUnidadesMedidaPorSubcategoriaEMarca(idSubcategoria: number, marca: string) {
+    const hds = new Headers({
+      'Authorization': `Bearer ${localStorage.getItem('token')}`
+    });
+
+    return this.http.get(`${environment.urlSpring}/produtos/marcas/subcategoria/${idSubcategoria}/marca/${marca}`, { headers: hds, withCredentials: true })
+  }
+
+  postFiltrar(filter: any) {
+    const hds = new Headers({
+      'Authorization': `Bearer ${localStorage.getItem('token')}`
+    });
+
+    return this.http.post(`${environment.urlSpring}/produtos/filter`, filter, { headers: hds, withCredentials: true })
+  }
+
   postUploadFile(file) {
 
     let pictureBlog = this.imageUtilService.dataUriToBlob(file);

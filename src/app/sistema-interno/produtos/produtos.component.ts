@@ -7,6 +7,7 @@ import { Categoria } from '../../models/categoria';
 import * as Lodash from "lodash";
 import { SubcategoriaService } from '../../services/subcategoria.service';
 import { Subcategoria } from '../../models/subcategoria';
+import { UnidadeMedidaService } from '../../services/unidade-medida.service';
 
 @Component({
   selector: 'app-produtos',
@@ -22,9 +23,10 @@ export class ProdutosComponent implements OnInit {
   categorias: Categoria[] = [];
   subcategorias: Subcategoria[] = [];
   marcas: any[] = [];
+  unidadesMedida: any[] = [];
 
   constructor(private produtoService: ProdutoService, private categoriaService: CategoriaService,
-    private subcategoriaService: SubcategoriaService) { }
+    private subcategoriaService: SubcategoriaService, private unidadeMedidaService: UnidadeMedidaService) { }
 
   ngOnInit() {
     this.getProdutos();
@@ -68,6 +70,16 @@ export class ProdutosComponent implements OnInit {
       this.marcas = Lodash.orderBy(data.json(), 'nome', 'asc');
     }, error => console.log(error))
   }
+
+  carregaUnidadesMedida(subcategoria: Subcategoria, marca: string) {
+    this.produtoService.getUnidadesMedidaPorSubcategoriaEMarca(subcategoria.idSubcategoria, marca).subscribe(data => {
+      this.unidadesMedida = Lodash.orderBy(data.json(), 'nome', 'asc');
+    }, error => console.log(error))
+  }
+
+  filtrar() {
+    this.produtoService.postFiltrar(this.filter).subscribe(data => this.produtos = data.json(), error => console.log(error));
+  }
 }
 
 export class ProdutoFilter {
@@ -75,4 +87,5 @@ export class ProdutoFilter {
   categoria: Categoria;
   subcategoria: Subcategoria;
   marca: string;
+  unidadeMedida: any;
 }
