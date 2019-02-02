@@ -8,6 +8,6 @@ export class Categoria {
     nome: string;
     unidadesMedida: UnidadeMedida[] = [];
     subcategorias: Subcategoria[] = [];
-    image?: string;
+    imagemUrl?: string;
 
 }

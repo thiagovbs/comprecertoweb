@@ -3,7 +3,9 @@
     <!-- <h4>Pré visualização</h4> -->
     <div fxLayout="row" fxLayoutWrap="wrap">
       <div fxFlex.gt-sm="20" fxFlex.gt-xs="20">
-        <div style="height: 100px; width: 100px; background-color: black; border-radius: 50px"></div>
+
+        <img height="100" [src]="myImage" style="margin-left:30px;">
+
       </div>
       <div fxFlex.gt-sm="50" fxFlex.gt-xs="50">
         <p style="font-weight: 500">{{ mercado.nomeFantasia }} <span *ngIf="mercado.fativo === false">(Inativo)</span></p>

@@ -56,8 +56,5 @@ export class CategoriaService {
     return this.http.post(`${environment.urlSpring}/categorias/picture`, formData, { headers: hds, withCredentials: true });
   }
 
-/*   getImageFromBucket(id:number):Observable<any>{
-    let url =`${environment.urlS3}/cat${id}.jpg`;
-    return this.http.get(url, {responseType: });
-  } */
+
 }

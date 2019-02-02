@@ -13,6 +13,7 @@ import * as Lodash from 'lodash';
 import { ImageCroppedEvent } from 'ngx-image-cropper';
 import { environment } from '../../../../environments/environment';
 
+
 @Component({
   selector: 'app-produtos-form',
   templateUrl: './produtos-form.component.html',
@@ -39,21 +40,27 @@ export class ProdutosFormComponent implements OnInit {
   croppedImage: any = '';
   fileToUpload: File
 
-  constructor(private formBuilder: FormBuilder, private produtoService: ProdutoService, private subcategoriaService: SubcategoriaService,
-    private unidadeMedidaService: UnidadeMedidaService) {
+
+  bucketS3:string = environment.urlS3;
+
+  constructor(private formBuilder: FormBuilder,
+              private produtoService: ProdutoService, 
+              private subcategoriaService: SubcategoriaService,
+              private unidadeMedidaService: UnidadeMedidaService) {
 
     this.formulario = this.formBuilder.group({
       caracteristica: ['', [Validators.required]],
-      // imagem: ['', [Validators.required]],
       marca: ['', [Validators.required]],
       nome: ['', [Validators.required]],
       quantidade: ['', [Validators.required, Validators.min(0.1)]],
       subcategoria: ['', [Validators.required]],
-      unidadeMedida: [{ value: '', disable: true }, [Validators.required]]
+      unidadeMedida: [{ value: '', disable: true }, [Validators.required]],
+      imagem: ['', [Validators.required]]
     });
   }
 
   ngOnInit() {
+
     this.getSubcategorias();
     if (this.produto.idProduto) {
       this.getUnidadesMedidaPorSubcategoria(this.produto.subcategoria)
@@ -61,7 +68,6 @@ export class ProdutosFormComponent implements OnInit {
       this.hasEdit = false;
     }
 
-    this.produto.imagem = `${environment.urlS3}/prod${this.produto.idProduto}.jpg`;
   }
 
   cancelar() {
@@ -74,8 +80,8 @@ export class ProdutosFormComponent implements OnInit {
   }
 
   salvar() {
+    this.produto.imagemUrl =this.formulario.value.imagem;
     if (this.formulario.valid) {
-      this.produto.imagem = 'teste';
       if (this.produto.idProduto) {
         this.produtoService.putProduto(this.produto).subscribe(data => {
           this.sendImage();

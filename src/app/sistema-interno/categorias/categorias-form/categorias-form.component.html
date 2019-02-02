@@ -8,22 +8,23 @@
             <div fxLayout="row" fxLayoutWrap="wrap">
                 <div fxFlex.gt-sm="100" fxFlex.gt-xs="100">
                     <div *ngIf="!hasEdit">
-                        <div *ngIf="categoria.image">
-                            <img height="75" [src]="categoria.image" alt="">
+                        <div *ngIf="!fileToUpload">
+                            <img height="75" [src]="categoria.imagemUrl" alt="">
+                        </div>
+                        <div *ngIf="fileToUpload">
+                            <img height="75" [src]="croppedImage" alt="">
                         </div>
                     </div>
                     <div *ngIf="hasEdit">
                         <div class="form-field form-field-file wrap">
-                            <label for="file-upload">Escolha uma imagem...</label>
-                            <input type="file" name="file-upload" id="file-upload" (change)="fileChangeEvent($event)" />
+                            <div class="upload-btn-wrapper">
+                                <button mat-raised-button color="primary">Adicionar Imagem</button>
+                                <input type="file" name="myfile" formControlName="imagem" (change)="fileChangeEvent($event)" />
+                            </div>
                         </div>
-                        <image-cropper style="width:300px;"  [imageChangedEvent]="imageChangedEvent" 
-                                        [maintainAspectRatio]="true"
-                                        [aspectRatio]="39 / 9 " 
-                                        [resizeToWidth]="300" 
-                                        format="png" 
-                                        (imageCropped)="imageCropped($event)"
-                                        (loadImageFailed)="loadImageFailed()">
+                        <image-cropper style="width:300px;" [imageChangedEvent]="imageChangedEvent"
+                            [maintainAspectRatio]="true" [aspectRatio]="39 / 9 " [resizeToWidth]="300" format="png"
+                            (imageCropped)="imageCropped($event)" (loadImageFailed)="loadImageFailed()">
                         </image-cropper>
                         <img [src]="croppedImage" />
                     </div>

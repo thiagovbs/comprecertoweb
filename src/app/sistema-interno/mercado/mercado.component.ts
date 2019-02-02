@@ -1,11 +1,13 @@
 import { MercadoService } from '../../services/mercado.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
 import { Mercado } from '../../models/mercado';
 
 import Swal from 'sweetalert2';
 import { ActivatedRoute } from '@angular/router';
 import { PacoteServico } from '../../models/pacote-servico';
+import { PreVisualizacaoComponent } from './tabs/pre-visualizacao/pre-visualizacao.component';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-mercado',
@@ -48,7 +50,9 @@ export class MercadoComponent implements OnInit {
 
   mercado: Mercado = new Mercado();
 
-  constructor(private mercadoService: MercadoService, private activeRoute: ActivatedRoute) { }
+  constructor(
+    private mercadoService: MercadoService,
+    private activeRoute: ActivatedRoute) { }
 
   ngOnInit() {
     this.activeRoute.params.subscribe(params => {
@@ -66,11 +70,10 @@ export class MercadoComponent implements OnInit {
   }
 
   salvar() {
-    console.log(this.mercado);
-    console.log(JSON.stringify(this.mercado));
 
     if (this.mercado.idMercado) {
       this.mercadoService.putMercado(this.mercado).subscribe(data => {
+        this.verificaEnvioImagem()
         console.log(data.json())
         // this.atualizaProduto.emit(true);
       }, error => {
@@ -81,8 +84,10 @@ export class MercadoComponent implements OnInit {
         Swal('Atualização', `O mercado ${this.mercado.nomeFantasia} foi atualizado!`, "success")
       })
     } else {
+
       this.mercadoService.postMercado(this.mercado).subscribe(data => {
-        console.log(data.json())
+
+        this.verificaEnvioImagem()
         // this.atualizaProduto.emit(true);
       }, error => {
         console.log(error.json());
@@ -112,5 +117,25 @@ export class MercadoComponent implements OnInit {
         })
       })
     })
+  }
+
+  //envia upload da imagem
+  sendImage() {
+    this.mercadoService.postUploadFile().subscribe(resp => {
+      console.log(resp)
+    }, erro => {
+
+    });
+  }
+
+  private verificaEnvioImagem() {
+    
+    if (this.mercadoService.file) {
+      this.mercado.imagemUrl = this.mercadoService.file;
+      this.sendImage();
+    } else {
+      
+      this.mercado.imagemUrl = `${environment.urlS3}/mercado${this.mercado.idMercado}.jpg`;
+    }
   }
 }

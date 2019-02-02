@@ -16,6 +16,8 @@ import { TextMaskModule } from 'angular2-text-mask';
 import { PacoteServicosComponent } from './tabs/pacote-servicos/pacote-servicos.component';
 import { ServicoService } from '../../services/servico.service';
 import { PreVisualizacaoComponent } from './tabs/pre-visualizacao/pre-visualizacao.component';
+import { ImageCropperModule } from 'ngx-image-cropper';
+import { ImageUtilService } from '../../services/image-util.service';
 
 @NgModule({
   imports: [
@@ -40,12 +42,14 @@ import { PreVisualizacaoComponent } from './tabs/pre-visualizacao/pre-visualizac
     HttpModule,
     MatSelectModule,
     MatCheckboxModule,
-    MatSlideToggleModule
+    MatSlideToggleModule,
+    ImageCropperModule
   ],
   declarations: [MercadoComponent, CadastroMercadoComponent, LocalidadeFilialComponent, PacoteServicosComponent, PreVisualizacaoComponent]
   , providers: [
     MercadoService,
-    ServicoService
+    ServicoService,
+    ImageUtilService
   ]
 })
 export class MercadoModule { }

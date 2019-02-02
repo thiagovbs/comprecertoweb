@@ -36,16 +36,21 @@ export class CategoriasFormComponent implements OnInit {
   //upload file
   imageChangedEvent: File = null;
   croppedImage: any = '';
-  fileToUpload: File
+
+
+  //bucketS3:string = environment.urlS3;
 
   // Enter, comma
   separatorKeysCodes = [ENTER, COMMA];
 
-  constructor(private formBuilder: FormBuilder, private categoriaService: CategoriaService, private unidadeMedidaService: UnidadeMedidaService) {
+  constructor(private formBuilder: FormBuilder,
+    private categoriaService: CategoriaService,
+    private unidadeMedidaService: UnidadeMedidaService) {
 
     this.formulario = this.formBuilder.group({
       fativo: ['', [Validators.required]],
-      nome: ['', [Validators.required]]
+      nome: ['', [Validators.required]],
+      imagem: ['', [Validators.required]]
     });
   }
 
@@ -54,11 +59,9 @@ export class CategoriasFormComponent implements OnInit {
       this.formulario.disable();
       this.hasEdit = false;
     }
-
-    this.categoria.image = `${environment.urlS3}/cat${this.categoria.idCategoria}.jpg`;
-    console.log("minha imagem é :" + this.categoria.image)
-
     this.getUnidadesMedida();
+
+    this.categoria.imagemUrl = `${environment.urlS3}/cat${this.categoria.idCategoria}.jpg`
   }
 
   getUnidadesMedida() {
@@ -126,11 +129,12 @@ export class CategoriasFormComponent implements OnInit {
 
     if (this.formulario.valid) {
       if (this.listsValid()) {
+        this.categoria.imagemUrl = this.formulario.value.imagem;
         if (this.categoria.idCategoria) {
           this.categoriaService.putCategoria(this.categoria).subscribe(data => {
-
             this.sendImage()
             this.atualizaCategoria.emit(true);
+            
           }, error => {
             console.log(error.json());
           }, () => {
@@ -217,6 +221,7 @@ export class CategoriasFormComponent implements OnInit {
 
   //envia upload da imagem
   private sendImage() {
+
     if (this.croppedImage) {
       this.categoriaService.postUploadFile(this.croppedImage).subscribe(resp => {
         console.log(resp)
@@ -225,5 +230,7 @@ export class CategoriasFormComponent implements OnInit {
       });
     }
   }
+
+
 
 }

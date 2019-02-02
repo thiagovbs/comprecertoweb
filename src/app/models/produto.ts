@@ -5,7 +5,7 @@ export class Produto {
 
     idProduto: number;
     caracteristica: string;
-    imagem: string;
+    imagemUrl: string;
     marca: string;
     nome: string;
     quantidade: number;

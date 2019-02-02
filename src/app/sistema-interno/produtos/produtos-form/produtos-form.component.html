@@ -8,21 +8,26 @@
         <mat-card-content>
             <div fxLayout="row" fxLayoutWrap="wrap">
                 <div *ngIf="!hasEdit">
-                    <div *ngIf="produto.imagem">
-                        <img height="200" width="320" [src]="produto.imagem" alt="">
+                    <div *ngIf="produto.imagemUrl">
+                        <img height="100%" src="{{bucketS3}}/prod{{produto.idProduto}}.jpg" alt="">
                     </div>
                 </div>
                 <div *ngIf="hasEdit">
                     <div class="form-field form-field-file wrap">
                         <div class="upload-btn-wrapper">
                             <button mat-raised-button color="primary">Adicionar Imagem</button>
-                            <input type="file" name="myfile" (change)="fileChangeEvent($event)" />
+                            <input type="file"
+                                   name="myfile" 
+                                   formControlName="imagem" (change)="fileChangeEvent($event)" />
                         </div>
                     </div>
-                    <image-cropper style="width:240px;" [imageChangedEvent]="imageChangedEvent" [maintainAspectRatio]="true"
+                    <image-cropper style="width:240px;" 
+                        [imageChangedEvent]="imageChangedEvent" 
+                        [maintainAspectRatio]="true"
                         [aspectRatio]=" 1 / 1 " [resizeToWidth]="180" format="png" (imageCropped)="imageCropped($event)"
                         (loadImageFailed)="loadImageFailed()">
                     </image-cropper>
+                   
                     <img [src]="croppedImage" />
 
                 </div>

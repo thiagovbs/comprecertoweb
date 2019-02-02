@@ -2,7 +2,11 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { MercadoComponent } from '../../mercado.component';
 import { MercadoLocalidade } from '../../../../models/mercado-localidade';
 import { MercadoService } from '../../../../services/mercado.service';
-import swal from 'sweetalert2';
+
+import { ImageCroppedEvent } from 'ngx-image-cropper';
+import { Mercado } from '../../../../models/mercado';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { environment } from '../../../../../environments/environment';
 
 @Component({
   selector: 'app-pre-visualizacao',
@@ -11,9 +15,36 @@ import swal from 'sweetalert2';
 })
 export class PreVisualizacaoComponent implements OnInit {
 
-  constructor(@Inject(MercadoComponent) private mercadoComponent: MercadoComponent, private mercadoService: MercadoService) { }
+
+  formulario: FormGroup;
+
+  //upload file
+  imageChangedEvent: File = null;
+  croppedImage: any = '';
+  mercado: Mercado
+  change: boolean =true;
+  myImage:string;
+  
+  constructor(@Inject(MercadoComponent) private mercadoComponent: MercadoComponent,
+    private mercadoService: MercadoService,
+    private formBuilder: FormBuilder) {
+
+
+  }
 
   ngOnInit() {
+    console.log("meu id: " +this.mercadoComponent.mercado.idMercado)
+    if(this.mercadoComponent.mercado.idMercado){
+      this.formulario = this.formBuilder.group({
+        imagem: ['']
+      });
+      this.myImage = `${environment.urlS3}/mercado${this.mercadoComponent.mercado.idMercado}.jpg`;
+    }else{
+      this.formulario = this.formBuilder.group({
+        imagem: ['', [Validators.required]]
+      });
+    }
+    
   }
 
   getValorTotal() {
@@ -23,4 +54,20 @@ export class PreVisualizacaoComponent implements OnInit {
   getValorRegional(localidade: MercadoLocalidade) {
     return localidade.mercadoServicos.map(servico => (servico.pacoteServico.valor - servico.pacoteServico.acrescimo) - servico.pacoteServico.desconto).reduce((total, valor) => total += valor);
   }
+
+  fileChangeEvent(event: any): void {
+    this.imageChangedEvent = event;  
+    this.change = false;
+  }
+
+  imageCropped(event: ImageCroppedEvent) {
+    this.croppedImage = event.base64;
+    console.log(this.formulario.value.imagem)
+    //pegando a url da imagem para adicionar no imagem model
+    this.mercadoService.getImageUrl(this.formulario.value.imagem);
+
+    //pego a imagem croppada para adicionar no serviço do S3
+    this.mercadoService.getCroppedImageFile(this.croppedImage);
+  }
+
 }
