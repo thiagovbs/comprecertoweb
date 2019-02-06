@@ -70,10 +70,11 @@ export class MercadoComponent implements OnInit {
   }
 
   salvar() {
-
+    this.mercado.imagemUrl = this.mercadoService.file;
+    console.log(this.mercado)
     if (this.mercado.idMercado) {
       this.mercadoService.putMercado(this.mercado).subscribe(data => {
-        this.verificaEnvioImagem()
+        this.sendImage();
         console.log(data.json())
         // this.atualizaProduto.emit(true);
       }, error => {
@@ -84,10 +85,9 @@ export class MercadoComponent implements OnInit {
         Swal('Atualização', `O mercado ${this.mercado.nomeFantasia} foi atualizado!`, "success")
       })
     } else {
-
+      
       this.mercadoService.postMercado(this.mercado).subscribe(data => {
-
-        this.verificaEnvioImagem()
+        this.sendImage();
         // this.atualizaProduto.emit(true);
       }, error => {
         console.log(error.json());
@@ -126,16 +126,5 @@ export class MercadoComponent implements OnInit {
     }, erro => {
 
     });
-  }
-
-  private verificaEnvioImagem() {
-    
-    if (this.mercadoService.file) {
-      this.mercado.imagemUrl = this.mercadoService.file;
-      this.sendImage();
-    } else {
-      
-      this.mercado.imagemUrl = `${environment.urlS3}/mercado${this.mercado.idMercado}.jpg`;
-    }
   }
 }

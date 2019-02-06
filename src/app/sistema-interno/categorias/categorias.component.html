@@ -13,7 +13,7 @@
 </mat-toolbar>
 
 <div fxLayout="row" fxLayoutWrap="wrap">
-  <div fxFlex.gt-sm="33.33%" fxFlex="100" *ngFor="let categoria of categorias">
+  <div fxFlex.gt-md="33.33%" fxFlex.gt-lg="50%" *ngFor="let categoria of categorias">
     <app-categorias-form [categoria]="categoria" (removerCategoria)="aoRemover($event)" (atualizaCategoria)="aoSalvar($event)"></app-categorias-form>
   </div>
 </div>

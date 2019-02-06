@@ -6,32 +6,24 @@
         </mat-card-title>
         <mat-card-content>
             <div fxLayout="row" fxLayoutWrap="wrap">
-                <div fxFlex.gt-sm="100" fxFlex.gt-xs="100">
-                    <div *ngIf="!hasEdit">
-                        <div *ngIf="!fileToUpload">
-                            <img height="75" [src]="categoria.imagemUrl" alt="">
-                        </div>
-                        <div *ngIf="fileToUpload">
-                            <img height="75" [src]="croppedImage" alt="">
-                        </div>
-                    </div>
+                <div fxFlex.gt-lg="100" fxFlex.gt-xs="100">
+                    <img mat-card-md-image style="width:100%;" [src]="myImage" alt="">
                     <div *ngIf="hasEdit">
-                        <div class="form-field form-field-file wrap">
-                            <div class="upload-btn-wrapper">
-                                <button mat-raised-button color="primary">Adicionar Imagem</button>
-                                <input type="file" name="myfile" formControlName="imagem" (change)="fileChangeEvent($event)" />
-                            </div>
-                        </div>
-                        <image-cropper style="width:300px;" [imageChangedEvent]="imageChangedEvent"
+                        <image-cropper style="width:100%;" [imageChangedEvent]="imageChangedEvent"
                             [maintainAspectRatio]="true" [aspectRatio]="39 / 9 " [resizeToWidth]="300" format="png"
                             (imageCropped)="imageCropped($event)" (loadImageFailed)="loadImageFailed()">
                         </image-cropper>
-                        <img [src]="croppedImage" />
+                        <div class="form-field form-field-file wrap">
+                            <div class="upload-btn-wrapper" style="text-align:center">
+                                <button mat-button color="primary">Adicionar Imagem</button>
+                                <input type="file" name="myfile" formControlName="imagem" (change)="fileChangeEvent($event)" />
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
             <div fxLayout="row" fxLayoutWrap="wrap">
-                <div fxFlex.gt-sm="100" fxFlex.gt-xs="100">
+                <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" style="margin-top:10px;">
                     <mat-form-field class="example-full-width">
                         <input matInput placeholder="Nome" formControlName="nome" [(ngModel)]="categoria.nome">
                         <mat-hint *ngIf="formulario.controls['nome'].hasError('required') && formulario.controls['nome'].touched"

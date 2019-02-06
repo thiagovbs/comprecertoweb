@@ -16,6 +16,8 @@ import { AppComponent } from './app.component';
 import { ImageCropperModule } from 'ngx-image-cropper';
 import { AppRoutes } from './app.routing';
 import { AppGuard } from './app.guard';
+import { ImageUtilService } from './services/image-util.service';
+
 
 
 @NgModule({
@@ -25,7 +27,6 @@ import { AppGuard } from './app.guard';
     AppHeaderComponent,
     SpinnerComponent,
     AppSidebarComponent,
-    
   ],
   imports: [
     BrowserModule,
@@ -39,7 +40,8 @@ import { AppGuard } from './app.guard';
     ImageCropperModule
   ],
   providers: [
-    AppGuard
+    AppGuard,
+    ImageUtilService
   ],
   bootstrap: [AppComponent]
 })

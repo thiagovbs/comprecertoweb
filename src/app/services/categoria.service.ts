@@ -1,9 +1,8 @@
 import { Categoria } from './../models/categoria';
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
-import { Http, RequestOptions, Headers } from '@angular/http';
+import { Http, Headers } from '@angular/http';
 import { ImageUtilService } from './image-util.service';
-import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +11,9 @@ export class CategoriaService {
 
   constructor(private http: Http, public imageUtilService: ImageUtilService) { }
 
+  croppedFile:any = null;
+  file:string;
+  
   getCategorias() {
     const hds = new Headers({
       'Authorization': `Bearer ${localStorage.getItem('token')}`
@@ -44,9 +46,21 @@ export class CategoriaService {
     return this.http.delete(`${environment.urlSpring}/categorias/${idCategoria}`, { headers: hds, withCredentials: true })
   }
 
-  postUploadFile(file) {
 
-    let pictureBlog = this.imageUtilService.dataUriToBlob(file);
+   //inserir a imagem croppada que vem da pagina e jogar no método postUploadFile()
+   getCroppedImageFile(myCroppedFile: File) {
+    this.croppedFile = myCroppedFile;
+  }
+
+    //pegar o path da imagem que vem da pagina pré visualização e jogar no mercado model
+    getImageUrl(myFile:string){
+      this.file = myFile;
+    }
+
+  postUploadFile() {
+    if (this.croppedFile) {
+
+    let pictureBlog = this.imageUtilService.dataUriToBlob(this.croppedFile);
     let formData: FormData = new FormData();
     formData.set('file', pictureBlog, 'file.png');
 
@@ -54,7 +68,9 @@ export class CategoriaService {
       'Authorization': `Bearer ${localStorage.getItem('token')}`
     });
     return this.http.post(`${environment.urlSpring}/categorias/picture`, formData, { headers: hds, withCredentials: true });
+    }  
   }
 
+ 
 
 }

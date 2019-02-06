@@ -16,6 +16,7 @@ export class ListaPerfilMercadoComponent implements OnInit {
   constructor(private mercadoService: MercadoService) { }
 
   ngOnInit() {
+    
     this.getMercados();
   }
 

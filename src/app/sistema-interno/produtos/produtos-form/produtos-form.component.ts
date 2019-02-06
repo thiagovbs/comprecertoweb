@@ -40,13 +40,12 @@ export class ProdutosFormComponent implements OnInit {
   croppedImage: any = '';
   fileToUpload: File
 
-
-  bucketS3:string = environment.urlS3;
+  myImage: string;
 
   constructor(private formBuilder: FormBuilder,
-              private produtoService: ProdutoService, 
-              private subcategoriaService: SubcategoriaService,
-              private unidadeMedidaService: UnidadeMedidaService) {
+    private produtoService: ProdutoService,
+    private subcategoriaService: SubcategoriaService,
+    private unidadeMedidaService: UnidadeMedidaService) {
 
     this.formulario = this.formBuilder.group({
       caracteristica: ['', [Validators.required]],
@@ -68,19 +67,27 @@ export class ProdutosFormComponent implements OnInit {
       this.hasEdit = false;
     }
 
+    this.myImage = `${environment.urlS3}/prod${this.produto.idProduto}.jpg`;
+
   }
 
   cancelar() {
+    this.formulario.value.imagem = '';
     if (this.produto.idProduto) {
       this.formulario.disable();
-      this.hasEdit = false
+      this.hasEdit = false;
+      this.atualizaProduto.emit(true);
+
+      this.myImage = `${environment.urlS3}/prod${this.produto.idProduto}.jpg`;
     } else {
       this.produtoRemovida.emit(this.produto);
     }
   }
 
   salvar() {
-    this.produto.imagemUrl =this.formulario.value.imagem;
+
+    this.produto.imagemUrl = this.formulario.value.imagem;
+    console.log(this.produto)
     if (this.formulario.valid) {
       if (this.produto.idProduto) {
         this.produtoService.putProduto(this.produto).subscribe(data => {
@@ -158,18 +165,18 @@ export class ProdutosFormComponent implements OnInit {
   }
 
   imageCropped(event: ImageCroppedEvent) {
-    console.log(event)
     this.croppedImage = event.base64;
+    this.produtoService.croppedFile = this.croppedImage;
+    //pega a imagem que for croppada e atualiza na tela
+    this.myImage = this.produtoService.croppedFile;
   }
 
   //envia upload da imagem
   private sendImage() {
-    if (this.croppedImage) {
-      this.produtoService.postUploadFile(this.croppedImage).subscribe(resp => {
-        console.log(resp)
-      }, erro => {
-
-      });
-    }
+    this.produtoService.postUploadFile().subscribe(resp => {
+      console.log(resp)
+    }, erro => {
+      console.log(erro)
+    });
   }
 }

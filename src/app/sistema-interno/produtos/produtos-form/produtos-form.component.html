@@ -7,33 +7,23 @@
         </mat-card-title>
         <mat-card-content>
             <div fxLayout="row" fxLayoutWrap="wrap">
-                <div *ngIf="!hasEdit">
-                    <div *ngIf="produto.imagemUrl">
-                        <img height="100%" src="{{bucketS3}}/prod{{produto.idProduto}}.jpg" alt="">
-                    </div>
-                </div>
-                <div *ngIf="hasEdit">
+                <img mat-card-md-image style="width:55%;margin: auto;" [src]="myImage" alt="">
+
+                <div *ngIf="hasEdit" style="margin: auto;">
+                    <image-cropper style="width:90%;margin: auto;" [imageChangedEvent]="imageChangedEvent"
+                        [resizeToWidth]="180" [maintainAspectRatio]="true" [aspectRatio]=" 1 / 1 " format="png"
+                        (imageCropped)="imageCropped($event)" (loadImageFailed)="loadImageFailed()">
+                    </image-cropper>
                     <div class="form-field form-field-file wrap">
-                        <div class="upload-btn-wrapper">
-                            <button mat-raised-button color="primary">Adicionar Imagem</button>
-                            <input type="file"
-                                   name="myfile" 
-                                   formControlName="imagem" (change)="fileChangeEvent($event)" />
+                        <div class="upload-btn-wrapper" style="text-align:center">
+                            <button mat-button color="primary">Adicionar Imagem</button>
+                            <input type="file" formControlName="imagem" (change)="fileChangeEvent($event)" />
                         </div>
                     </div>
-                    <image-cropper style="width:240px;" 
-                        [imageChangedEvent]="imageChangedEvent" 
-                        [maintainAspectRatio]="true"
-                        [aspectRatio]=" 1 / 1 " [resizeToWidth]="180" format="png" (imageCropped)="imageCropped($event)"
-                        (loadImageFailed)="loadImageFailed()">
-                    </image-cropper>
-                   
-                    <img [src]="croppedImage" />
-
                 </div>
             </div>
             <div fxLayout="row" fxLayoutWrap="wrap">
-                <div fxFlex.gt-sm="100" fxFlex.gt-xs="100">
+                <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" style="margin-top:10px;">
                     <mat-form-field>
                         <mat-select placeholder="Subcategorias" formControlName="subcategoria" [(ngModel)]="produto.subcategoria.idSubcategoria"
                             (selectionChange)="atualizaSubcategoriaSelect($event.value)">

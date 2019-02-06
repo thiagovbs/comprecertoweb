@@ -114,10 +114,32 @@ const MERCADO_ADMIN_MENU_ITEMS = [
     name: 'Perfil e Ferramentas',
     type: 'link',
     icon: 'add'
+  }
+];
+
+const MERCADO_MENU_ITEMS = [
+
+  {
+    state: 'analytics-mercado',
+    name: 'Analytics',
+    type: 'link',
+    icon: 'add'
+  },
+  {
+    state: 'produtos-mercado',
+    name: 'Cadastrar Produtos',
+    type: 'link',
+    icon: 'add'
+  },
+  {
+    state: 'perfil-ferramentas',
+    name: 'Perfil e Ferramentas',
+    type: 'link',
+    icon: 'add'
   },
   {
     state: 'faqs',
-    name: 'FAQ',
+    name: 'Faqs',
     type: 'link',
     icon: 'add'
   }
@@ -132,7 +154,8 @@ export class MenuItems {
     if (this.usuarioService.getUsuarioLogged().permissoes.find(p => p.descricao == 'MERCADO_ADMIN')) {
       return MERCADO_ADMIN_MENU_ITEMS;
     }
-
-    return MENUITEMS;
+    if (this.usuarioService.getUsuarioLogged().permissoes.find(p => p.descricao == 'MERCADO_OPERADOR')) {
+      return MERCADO_MENU_ITEMS;
+    }
   }
 }

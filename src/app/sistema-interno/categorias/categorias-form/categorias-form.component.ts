@@ -1,5 +1,5 @@
 import { CategoriaService } from './../../../services/categoria.service';
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, Inject } from '@angular/core';
 import { Categoria } from '../../../models/categoria';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ENTER, COMMA } from '@angular/cdk/keycodes';
@@ -11,6 +11,7 @@ import Swal from 'sweetalert2';
 import * as Lodash from 'lodash';
 import { ImageCroppedEvent } from 'ngx-image-cropper';
 import { environment } from '../../../../environments/environment';
+
 
 @Component({
   selector: 'app-categorias-form',
@@ -36,9 +37,7 @@ export class CategoriasFormComponent implements OnInit {
   //upload file
   imageChangedEvent: File = null;
   croppedImage: any = '';
-
-
-  //bucketS3:string = environment.urlS3;
+  myImage:string;
 
   // Enter, comma
   separatorKeysCodes = [ENTER, COMMA];
@@ -61,7 +60,14 @@ export class CategoriasFormComponent implements OnInit {
     }
     this.getUnidadesMedida();
 
-    this.categoria.imagemUrl = `${environment.urlS3}/cat${this.categoria.idCategoria}.jpg`
+    
+    console.log(this.categoriaService.croppedFile +" meu produto")
+    if(this.categoriaService.file === this.categoria.imagemUrl){
+      this.myImage = this.categoriaService.croppedFile;
+    }else{
+      this.myImage = `${environment.urlS3}/cat${this.categoria.idCategoria}.jpg`;
+    }
+    
   }
 
   getUnidadesMedida() {
@@ -126,15 +132,15 @@ export class CategoriasFormComponent implements OnInit {
   }
 
   salvar() {
-
     if (this.formulario.valid) {
       if (this.listsValid()) {
         this.categoria.imagemUrl = this.formulario.value.imagem;
         if (this.categoria.idCategoria) {
           this.categoriaService.putCategoria(this.categoria).subscribe(data => {
+
             this.sendImage()
             this.atualizaCategoria.emit(true);
-            
+
           }, error => {
             console.log(error.json());
           }, () => {
@@ -213,24 +219,19 @@ export class CategoriasFormComponent implements OnInit {
 
   fileChangeEvent(event: any): void {
     this.imageChangedEvent = event;
+    this.categoriaService.file = event.target.value;
   }
 
   imageCropped(event: ImageCroppedEvent) {
     this.croppedImage = event.base64;
+    this.categoriaService.croppedFile = this.croppedImage;
   }
 
   //envia upload da imagem
   private sendImage() {
-
-    if (this.croppedImage) {
-      this.categoriaService.postUploadFile(this.croppedImage).subscribe(resp => {
-        console.log(resp)
-      }, erro => {
-
-      });
-    }
+    this.categoriaService.postUploadFile().subscribe(resp => {
+      console.log(resp)
+    }, erro => { });
   }
-
-
 
 }

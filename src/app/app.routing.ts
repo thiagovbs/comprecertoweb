@@ -15,11 +15,7 @@ export const AppRoutes: Routes = [
     component: FullComponent,
     canActivate: [AppGuard],
     children: [
-      {
-        path: '',
-        redirectTo: '/analytics',
-        pathMatch: 'full'
-      },
+      
       {
         path: 'analytics',
         loadChildren: './analytics/analytics.module#AnalyticsModule'
@@ -68,6 +64,16 @@ export const AppRoutes: Routes = [
         path: 'faqs',
         loadChildren:
           './sistema-mercado/faq/faq.module#FaqModule'
+      },
+      {
+        path: 'produtos-mercado',
+        loadChildren:
+          './sistema-mercado/produtos-mercado/produtos-mercado.module#ProdutosMercadoModule'
+      },
+      {
+        path: 'analytics-mercado',
+        loadChildren:
+          './sistema-mercado/analytics-mercado/analytics-mercado.module#AnalyticsMercadoModule'
       }
     ]
   },

@@ -7,13 +7,14 @@ import { HttpModule } from '@angular/http';
 import { MercadoService } from '../../services/mercado.service';
 import { PerfilMercadoModule } from '../perfil-mercado/perfil-mercado.module';
 import { ImageUtilService } from '../../services/image-util.service';
-
+import { MatCardModule} from '@angular/material';
 @NgModule({
   imports: [
     CommonModule,
     RouterModule.forChild(ListaPerfilMercadoRoutes),
     HttpModule,
-    PerfilMercadoModule
+    PerfilMercadoModule,
+    MatCardModule
   ],
   declarations: [ListaPerfilMercadoComponent],
   providers: [

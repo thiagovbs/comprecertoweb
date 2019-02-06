@@ -49,6 +49,7 @@ export class ProdutosComponent implements OnInit {
 
   atualizaProduto(salvo) {
     if (salvo) {
+      console.log(salvo)
       this.getProdutos();
     }
   }

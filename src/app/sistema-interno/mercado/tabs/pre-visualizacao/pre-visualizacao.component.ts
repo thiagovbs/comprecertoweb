@@ -33,7 +33,6 @@ export class PreVisualizacaoComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log("meu id: " +this.mercadoComponent.mercado.idMercado)
     if(this.mercadoComponent.mercado.idMercado){
       this.formulario = this.formBuilder.group({
         imagem: ['']
@@ -62,10 +61,9 @@ export class PreVisualizacaoComponent implements OnInit {
 
   imageCropped(event: ImageCroppedEvent) {
     this.croppedImage = event.base64;
-    console.log(this.formulario.value.imagem)
+    
     //pegando a url da imagem para adicionar no imagem model
     this.mercadoService.getImageUrl(this.formulario.value.imagem);
-
     //pego a imagem croppada para adicionar no serviço do S3
     this.mercadoService.getCroppedImageFile(this.croppedImage);
   }

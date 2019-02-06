@@ -1,2 +1,9 @@
+<div *ngIf="mercados">
+    <app-perfil-mercado *ngFor="let mercado of mercados" [mercado]="mercado" (atualiza)="getMercados()"></app-perfil-mercado>
+</div>
 
-<app-perfil-mercado *ngFor="let mercado of mercados" [mercado]="mercado" (atualiza)="getMercados()"></app-perfil-mercado>
+<mat-card *ngIf="mercados.length ===0">
+    <mat-card-content fxLayout="row" >
+        <p> Não existem mercados cadastrados</p>
+    </mat-card-content>
+</mat-card>

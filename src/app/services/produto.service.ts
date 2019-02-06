@@ -11,6 +11,9 @@ export class ProdutoService {
 
   constructor(private http: Http, public imageUtilService: ImageUtilService) { }
 
+  croppedFile: any = null;
+  file: string;
+
   getProdutos() {
     const hds = new Headers({
       'Authorization': `Bearer ${localStorage.getItem('token')}`
@@ -67,15 +70,18 @@ export class ProdutoService {
     return this.http.post(`${environment.urlSpring}/produtos/filter`, filter, { headers: hds, withCredentials: true })
   }
 
-  postUploadFile(file) {
+  postUploadFile() {
+    if (this.croppedFile) {
 
-    let pictureBlog = this.imageUtilService.dataUriToBlob(file);
-    let formData: FormData = new FormData();
-    formData.set('file', pictureBlog, 'file.png');
+      let pictureBlog = this.imageUtilService.dataUriToBlob(this.croppedFile);
+      let formData: FormData = new FormData();
+      formData.set('file', pictureBlog, 'file.png');
 
-    const hds = new Headers({
-      'Authorization': `Bearer ${localStorage.getItem('token')}`
-    });
-    return this.http.post(`${environment.urlSpring}/produtos/picture`, formData, { headers: hds, withCredentials: true });
+      const hds = new Headers({
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      });
+      return this.http.post(`${environment.urlSpring}/produtos/picture`, formData, { headers: hds, withCredentials: true });
+    }
+
   }
 }
