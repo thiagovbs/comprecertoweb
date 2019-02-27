@@ -5,6 +5,6 @@
 
 export const environment = {
   production: false,
-  urlSpring: 'https://sheap.herokuapp.com',
+  urlSpring: 'http://api.sheap.com.br',
   urlS3:'https://s3-sa-east-1.amazonaws.com/compre-certo'
 };
