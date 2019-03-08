@@ -19,7 +19,6 @@ import { ImageCropperModule } from 'ngx-image-cropper';
   imports: [
     CommonModule,
     RouterModule.forChild(ProdutosRoutes),
-
     MatCardModule,
     MatFormFieldModule,
     MatInputModule,

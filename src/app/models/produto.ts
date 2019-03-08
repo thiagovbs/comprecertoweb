@@ -1,5 +1,6 @@
 import { Subcategoria } from "./subcategoria";
 import { UnidadeMedida } from "./unidade-medida";
+import { Categoria } from "./categoria";
 
 export class Produto {
 
@@ -11,4 +12,5 @@ export class Produto {
     quantidade: number;
     subcategoria: Subcategoria = new Subcategoria();
     unidadeMedida: UnidadeMedida = new UnidadeMedida();
+    categoria: Categoria = new Categoria();
 }

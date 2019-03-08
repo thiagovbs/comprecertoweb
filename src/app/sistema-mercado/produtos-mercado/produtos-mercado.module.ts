@@ -13,33 +13,47 @@ import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 
 import { RouterModule } from '@angular/router';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { MercadoService } from '../../services/mercado.service';
 import { HttpModule } from '@angular/http';
 import { ProdutosMercadoRoutes } from './produtos-mercado.routing';
 import { ProdutosMercadoComponent } from './produtos-mercado.component';
+import { ProdutosMercadoFormComponent } from './produtos-mercado-form/produtos-mercado-form.component';
+import { ProdutoService } from '../../services/produto.service';
+import { SubcategoriaService } from '../../services/subcategoria.service';
+import { UnidadeMedidaService } from '../../services/unidade-medida.service';
+import { CategoriaService } from '../../services/categoria.service';
+import { ImageUtilService } from '../../services/image-util.service';
+import { ImageCropperModule } from 'ngx-image-cropper';
 
 @NgModule({
   imports: [
     CommonModule,
     RouterModule.forChild(ProdutosMercadoRoutes),
-    MatToolbarModule,
-    MatButtonModule,
-    PerfectScrollbarModule,
     MatCardModule,
-    MatSelectModule,
-    MatCheckboxModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
     FlexLayoutModule,
     MatFormFieldModule,
     FormsModule,
-    MatInputModule,
+    MatSelectModule,
+    ReactiveFormsModule,
     MatIconModule,
-    HttpModule
+    MatToolbarModule,
+    MatCheckboxModule,
+    HttpModule,
+    ImageCropperModule
   ],
-  declarations: [ProdutosMercadoComponent],
+  declarations: [ProdutosMercadoComponent, ProdutosMercadoFormComponent],
   providers: [
-    MercadoService
+    MercadoService,
+    ProdutoService,
+    SubcategoriaService,
+    UnidadeMedidaService,
+    CategoriaService,
+    ImageUtilService
   ]
 })
 export class ProdutosMercadoModule { }

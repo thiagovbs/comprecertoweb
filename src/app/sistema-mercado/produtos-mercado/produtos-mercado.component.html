@@ -1,7 +1,7 @@
 <mat-toolbar color="primary" class="little">
     <span>Cadastros de produtos</span>
     <span fxFlex></span>
-    <button mat-button href="#" mat-icon-button>
+    <button mat-button href="#" mat-icon-button (click)="adicionarProdutoForm()">
         <mat-icon>add</mat-icon>
     </button>
     <button mat-button href="#" mat-icon-button>
@@ -11,3 +11,9 @@
         <mat-icon>filter_list</mat-icon>
     </button>
 </mat-toolbar>
+
+<div fxLayout="row" fxLayoutWrap="wrap">
+    <div fxFlex.gt-sm="33.33%" fxFlex="100" *ngFor="let produto of produtos">
+        <app-produtos-mercado-form [produto]="produto"></app-produtos-mercado-form>
+    </div>
+</div>
