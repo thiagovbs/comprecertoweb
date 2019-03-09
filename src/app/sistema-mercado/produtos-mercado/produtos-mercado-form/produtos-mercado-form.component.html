@@ -14,54 +14,52 @@
       <div fxLayout="row" fxLayoutWrap="wrap">
         <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" style="margin-top:10px;">
           <mat-form-field>
-            <mat-select placeholder="Categorias" 
-                        formControlName="categoria" 
-                        [(ngModel)]="produto.categoria.idCategoria"
-                        (selectionChange)="atualizaCategoriaSelect($event.value)">
+            <mat-select placeholder="Categorias" formControlName="categoria" [(ngModel)]="produto.categoria.idCategoria"
+              (selectionChange)="atualizaCategoriaSelect($event.value)">
               <mat-option *ngFor="let categoria of categorias" [value]="categoria">
                 {{categoria.nome}}
               </mat-option>
             </mat-select>
-            <mat-hint *ngIf="formulario.controls['categoria'].hasError('required') && formulario.controls['categoria'].touched"
+            <mat-hint
+              *ngIf="formulario.controls['categoria'].hasError('required') && formulario.controls['categoria'].touched"
               class="text-danger font-14">A Categoria é obrigatória.</mat-hint>
           </mat-form-field>
 
           <mat-form-field>
-            <mat-select placeholder="Subcategorias" 
-                        formControlName="subcategoria" 
-                        [(ngModel)]="produto.subcategoria.idSubcategoria"
-                        (selectionChange)="atualizaSubcategoriaSelect($event.value)">
+            <mat-select placeholder="Subcategorias" formControlName="subcategoria"
+              [(ngModel)]="produto.subcategoria.idSubcategoria"
+              (selectionChange)="atualizaSubcategoriaSelect($event.value)">
               <mat-option *ngFor="let subcategoria of subcategorias" [value]="subcategoria">
                 {{subcategoria.nome}}
               </mat-option>
             </mat-select>
-            <mat-hint *ngIf="formulario.controls['subcategoria'].hasError('required') && formulario.controls['subcategoria'].touched"
+            <mat-hint
+              *ngIf="formulario.controls['subcategoria'].hasError('required') && formulario.controls['subcategoria'].touched"
               class="text-danger font-14">A subcategoria é obrigatória.</mat-hint>
           </mat-form-field>
 
           <mat-form-field>
-            <mat-select placeholder="Produtos" 
-                        formControlName="produto"> 
-              <mat-option *ngFor="let produto of filterProdutos" [value]="produto"> 
+            <mat-select placeholder="Produtos" formControlName="produto">
+              <mat-option *ngFor="let produto of filterProdutos" [value]="produto">
                 {{produto.nome}}
               </mat-option>
             </mat-select>
-            <mat-hint *ngIf="formulario.controls['produto'].hasError('required') && formulario.controls['produto'].touched"
+            <mat-hint
+              *ngIf="formulario.controls['produto'].hasError('required') && formulario.controls['produto'].touched"
               class="text-danger font-14">O produto é obrigatório.</mat-hint>
           </mat-form-field>
 
           <mat-form-field>
-            <mat-select placeholder="Marca" 
-                        formControlName="marca"
-                        (selectionChange)="atualizaMarcaSelect($event.value)">
-              <mat-option *ngFor="let marca of marcas" [value]="marca"> 
+            <mat-select placeholder="Marca" formControlName="marca"
+              (selectionChange)="atualizaMarcaSelect($event.value)">
+              <mat-option *ngFor="let marca of marcas" [value]="marca">
                 {{marca}}
               </mat-option>
             </mat-select>
             <mat-hint *ngIf="formulario.controls['marca'].hasError('required') && formulario.controls['marca'].touched"
               class="text-danger font-14">A marca é obrigatório.</mat-hint>
           </mat-form-field>
-          
+
           <mat-form-field class="example-full-width">
             <input matInput placeholder="Característica">
             <mat-hint class="text-danger font-14">A caracteristica é obrigatória.</mat-hint>
@@ -69,18 +67,41 @@
         </div>
         <div fxFlex.gt-sm="80" fxFlex.gt-xs="80">
           <mat-form-field class="example-full-width">
-            <input matInput type="number" placeholder="Quantidade">
-            <mat-hint class="text-danger font-14">A quantidade é obrigatória.</mat-hint>
+            <input matInput type="number" placeholder="Peso">
+            <mat-hint class="text-danger font-14"
+              *ngIf="formulario.controls['unidadeMedida'].hasError('required') && formulario.controls['unidadeMedida'].touched">
+              O peso é obrigatório.
+            </mat-hint>
           </mat-form-field>
         </div>
         <div fxFlex.gt-sm="20" fxFlex.gt-xs="20">
           <mat-form-field>
             <mat-select placeholder="UM" formControlName="unidadeMedida" [(ngModel)]="produto.unidadeMedida.idUnidade"
               (selectionChange)="atualizaUnidadeMedidaSelect($event.value)">
-              <mat-option *ngFor="let unidadeMedida of unidadesMedida" [value]="unidadeMedida.idUnidade">
-                {{unidadeMedida.sigla}}
+              <mat-option *ngFor="let unidadeMedida of unidadesMedidas" [value]="unidadeMedida.unidadeMedida">
+                {{unidadeMedida.unidadeMedida}}
               </mat-option>
             </mat-select>
+
+          </mat-form-field>
+        </div>
+        <div fxFlex.gt-sm="80" fxFlex.gt-xs="80">
+          <mat-form-field class="example-full-width">
+            <input matInput placeholder="Valor" type="number" formControlName="valor">
+            <mat-hint class="text-danger font-14"
+              *ngIf="formulario.controls['valor'].hasError('required') && formulario.controls['valor'].touched">
+              O preço é obrigatório.
+            </mat-hint>
+          </mat-form-field>
+        </div>
+        <div fxFlex.gt-sm="20" fxFlex.gt-xs="20">
+          <mat-form-field class="example-full-width">
+            <input matInput readonly value="R$">
+          </mat-form-field>
+        </div>
+        <div fxFlex.gt-sm="100" fxFlex.gt-xs="100">
+          <mat-form-field class="example-full-width">
+            <input matInput placeholder="Observação">
           </mat-form-field>
         </div>
       </div>
@@ -89,7 +110,6 @@
       <button mat-raised-button color="warn">CANCELAR</button>
       <button mat-raised-button color="warn">EXCLUIR</button>
       <button mat-raised-button color="primary">SALVAR</button>
-
     </mat-card-actions>
   </form>
 </mat-card>

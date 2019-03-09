@@ -19,18 +19,18 @@ export class ProdutosMercadoFormComponent implements OnInit {
 
   @Input() produto: Produto
 
-  idSubcategoria:number
+  idSubcategoria: number
   subcategorias: Subcategoria[] = [];
-  
-  marcas:[]=[]
-  
-  unidadesMedida: UnidadeMedida[] = [];
+
+  unidadesMedidas: UnidadeMedida[];
 
   categoriaId: number;
   categorias: Categoria[] = [];
-  
+
   produtos: Produto[]
   filterProdutos: Produto[] = []
+
+  marcas: Array<any> = [];
 
   formulario: FormGroup;
 
@@ -49,10 +49,10 @@ export class ProdutosMercadoFormComponent implements OnInit {
     private categoriaService: CategoriaService) {
 
     this.formulario = this.formBuilder.group({
-      /*  caracteristica: ['', [Validators.required]],
-       
-       
-       quantidade: ['', [Validators.required, Validators.min(0.1)]], */
+      caracteristica: ['', [Validators.required]],
+
+
+      valor: ['', [Validators.required]],
       marca: [{ value: '', disable: true }, [Validators.required]],
       categoria: [{ value: '' }, [Validators.required]],
       produto: [{ value: '', disable: true }, [Validators.required]],
@@ -65,9 +65,7 @@ export class ProdutosMercadoFormComponent implements OnInit {
 
     this.getCategorias();
 
-
     if (this.produto.idProduto) {
-      this.getUnidadesMedidaPorSubcategoria(this.produto.subcategoria)
       this.formulario.disable();
       this.hasEdit = false;
     }
@@ -81,67 +79,52 @@ export class ProdutosMercadoFormComponent implements OnInit {
 
   //atualiza o select da CATEGORIA para habilitar as SUBCATEGORIAS
   atualizaCategoriaSelect(categoria: Categoria) {
-    this.filterProdutos = null;
-    //this.marcas = null;
 
+    this.filterProdutos = [];
     this.formulario.get('subcategoria').enabled;
+
     this.subcategorias = categoria.subcategorias;
     this.categoriaId = categoria.idCategoria
   }
 
   //atualiza o select da SUBCATEGORIA para habilitar os PRODUTOS
   atualizaSubcategoriaSelect(subcategoria: Subcategoria) {
-    //this.marcas = null;
+
     this.formulario.get('produto').enabled;
-    this.formulario.get('marca').enabled;
 
     this.idSubcategoria = subcategoria.idSubcategoria
-    
+
+    //pega as marca pelas subcategorias
     this.getMarcasPorSubcategoria(subcategoria.idSubcategoria);
-    this.getProdutosPorSubcategorias(subcategoria); 
+    //pega os produtos pelas subcategorias
+    this.getProdutosPorSubcategorias(subcategoria);
   }
+
   private getProdutosPorSubcategorias(subcategoria: Subcategoria) {
+
     this.subcategoriaService.getProdutosPorSubCategorias(this.categoriaId).subscribe(data => {
       this.produtos = data.json();
       this.filterProdutos = this.produtos.filter((prod: Produto) => prod.subcategoria.nome === subcategoria.nome);
     }, erro => { console.log(erro) })
   }
 
-  private getMarcasPorSubcategoria(idSubcategoria){
+  private getMarcasPorSubcategoria(idSubcategoria) {
     this.produtoService.getMarcasPorSubcategoria(idSubcategoria).subscribe(data => {
-     this.marcas = data.json()
-     
+      this.marcas = data.json();
     }, erro => { console.log(erro) })
   }
 
-  atualizaMarcaSelect(marca){
+  atualizaMarcaSelect(marca) {
+
     this.produtoService.getUnidadesMedidaPorSubcategoriaEMarca(this.idSubcategoria, marca).subscribe(data => {
-      console.log(data.json())
-     }, erro => { console.log(erro) })
-  }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  getUnidadesMedidaPorSubcategoria(subcategoria: Subcategoria) {
-    this.formulario.get('unidadeMedida').enabled;
-    this.unidadeMedidaService.getUnidadesMedidaPorSubcategoria(subcategoria).subscribe(data => {
-      this.unidadesMedida = data.json();
-    })
+      this.unidadesMedidas = data.json()
+      console.log(this.unidadesMedidas)
+    }, erro => { console.log(erro) })
   }
 
   atualizaUnidadeMedidaSelect(value) {
-    this.produto.unidadeMedida = this.unidadesMedida.filter(unidadeMedida => unidadeMedida.idUnidade = value)[0];
+    console.log(value)
+    this.produto.unidadeMedida = this.unidadesMedidas.filter(unidadeMedida => unidadeMedida.idUnidade = value)[0];
   }
 
 }
