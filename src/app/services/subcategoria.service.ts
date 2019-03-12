@@ -51,7 +51,7 @@ export class SubcategoriaService {
   }
 
   
-  getProdutosPorSubCategorias(categoriaId){
+  getProdutosPorCategorias(categoriaId){
     const hds = new Headers({
       'Authorization': `Bearer ${localStorage.getItem('token')}`
     });

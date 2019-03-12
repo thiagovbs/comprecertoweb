@@ -2,17 +2,18 @@
   <form [formGroup]="formulario" autocomplete="off">
     <mat-card-title>
       <h4>ID {{ produto.idProduto ? produto.idProduto : 'Indefinido' }}</h4>
-
-      <!-- <button mat-raised-button color="primary">Adicionar Foto</button> -->
+     
     </mat-card-title><!--  -->
     <mat-card-content>
       <div fxLayout="row" fxLayoutWrap="wrap">
-        <div mat-card-md-image style="width:55%;margin: auto;" alt=""></div>
-        <div style="margin: auto;">
+        <div mat-card-md-image style="width:50%; margin: -20px auto 25px auto;"  alt="">
+          <div *ngIf="filterProdsPorPeso" >
+            <img  src="{{myImage}}" alt="">
+          </div>
         </div>
       </div>
       <div fxLayout="row" fxLayoutWrap="wrap">
-        <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" style="margin-top:10px;">
+        <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" style="margin-top:30px;">
           <mat-form-field>
             <mat-select placeholder="Categorias" formControlName="categoria" [(ngModel)]="produto.categoria.idCategoria"
               (selectionChange)="atualizaCategoriaSelect($event.value)">
@@ -39,9 +40,22 @@
           </mat-form-field>
 
           <mat-form-field>
-            <mat-select placeholder="Produtos" formControlName="produto">
-              <mat-option *ngFor="let produto of filterProdutos" [value]="produto">
-                {{produto.nome}}
+            <mat-select placeholder="Marcas" formControlName="marca"
+              (selectionChange)="atualizaMarcaSelect($event.value)">
+              <mat-option *ngFor="let marca of marcasNome" [value]="marca">
+                {{marca}}
+              </mat-option>
+            </mat-select>
+            <mat-hint *ngIf="formulario.controls['marca'].hasError('required') && formulario.controls['marca'].touched"
+              class="text-danger font-14">A marca é obrigatório.</mat-hint>
+          </mat-form-field>
+
+          <mat-form-field>
+            <mat-select placeholder="Produtos" 
+                        formControlName="produto" 
+                        (selectionChange)="atualizaProdutoSelect($event.value)">
+              <mat-option *ngFor="let produto of produtosNome" [value]="produto">
+                {{produto}}
               </mat-option>
             </mat-select>
             <mat-hint
@@ -50,41 +64,31 @@
           </mat-form-field>
 
           <mat-form-field>
-            <mat-select placeholder="Marca" formControlName="marca"
-              (selectionChange)="atualizaMarcaSelect($event.value)">
-              <mat-option *ngFor="let marca of marcas" [value]="marca">
-                {{marca}}
+            <mat-select placeholder="Caracteristicas" formControlName="caracteristica"
+              (selectionChange)="atualizaCaracteristicaSelect($event.value)">
+              <mat-option *ngFor="let caract of caracteristicasNome"  [value]="caract">
+                {{caract}}
               </mat-option>
             </mat-select>
-            <mat-hint *ngIf="formulario.controls['marca'].hasError('required') && formulario.controls['marca'].touched"
-              class="text-danger font-14">A marca é obrigatório.</mat-hint>
-          </mat-form-field>
-
-          <mat-form-field class="example-full-width">
-            <input matInput placeholder="Característica">
-            <mat-hint class="text-danger font-14">A caracteristica é obrigatória.</mat-hint>
+            <mat-hint *ngIf="formulario.controls['caracteristica'].hasError('required') && formulario.controls['caracteristica'].touched"
+              class="text-danger font-14">A característica é obrigatório.</mat-hint>
           </mat-form-field>
         </div>
-        <div fxFlex.gt-sm="80" fxFlex.gt-xs="80">
+        <div fxFlex.gt-sm="100" fxFlex.gt-xs="100">
           <mat-form-field class="example-full-width">
-            <input matInput type="number" placeholder="Peso">
+            <mat-select placeholder="Peso" formControlName="peso"
+              (selectionChange)="atualizaPesoSelect($event.value)">
+              <mat-option *ngFor="let unidade of unidadesMedida"  [value]="unidade">
+                {{unidade.valor}} - {{unidade.unidade}}
+              </mat-option>
+            </mat-select>
             <mat-hint class="text-danger font-14"
               *ngIf="formulario.controls['unidadeMedida'].hasError('required') && formulario.controls['unidadeMedida'].touched">
               O peso é obrigatório.
             </mat-hint>
           </mat-form-field>
         </div>
-        <div fxFlex.gt-sm="20" fxFlex.gt-xs="20">
-          <mat-form-field>
-            <mat-select placeholder="UM" formControlName="unidadeMedida" [(ngModel)]="produto.unidadeMedida.idUnidade"
-              (selectionChange)="atualizaUnidadeMedidaSelect($event.value)">
-              <mat-option *ngFor="let unidadeMedida of unidadesMedidas" [value]="unidadeMedida.unidadeMedida">
-                {{unidadeMedida.unidadeMedida}}
-              </mat-option>
-            </mat-select>
-
-          </mat-form-field>
-        </div>
+       
         <div fxFlex.gt-sm="80" fxFlex.gt-xs="80">
           <mat-form-field class="example-full-width">
             <input matInput placeholder="Valor" type="number" formControlName="valor">
