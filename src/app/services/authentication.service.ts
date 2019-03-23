@@ -5,6 +5,9 @@ import { Router } from '@angular/router';
 import { UsuarioService } from './usuario.service';
 import { JwtHelper } from 'angular2-jwt';
 
+import Swal from 'sweetalert2';
+import { Observable } from 'rxjs';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -18,7 +21,7 @@ export class AuthenticationService {
 
   constructor(private http: HttpClient, private router: Router, private usuarioService: UsuarioService) { }
 
-  login(usuario: String, senha: String): void {
+  login(usuario: String, senha: String) {
     const hds = new HttpHeaders({
       'Content-Type': 'application/x-www-form-urlencoded',
       'Authorization': 'Basic YW5ndWxhcjpAbmd1bEByMA=='
@@ -26,32 +29,10 @@ export class AuthenticationService {
 
     const body = `username=${usuario}&password=${senha}&grant_type=password`;
 
-    this.http.post(this.oauthTokenUrl, body, { headers: hds, withCredentials: true }).subscribe(
-      data => {
-        console.log(data)
-        this.armazenarToken(data['access_token']);
-
-        if (!this.usuarioService.hasPermissoes()) {
-          console.log('O usuário não possui nenhum permissão');
-          return;
-        }
-
-        this.router.navigate(['/secure/analytics']);
-      }, error => {
-        if (error.status === 400) {
-          const responseJson = error.json();
-
-          if (responseJson.error === 'invalid_grant') {
-            return Promise.reject('Usuário ou senha inválida!');
-          }
-        }
-
-        return Promise.reject(error);
-      }
-    );
+    return this.http.post(this.oauthTokenUrl, body, { headers: hds, withCredentials: true });
   }
 
-  private armazenarToken(token: string) {
+  armazenarToken(token: string) {
     localStorage.setItem('token', token);
   }
 
@@ -69,5 +50,25 @@ export class AuthenticationService {
   isTokenExpired() {
     if (localStorage.getItem('token') !== null)
       return this.jwtHelper.isTokenExpired(localStorage.getItem('token'));
+  }
+
+  obterNovoAccessToken() {
+    const hds = new HttpHeaders({
+      'Content-Type': 'application/x-www-form-urlencoded',
+      'Authorization': 'Basic YW5ndWxhcjpAbmd1bEByMA=='
+    });
+
+    const body = 'grant_type=refresh_token';
+
+    return this.http.post(this.oauthTokenUrl, body,
+      { headers: hds, withCredentials: true });
+  }
+
+  isAccessTokenInvalido() {
+    const token = localStorage.getItem('token');
+
+    const jwtHelper: JwtHelper = new JwtHelper();
+
+    return !token || jwtHelper.isTokenExpired(token);
   }
 }
