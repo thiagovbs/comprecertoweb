@@ -9,7 +9,7 @@ import { MatInputModule,
          MatCheckboxModule, 
          MatToolbarModule, 
          MatIconModule } from '@angular/material';
-import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
+
 
 import { RouterModule } from '@angular/router';
 import { FlexLayoutModule } from '@angular/flex-layout';
@@ -26,6 +26,7 @@ import { UnidadeMedidaService } from '../../services/unidade-medida.service';
 import { CategoriaService } from '../../services/categoria.service';
 import { ImageUtilService } from '../../services/image-util.service';
 import { ImageCropperModule } from 'ngx-image-cropper';
+
 
 @NgModule({
   imports: [

@@ -1,4 +1,30 @@
-<mat-toolbar color="primary" class="little">
+<mat-toolbar class="box-superior">
+    <form [formGroup]="formLocalidade" autocomplete="off">
+        <div fxLayout="row" fxLayoutWrap="wrap">
+            <div fxFlex.gt-sm="80" fxFlex.gt-xs="80">
+                <mat-form-field class="m-r-0  m-t-10">
+                    <mat-select placeholder="Localidade" formControlName="mercadoLocalidade">
+                        <mat-option *ngFor="let localidade of localidades" [value]="localidade"
+                            (click)="getLocalidade(localidade)">
+                            {{localidade}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div fxFlex.gt-sm="20" fxFlex.gt-xs="20" class="m-t-20 ">
+                <button mat-raised-button class="m-l-20" style="background-color:transparent; color:#fff"
+                    [disabled]="formLocalidade.invalid" (click)="btnSalvarLocalidade()">SALVAR
+                </button>
+            </div>
+        </div>
+
+
+
+
+    </form>
+</mat-toolbar>
+
+<mat-toolbar color="primary" style=" margin-top:10px;" class="little" *ngIf="localidadeAtual">
     <span>Cadastros de produtos</span>
     <span fxFlex></span>
     <button mat-button href="#" mat-icon-button (click)="adicionarProdutoForm()">
@@ -12,8 +38,10 @@
     </button>
 </mat-toolbar>
 
+
+
 <div fxLayout="row" fxLayoutWrap="wrap">
-    <div fxFlex.gt-sm="33.33%" fxFlex="100" *ngFor="let produto of produtos">
-        <app-produtos-mercado-form [produto]="produto"></app-produtos-mercado-form>
+    <div fxFlex.gt-sm="33.33%" fxFlex="100" *ngFor="let produto of mercadosprodutos">
+        <app-produtos-mercado-form [mercadoProduto]="produto"></app-produtos-mercado-form>
     </div>
 </div>

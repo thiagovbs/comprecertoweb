@@ -10,6 +10,8 @@ import * as Lodash from 'lodash';
 import { Categoria } from '../../../models/categoria';
 import { CategoriaService } from '../../../services/categoria.service';
 import { environment } from '../../../../environments/environment';
+import { MercadoProduto } from '../../../models/mercado-produto';
+
 
 @Component({
   selector: 'app-produtos-mercado-form',
@@ -18,7 +20,7 @@ import { environment } from '../../../../environments/environment';
 })
 export class ProdutosMercadoFormComponent implements OnInit {
 
-  @Input() produto: Produto
+  @Input() mercadoProduto: MercadoProduto
 
   categoriaId: number;
   categorias: Categoria[] = [];
@@ -26,20 +28,18 @@ export class ProdutosMercadoFormComponent implements OnInit {
   idSubcategoria: number;
   subcategorias: Subcategoria[] = [];
 
-  filterProdutos: Produto[] = [];
+  filterProdutosPorSubcategoria: Produto[] = [];
   filterProdsPorMarca: Produto[] = [];
   filterProdsPorNome: Produto[] = [];
   filterProdsCaract: Produto[] = []
-  filterProdsPorPeso: Produto[] =[];
-
+  filterProdsPorPeso: Produto[] = [];
 
   marcas: Array<string> = [];
-
   produtosNome: Array<string> = [];
   marcasNome: Array<string> = [];
   caracteristicasNome: Array<string> = [];
   unidadesMedida: Array<{ unidade: string, valor: number }> = [];
-
+  preco:any
   formulario: FormGroup;
 
   @Output("removerProduto")
@@ -49,7 +49,9 @@ export class ProdutosMercadoFormComponent implements OnInit {
   atualizaProduto = new EventEmitter();
 
   hasEdit: boolean = true;
-  myImage:string =null;
+  myImage: string = null;
+
+  boosts:Array<string>=["Nenhum","Destaque","Super Destaque"]
 
   constructor(private formBuilder: FormBuilder,
     private produtoService: ProdutoService,
@@ -57,22 +59,23 @@ export class ProdutosMercadoFormComponent implements OnInit {
     private categoriaService: CategoriaService) {
 
     this.formulario = this.formBuilder.group({
-      caracteristica: ['', [Validators.required]],
-      valor: ['', [Validators.required]],
-      marca: [{ value: '', disable: true }, [Validators.required]],
       categoria: [{ value: '' }, [Validators.required]],
+      subcategoria: [{ value: '' }, [Validators.required]],
+      marca: [{ value: '', disable: true }, [Validators.required]],
+      caracteristica: ['', [Validators.required]],
       produto: [{ value: '', disable: true }, [Validators.required]],
-      subcategoria: [{ value: '', disable: true }, [Validators.required]],
-      unidadeMedida: [{ value: '', disable: true }, [Validators.required]],
-      peso: [{ value: '', disable: true }, [Validators.required]]
+      peso: [{ value: '', disable: true }, [Validators.required]],
+      preco: [{value:''}, [Validators.required]],
+      observacao: [{ value: '' }],
+      boost: [{ value: '', disable: true }, [Validators.required]]
     });
   }
 
   ngOnInit() {
-
+    console.log(this.mercadoProduto)
     this.getCategorias();
 
-    if (this.produto.idProduto) {
+    if (this.mercadoProduto.idMercadoProduto) {
       this.formulario.disable();
       this.hasEdit = false;
     }
@@ -88,7 +91,7 @@ export class ProdutosMercadoFormComponent implements OnInit {
   atualizaCategoriaSelect(categoria: Categoria) {
 
     //zerando os filtros de produtos
-    this.filterProdutos = [];
+    this.filterProdutosPorSubcategoria = [];
     this.filterProdsPorMarca = [];
     this.filterProdsPorNome = [];
     this.filterProdsCaract = [];
@@ -101,13 +104,14 @@ export class ProdutosMercadoFormComponent implements OnInit {
 
     this.subcategorias = categoria.subcategorias;
     this.categoriaId = categoria.idCategoria
+   
   }
 
   //atualiza o select da SUBCATEGORIA para habilitar as Marcas
   atualizaSubcategoriaSelect(subcategoria: Subcategoria) {
-
+    
     //zerando os filtros de produtos
-    this.filterProdutos = [];
+    this.filterProdutosPorSubcategoria = [];
     this.filterProdsPorMarca = [];
     this.filterProdsPorNome = [];
     this.filterProdsCaract = [];
@@ -119,7 +123,7 @@ export class ProdutosMercadoFormComponent implements OnInit {
     this.unidadesMedida = [];
 
     this.idSubcategoria = subcategoria.idSubcategoria
-
+    
     //pega as marca pelas subcategorias
     this.getMarcasPorSubcategoria(subcategoria.idSubcategoria);
     //pega os produtos pelas subcategorias
@@ -129,11 +133,13 @@ export class ProdutosMercadoFormComponent implements OnInit {
   private getProdutosPorSubcategorias(subcategoria: Subcategoria) {
     let produtos: Produto[];
     //serviços que pega os produtos por categoria
+    console.log(this.categoriaId)
     this.subcategoriaService.getProdutosPorCategorias(this.categoriaId).subscribe(data => {
+      console.log(produtos)
       produtos = data.json();
 
       //filtra todos os produtos por subcategorias
-      this.filterProdutos = produtos.filter((prod: Produto) => prod.subcategoria.nome === subcategoria.nome);
+      this.filterProdutosPorSubcategoria = produtos.filter((prod: Produto) => prod.subcategoria.nome === subcategoria.nome);
 
     }, erro => { console.log(erro) })
   }
@@ -142,14 +148,12 @@ export class ProdutosMercadoFormComponent implements OnInit {
 
     this.produtoService.getMarcasPorSubcategoria(idSubcategoria).subscribe(data => {
       this.marcas = data.json();
-
+      
       //adicionar filtro para não repetir marcas com o mesmo nome  
       this.marcas.filter((marca) => this.marcasNome.push(marca))
-
       this.marcasNome = this.marcasNome.filter((nome, i, el) => {
         return i === el.indexOf(nome)
       })
-
     }, erro => { console.log(erro) })
   }
 
@@ -159,14 +163,13 @@ export class ProdutosMercadoFormComponent implements OnInit {
     //zerando os filtros de produtos  
     this.filterProdsPorNome = [];
     this.filterProdsCaract = [];
-
     //zerando os nomes de produtos
-    this.produtosNome = [];
+    //this.produtosNome = [];
     this.caracteristicasNome = [];
     this.unidadesMedida = [];
 
     //filtro para pegar os produtos pelas marcas
-    this.filterProdsPorMarca = this.filterProdutos.filter((prod: Produto) => {
+    this.filterProdsPorMarca = this.filterProdutosPorSubcategoria.filter((prod: Produto) => {
       return prod.marca === marca;
     });
     //filtro os nomes dos produtos pelas marcas
@@ -177,6 +180,7 @@ export class ProdutosMercadoFormComponent implements OnInit {
     this.produtosNome = this.produtosNome.filter((nome, i, el) => {
       return i === el.indexOf(nome)
     })
+
   }
 
   //Ao Atualizar os produtos, preencher o select das características 
@@ -218,9 +222,19 @@ export class ProdutosMercadoFormComponent implements OnInit {
   atualizaPesoSelect(value: any) {
     //this.filterProdsPorPeso[0]
     this.filterProdsPorPeso = this.filterProdsCaract.
-    filter((prod: Produto) => prod.quantidade === value.valor && prod.unidadeMedida.sigla === value.unidade)
-    this.myImage = `${environment.urlS3}/prod`+this.filterProdsPorPeso[0].idProduto+`.jpg`
+      filter((prod: Produto) => prod.quantidade === value.valor && prod.unidadeMedida.sigla === value.unidade)
+    this.myImage = `${environment.urlS3}/prod` + this.filterProdsPorPeso[0].idProduto + `.jpg`
     console.log(this.myImage)
+  }
+
+  atualizaBoostSelect(boost){
+
+  }
+
+  btnSalvar() {
+    this.mercadoProduto.produto = this.filterProdsPorPeso[0];
+    
+    console.log(this.mercadoProduto)
   }
 
 }

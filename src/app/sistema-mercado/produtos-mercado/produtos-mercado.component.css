@@ -1,0 +1,10 @@
+.box-superior{
+    background:#009b89 !important;  
+    margin-top:-15px; 
+    margin-left: -15px !important;
+    width: 105% !important;
+} 
+.mat-toolbar{
+    color: #eee;
+    font-size: 1em;
+}
