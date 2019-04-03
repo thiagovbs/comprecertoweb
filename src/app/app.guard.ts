@@ -8,7 +8,6 @@ export class AppGuard implements CanActivate {
     constructor(private authenticationService: AuthenticationService, private router: Router) { }
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-        console.log('teste')
         if (this.authenticationService.isAccessTokenInvalido()) {
             console.log('Navegação com access token inválido. Obtendo novo token...');
 
