@@ -18,7 +18,6 @@ export class MercadoService {
     const hds = new Headers({
       'Authorization': `Bearer ${localStorage.getItem('token')}`
     });
-
     return this.http.post(`${environment.urlSpring}/mercados`, mercado, { headers: hds, withCredentials: true })
   }
 
@@ -58,8 +57,15 @@ export class MercadoService {
     const hds = new Headers({
       'Authorization': `Bearer ${localStorage.getItem('token')}`
     });
-
     return this.http.get(`${environment.urlSpring}/mercados/funcionario`, { headers: hds, withCredentials: true })
+  }
+
+  //localidades do mercado
+  getMercadoLocalidade(){
+    const hds = new Headers({
+      'Authorization': `Bearer ${localStorage.getItem('token')}`
+    });
+    return this.http.get(`${environment.urlSpring}/mercado-localidades`, { headers: hds, withCredentials: true })
   }
 
   //inserir a imagem croppada que vem da pagina pré visualização e jogar no método postUploadFile()

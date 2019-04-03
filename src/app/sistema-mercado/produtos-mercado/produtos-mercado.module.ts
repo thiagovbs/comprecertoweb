@@ -26,6 +26,7 @@ import { UnidadeMedidaService } from '../../services/unidade-medida.service';
 import { CategoriaService } from '../../services/categoria.service';
 import { ImageUtilService } from '../../services/image-util.service';
 import { ImageCropperModule } from 'ngx-image-cropper';
+import { MercadoProdutoService } from '../../services/mercado-produto.service';
 
 
 @NgModule({
@@ -54,7 +55,8 @@ import { ImageCropperModule } from 'ngx-image-cropper';
     SubcategoriaService,
     UnidadeMedidaService,
     CategoriaService,
-    ImageUtilService
+    ImageUtilService,
+    MercadoProdutoService
   ]
 })
 export class ProdutosMercadoModule { }
