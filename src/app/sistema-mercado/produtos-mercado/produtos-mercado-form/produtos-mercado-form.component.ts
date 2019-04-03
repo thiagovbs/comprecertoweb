@@ -11,6 +11,8 @@ import { Categoria } from '../../../models/categoria';
 import { CategoriaService } from '../../../services/categoria.service';
 import { environment } from '../../../../environments/environment';
 import { MercadoProduto } from '../../../models/mercado-produto';
+import { MercadoLocalidade } from '../../../models/mercado-localidade';
+import { MercadoProdutoService } from '../../../services/mercado-produto.service';
 
 
 @Component({
@@ -20,7 +22,10 @@ import { MercadoProduto } from '../../../models/mercado-produto';
 })
 export class ProdutosMercadoFormComponent implements OnInit {
 
-  @Input() mercadoProduto: MercadoProduto
+  @Input() 
+  mercadoProduto: MercadoProduto;
+  @Input() 
+  localidadeAtual:MercadoLocalidade;
 
   categoriaId: number;
   categorias: Categoria[] = [];
@@ -28,35 +33,35 @@ export class ProdutosMercadoFormComponent implements OnInit {
   idSubcategoria: number;
   subcategorias: Subcategoria[] = [];
 
+  //filtros
   filterProdutosPorSubcategoria: Produto[] = [];
   filterProdsPorMarca: Produto[] = [];
   filterProdsPorNome: Produto[] = [];
   filterProdsCaract: Produto[] = []
   filterProdsPorPeso: Produto[] = [];
 
+  //Arrays para apresentar nos selects
   marcas: Array<string> = [];
   produtosNome: Array<string> = [];
   marcasNome: Array<string> = [];
   caracteristicasNome: Array<string> = [];
   unidadesMedida: Array<{ unidade: string, valor: number }> = [];
   preco:any
+  boosts:Array<string>=["Nenhum","Destaque","Super Destaque"]
+  
   formulario: FormGroup;
 
-  @Output("removerProduto")
-  produtoRemovida = new EventEmitter();
-
-  @Output("atualizaProduto")
-  atualizaProduto = new EventEmitter();
 
   hasEdit: boolean = true;
   myImage: string = null;
 
-  boosts:Array<string>=["Nenhum","Destaque","Super Destaque"]
+  
 
   constructor(private formBuilder: FormBuilder,
     private produtoService: ProdutoService,
     private subcategoriaService: SubcategoriaService,
-    private categoriaService: CategoriaService) {
+    private categoriaService: CategoriaService,
+    private mercadoProdutoService:MercadoProdutoService) {
 
     this.formulario = this.formBuilder.group({
       categoria: [{ value: '' }, [Validators.required]],
@@ -72,7 +77,7 @@ export class ProdutosMercadoFormComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log(this.mercadoProduto)
+    console.log(this.localidadeAtual)
     this.getCategorias();
 
     if (this.mercadoProduto.idMercadoProduto) {
@@ -135,7 +140,6 @@ export class ProdutosMercadoFormComponent implements OnInit {
     //serviços que pega os produtos por categoria
     console.log(this.categoriaId)
     this.subcategoriaService.getProdutosPorCategorias(this.categoriaId).subscribe(data => {
-      console.log(produtos)
       produtos = data.json();
 
       //filtra todos os produtos por subcategorias
@@ -227,14 +231,35 @@ export class ProdutosMercadoFormComponent implements OnInit {
     console.log(this.myImage)
   }
 
-  atualizaBoostSelect(boost){
-
-  }
 
   btnSalvar() {
     this.mercadoProduto.produto = this.filterProdsPorPeso[0];
+    this.mercadoProduto.mercadoLocalidade = this.localidadeAtual;
+    this.mercadoProduto.preco = this.formulario.get('preco').value;
+    this.mercadoProduto.observacao = this.formulario.get('observacao').value;
+    let dt_Entrada = new Date('2020-01-10').getDate();
+    console.log(dt_Entrada) 
+     
+    //this.mercadoProduto.dtEntrada =dt_Entrada ;
     
+    if(this.formulario.get('boost').value === 'Nenhum'){
+      this.mercadoProduto.fDestaque = false;
+      this.mercadoProduto.fSuperDestaque = false  
+    }else if(this.formulario.get('boost').value === 'Destaque'){
+      this.mercadoProduto.fDestaque = true;
+      this.mercadoProduto.fSuperDestaque = false  
+    }else if(this.formulario.get('boost').value === 'Super Destaque'){
+      this.mercadoProduto.fDestaque = false;
+      this.mercadoProduto.fSuperDestaque = true;  
+    }
     console.log(this.mercadoProduto)
+    this.mercadoProdutoService.salvarProdutosNoMercado(this.mercadoProduto)
+    .subscribe(resp=>{
+      console.log(resp.json())
+    },erro=>{
+      console.log(erro)
+    })
+    
   }
 
 }
