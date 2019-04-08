@@ -1,30 +1,36 @@
 <mat-toolbar class="box-superior">
     <form [formGroup]="formLocalidade" autocomplete="off">
         <div fxLayout="row" fxLayoutWrap="wrap">
-            <div fxFlex.gt-sm="80" fxFlex.gt-xs="80">
+            <div fxFlex.gt-sm="40" fxFlex.gt-xs="40">
                 <mat-form-field class="m-r-0  m-t-10">
                     <mat-select placeholder="Localidade" formControlName="mercadoLocalidade">
                         <mat-option *ngFor="let localidade of localidadesPorBairro" [value]="localidade"
-                        (selectionChange)="localidade">
+                            (selectionChange)="localidade">
                             {{localidade.bairro.nome}}
                         </mat-option>
                     </mat-select>
                 </mat-form-field>
             </div>
+            <div fxFlex.gt-sm="40" fxFlex.gt-xs="40">
+                <mat-form-field class="m-l-10 m-t-10">
+                    <input matInput
+                    [matDatepickerFilter]="myFilter"  [min]="minDate"
+                    [matDatepicker]="picker" placeholder="Data de Entrada" readonly 
+                    (dateChange)="getDataEntrada($event)">
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+            </div>
             <div fxFlex.gt-sm="20" fxFlex.gt-xs="20" class="m-t-20 ">
                 <button mat-raised-button class="m-l-20" style="background-color:transparent; color:#fff"
-                    [disabled]="formLocalidade.invalid" (click)="btnSalvarLocalidade()">SALVAR
+                    [disabled]="formLocalidade.invalid" (click)="btnSalvarLocalidade()">ENVIAR
                 </button>
             </div>
         </div>
-
-
-
-
     </form>
 </mat-toolbar>
 
-<mat-toolbar color="primary" style=" margin-top:10px;" class="little" *ngIf="localidadeAtual">
+<mat-toolbar color="primary" style=" margin-top:10px;" class="little" *ngIf="localidadeAtual && dtEntrada">
     <span>Cadastros de produtos</span>
     <span fxFlex></span>
     <button mat-button href="#" mat-icon-button (click)="adicionarProdutoForm()">
@@ -42,6 +48,7 @@
 
 <div fxLayout="row" fxLayoutWrap="wrap">
     <div fxFlex.gt-sm="33.33%" fxFlex="100" *ngFor="let produto of mercadosprodutos">
-        <app-produtos-mercado-form [mercadoProduto]="produto" [localidadeAtual]="localidadeAtual"></app-produtos-mercado-form>
+        <app-produtos-mercado-form [mercadoProduto]="produto" [localidadeAtual]="localidadeAtual" [dtEntrada]="dtEntrada">
+        </app-produtos-mercado-form>
     </div>
 </div>

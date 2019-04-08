@@ -17,5 +17,12 @@ import { environment } from "../../environments/environment";
           });
           return this.http.post(`${environment.urlSpring}/mercado-produtos`,mercadoProduto, { headers: hds, withCredentials: true })
     }
+
+    getBuscarMercadoProdutos(){
+      const hds = new Headers({
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      });
+      return this.http.get(`${environment.urlSpring}/mercado-produtos`, { headers: hds, withCredentials: true })
+    }
       
   }

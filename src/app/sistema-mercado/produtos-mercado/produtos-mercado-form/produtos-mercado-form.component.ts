@@ -13,6 +13,7 @@ import { environment } from '../../../../environments/environment';
 import { MercadoProduto } from '../../../models/mercado-produto';
 import { MercadoLocalidade } from '../../../models/mercado-localidade';
 import { MercadoProdutoService } from '../../../services/mercado-produto.service';
+import swal from 'sweetalert2';
 
 
 @Component({
@@ -26,6 +27,8 @@ export class ProdutosMercadoFormComponent implements OnInit {
   mercadoProduto: MercadoProduto;
   @Input() 
   localidadeAtual:MercadoLocalidade;
+  @Input()
+  dtEntrada:number;
 
   categoriaId: number;
   categorias: Categoria[] = [];
@@ -77,7 +80,7 @@ export class ProdutosMercadoFormComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log(this.localidadeAtual)
+    console.log( this.dtEntrada);
     this.getCategorias();
 
     if (this.mercadoProduto.idMercadoProduto) {
@@ -237,10 +240,7 @@ export class ProdutosMercadoFormComponent implements OnInit {
     this.mercadoProduto.mercadoLocalidade = this.localidadeAtual;
     this.mercadoProduto.preco = this.formulario.get('preco').value;
     this.mercadoProduto.observacao = this.formulario.get('observacao').value;
-    let dt_Entrada = new Date('2020-01-10').getDate();
-    console.log(dt_Entrada) 
-     
-    //this.mercadoProduto.dtEntrada =dt_Entrada ;
+    this.mercadoProduto.dtEntrada = this.dtEntrada;
     
     if(this.formulario.get('boost').value === 'Nenhum'){
       this.mercadoProduto.fDestaque = false;
@@ -255,6 +255,7 @@ export class ProdutosMercadoFormComponent implements OnInit {
     console.log(this.mercadoProduto)
     this.mercadoProdutoService.salvarProdutosNoMercado(this.mercadoProduto)
     .subscribe(resp=>{
+      swal('Atualização', `O produto ${this.mercadoProduto.produto.nome} foi atualizado!`, "success")
       console.log(resp.json())
     },erro=>{
       console.log(erro)

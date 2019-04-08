@@ -8,7 +8,8 @@ import { MatInputModule,
          MatSelectModule, 
          MatCheckboxModule, 
          MatToolbarModule, 
-         MatIconModule } from '@angular/material';
+         MatIconModule, 
+         MatDatepickerModule} from '@angular/material';
 
 
 import { RouterModule } from '@angular/router';
@@ -46,7 +47,8 @@ import { MercadoProdutoService } from '../../services/mercado-produto.service';
     MatToolbarModule,
     MatCheckboxModule,
     HttpModule,
-    ImageCropperModule
+    ImageCropperModule,
+    MatDatepickerModule
   ],
   declarations: [ProdutosMercadoComponent, ProdutosMercadoFormComponent],
   providers: [

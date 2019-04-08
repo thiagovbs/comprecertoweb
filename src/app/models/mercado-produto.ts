@@ -4,8 +4,7 @@ import { Produto } from "./produto";
 
 export class MercadoProduto {
     idMercadoProduto: number;
-    dtEntrada:Date;
-    //dtValidade:Date;
+    dtEntrada:number;
     fAtivo:boolean;
     fDestaque:boolean;
     fSuperDestaque:boolean;
