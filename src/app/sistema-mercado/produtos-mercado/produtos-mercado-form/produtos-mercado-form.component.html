@@ -1,15 +1,15 @@
 <mat-card class="shadow-border">
   <form [formGroup]="formulario" autocomplete="off" >
-    <mat-card-title>
-      <h4>ID {{ filterProdsPorPeso[0] ? filterProdsPorPeso[0].idProduto : 'Indefinido' }}</h4>
-
-    </mat-card-title><!--  -->
-    <mat-card-content>
-      <div fxLayout="row" fxLayoutWrap="wrap" *ngIf="filterProdsPorPeso.length !==0">
+    <mat-card-title >
+      <div fxLayout="row" fxLayoutWrap="wrap"  style="margin-top:30px;">
         <div style="height:50%; margin: -20px auto -20px auto;padding: 5px; border: 1px solid #eee;" alt="">
           <img src="{{myImage}}" alt="">
         </div>
       </div>
+
+    </mat-card-title><!--  -->
+    <mat-card-content>
+     
       <div fxLayout="row" fxLayoutWrap="wrap">
         <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" style="margin-top:30px;">
           <mat-form-field>
@@ -92,7 +92,7 @@
                   placeholder="Preço" 
                   type="text" 
                   formControlName="preco"
-                  value="">
+                  [value]="mercadoProduto.preco ||''">
           </mat-form-field>
         </div>
         <div fxFlex.gt-sm="20" fxFlex.gt-xs="20">
@@ -102,7 +102,7 @@
         </div>
         <div fxFlex.gt-sm="100" fxFlex.gt-xs="100">
           <mat-form-field class="example-full-width">
-            <input type="text" matInput placeholder="Observação" formControlName="observacao" value="">
+            <input type="text" matInput placeholder="Observação" formControlName="observacao" [value]="mercadoProduto.observacao ||'' ">
           </mat-form-field>
         </div>
         <div fxFlex.gt-sm="100" fxFlex.gt-xs="100">
@@ -123,7 +123,8 @@
     <mat-card-actions>
       <button mat-raised-button color="warn">CANCELAR</button>
       <button mat-raised-button color="warn">EXCLUIR</button>
-      <button mat-raised-button color="primary" [disabled]="formulario.invalid" (click)="btnSalvar()">SALVAR</button>
+      <button mat-raised-button color="primary" [disabled]="formulario.invalid" *ngIf="hasEdit" (click)="btnSalvar(formulario)">SALVAR</button>
+      <button mat-raised-button *ngIf="!hasEdit" color="primary">Editar</button>
     </mat-card-actions>
     
   </form>

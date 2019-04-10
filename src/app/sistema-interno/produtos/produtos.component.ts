@@ -36,6 +36,7 @@ export class ProdutosComponent implements OnInit {
   getProdutos() {
     this.produtoService.getProdutos().subscribe(data => {
       this.produtos = Lodash.orderBy(data.json(), 'idProduto', 'desc');
+      console.log(this.produtos)
     }, error => console.log(error.json()));
   }
 

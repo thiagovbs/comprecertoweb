@@ -5,7 +5,7 @@
                 <mat-form-field class="m-r-0  m-t-10">
                     <mat-select placeholder="Localidade" formControlName="mercadoLocalidade">
                         <mat-option *ngFor="let localidade of localidadesPorBairro" [value]="localidade"
-                            (selectionChange)="localidade">
+                            (click)="getLocalidade(localidade)">
                             {{localidade.bairro.nome}}
                         </mat-option>
                     </mat-select>
@@ -48,7 +48,10 @@
 
 <div fxLayout="row" fxLayoutWrap="wrap">
     <div fxFlex.gt-sm="33.33%" fxFlex="100" *ngFor="let produto of mercadosprodutos">
-        <app-produtos-mercado-form [mercadoProduto]="produto" [localidadeAtual]="localidadeAtual" [dtEntrada]="dtEntrada">
+        <app-produtos-mercado-form [mercadoProduto]="produto" 
+                                   [localidadeAtual]="localidadeAtual" 
+                                   [dtEntrada]="dtEntrada"
+                                   (salvarProduto)="atualizaProduto($event)">
         </app-produtos-mercado-form>
     </div>
 </div>

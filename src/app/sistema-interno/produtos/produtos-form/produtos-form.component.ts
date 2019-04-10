@@ -59,9 +59,9 @@ export class ProdutosFormComponent implements OnInit {
   }
 
   ngOnInit() {
-
     this.getSubcategorias();
     if (this.produto.idProduto) {
+      console.log(this.produto)
       this.getUnidadesMedidaPorSubcategoria(this.produto.subcategoria)
       this.formulario.disable();
       this.hasEdit = false;

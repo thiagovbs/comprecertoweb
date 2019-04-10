@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule} from '@angular/common/http';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DemoMaterialModule } from './demo-material-module';
@@ -17,6 +17,7 @@ import { ImageCropperModule } from 'ngx-image-cropper';
 import { AppRoutes } from './app.routing';
 import { AppGuard } from './app.guard';
 import { ImageUtilService } from './services/image-util.service';
+
 
 
 
@@ -38,7 +39,7 @@ import { ImageUtilService } from './services/image-util.service';
     HttpClientModule,
     SharedModule,
     RouterModule.forRoot(AppRoutes),
-    ImageCropperModule
+    ImageCropperModule,
   ],
   providers: [
     AppGuard,

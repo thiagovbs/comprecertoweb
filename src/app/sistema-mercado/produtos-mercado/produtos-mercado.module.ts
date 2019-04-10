@@ -28,6 +28,7 @@ import { CategoriaService } from '../../services/categoria.service';
 import { ImageUtilService } from '../../services/image-util.service';
 import { ImageCropperModule } from 'ngx-image-cropper';
 import { MercadoProdutoService } from '../../services/mercado-produto.service';
+import { DateFormatPipe } from './dateFormat.pipe';
 
 
 @NgModule({
@@ -48,9 +49,9 @@ import { MercadoProdutoService } from '../../services/mercado-produto.service';
     MatCheckboxModule,
     HttpModule,
     ImageCropperModule,
-    MatDatepickerModule
+    MatDatepickerModule,
   ],
-  declarations: [ProdutosMercadoComponent, ProdutosMercadoFormComponent],
+  declarations: [ProdutosMercadoComponent, ProdutosMercadoFormComponent,DateFormatPipe],
   providers: [
     MercadoService,
     ProdutoService,
@@ -58,7 +59,8 @@ import { MercadoProdutoService } from '../../services/mercado-produto.service';
     UnidadeMedidaService,
     CategoriaService,
     ImageUtilService,
-    MercadoProdutoService
+    MercadoProdutoService,
+    DateFormatPipe
   ]
 })
 export class ProdutosMercadoModule { }

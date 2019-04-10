@@ -23,12 +23,18 @@ import swal from 'sweetalert2';
 })
 export class ProdutosMercadoFormComponent implements OnInit {
 
-  @Input() 
-  mercadoProduto: MercadoProduto;
-  @Input() 
-  localidadeAtual:MercadoLocalidade;
   @Input()
-  dtEntrada:number;
+  mercadoProduto: MercadoProdutoFilter;
+  @Input()
+  localidadeAtual: MercadoLocalidade;
+  @Input()
+  dtEntrada: Date;
+
+  @Output("atualizaProduto")
+  atualizaProduto = new EventEmitter();
+
+  mercadoLocalidade: MercadoLocalidade = new MercadoLocalidade();
+  produto: Produto = new Produto();
 
   categoriaId: number;
   categorias: Categoria[] = [];
@@ -49,22 +55,20 @@ export class ProdutosMercadoFormComponent implements OnInit {
   marcasNome: Array<string> = [];
   caracteristicasNome: Array<string> = [];
   unidadesMedida: Array<{ unidade: string, valor: number }> = [];
-  preco:any
-  boosts:Array<string>=["Nenhum","Destaque","Super Destaque"]
-  
-  formulario: FormGroup;
+  preco: any
+  boosts: Array<string> = ["Nenhum", "Destaque", "Super Destaque"]
 
+  formulario: FormGroup;
 
   hasEdit: boolean = true;
   myImage: string = null;
-
-  
 
   constructor(private formBuilder: FormBuilder,
     private produtoService: ProdutoService,
     private subcategoriaService: SubcategoriaService,
     private categoriaService: CategoriaService,
-    private mercadoProdutoService:MercadoProdutoService) {
+    private mercadoProdutoService: MercadoProdutoService
+  ) {
 
     this.formulario = this.formBuilder.group({
       categoria: [{ value: '' }, [Validators.required]],
@@ -73,25 +77,29 @@ export class ProdutosMercadoFormComponent implements OnInit {
       caracteristica: ['', [Validators.required]],
       produto: [{ value: '', disable: true }, [Validators.required]],
       peso: [{ value: '', disable: true }, [Validators.required]],
-      preco: [{value:''}, [Validators.required]],
+      preco: [{ value: '' }, [Validators.required]],
       observacao: [{ value: '' }],
       boost: [{ value: '', disable: true }, [Validators.required]]
     });
   }
 
   ngOnInit() {
-    console.log( this.dtEntrada);
+    console.log(this.mercadoProduto.produto.idProduto)
     this.getCategorias();
 
     if (this.mercadoProduto.idMercadoProduto) {
+      this.myImage = `${environment.urlS3}/prod` + this.mercadoProduto.produto.idProduto + `.jpg`
+      console.log(this.mercadoProduto)
       this.formulario.disable();
       this.hasEdit = false;
+      this.unidadesMedida = undefined;
     }
   }
 
   getCategorias() {
     this.categoriaService.getCategorias().subscribe((data: any) => {
       this.categorias = Lodash.orderBy(data.json(), 'nome', 'asc');
+
     }, error => console.log(error))
   }
 
@@ -112,12 +120,12 @@ export class ProdutosMercadoFormComponent implements OnInit {
 
     this.subcategorias = categoria.subcategorias;
     this.categoriaId = categoria.idCategoria
-   
+
   }
 
   //atualiza o select da SUBCATEGORIA para habilitar as Marcas
   atualizaSubcategoriaSelect(subcategoria: Subcategoria) {
-    
+
     //zerando os filtros de produtos
     this.filterProdutosPorSubcategoria = [];
     this.filterProdsPorMarca = [];
@@ -131,7 +139,7 @@ export class ProdutosMercadoFormComponent implements OnInit {
     this.unidadesMedida = [];
 
     this.idSubcategoria = subcategoria.idSubcategoria
-    
+
     //pega as marca pelas subcategorias
     this.getMarcasPorSubcategoria(subcategoria.idSubcategoria);
     //pega os produtos pelas subcategorias
@@ -155,7 +163,7 @@ export class ProdutosMercadoFormComponent implements OnInit {
 
     this.produtoService.getMarcasPorSubcategoria(idSubcategoria).subscribe(data => {
       this.marcas = data.json();
-      
+
       //adicionar filtro para não repetir marcas com o mesmo nome  
       this.marcas.filter((marca) => this.marcasNome.push(marca))
       this.marcasNome = this.marcasNome.filter((nome, i, el) => {
@@ -235,32 +243,46 @@ export class ProdutosMercadoFormComponent implements OnInit {
   }
 
 
-  btnSalvar() {
-    this.mercadoProduto.produto = this.filterProdsPorPeso[0];
-    this.mercadoProduto.mercadoLocalidade = this.localidadeAtual;
-    this.mercadoProduto.preco = this.formulario.get('preco').value;
-    this.mercadoProduto.observacao = this.formulario.get('observacao').value;
-    this.mercadoProduto.dtEntrada = this.dtEntrada;
-    
-    if(this.formulario.get('boost').value === 'Nenhum'){
-      this.mercadoProduto.fDestaque = false;
-      this.mercadoProduto.fSuperDestaque = false  
-    }else if(this.formulario.get('boost').value === 'Destaque'){
-      this.mercadoProduto.fDestaque = true;
-      this.mercadoProduto.fSuperDestaque = false  
-    }else if(this.formulario.get('boost').value === 'Super Destaque'){
-      this.mercadoProduto.fDestaque = false;
-      this.mercadoProduto.fSuperDestaque = true;  
+  btnSalvar(form) {
+    let mercadoProduto2: MercadoProdutoFilter = new MercadoProdutoFilter();
+    mercadoProduto2.mercadoLocalidade = this.localidadeAtual
+    mercadoProduto2.produto = this.filterProdsPorPeso[0];
+    mercadoProduto2.preco = this.formulario.get('preco').value;
+    mercadoProduto2.observacao = this.formulario.get('observacao').value;
+    mercadoProduto2.dtEntrada = this.dtEntrada;
+
+    if (this.formulario.get('boost').value === 'Nenhum') {
+      mercadoProduto2.fDestaque = false;
+      mercadoProduto2.fSuperDestaque = false;
+    } else if (this.formulario.get('boost').value === 'Destaque') {
+      mercadoProduto2.fDestaque = true;
+      mercadoProduto2.fSuperDestaque = false
+    } else if (this.formulario.get('boost').value === 'Super Destaque') {
+      mercadoProduto2.fDestaque = false;
+      mercadoProduto2.fSuperDestaque = true;
     }
-    console.log(this.mercadoProduto)
-    this.mercadoProdutoService.salvarProdutosNoMercado(this.mercadoProduto)
-    .subscribe(resp=>{
-      swal('Atualização', `O produto ${this.mercadoProduto.produto.nome} foi atualizado!`, "success")
-      console.log(resp.json())
-    },erro=>{
-      console.log(erro)
-    })
-    
+
+    this.mercadoProdutoService.salvarProdutosNoMercado(mercadoProduto2)
+      .subscribe(resp => {
+        this.atualizaProduto.emit(true);
+
+        swal('Atualização', `O produto ${this.mercadoProduto.observacao} foi atualizado!`, "success")
+      }, erro => {
+        console.log(erro)
+      })
+
   }
 
+}
+
+export class MercadoProdutoFilter {
+  idMercadoProduto: number;
+  mercadoLocalidade: any;
+  produto: any;
+  fAtivo: boolean;
+  preco: number;
+  observacao: string;
+  dtEntrada: Date;
+  fDestaque: boolean;
+  fSuperDestaque: boolean
 }
