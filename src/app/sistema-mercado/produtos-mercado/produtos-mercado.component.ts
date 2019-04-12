@@ -3,10 +3,8 @@ import { MercadoProduto } from '../../models/mercado-produto';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MercadoService } from '../../services/mercado.service';
 import { MercadoLocalidade } from '../../models/mercado-localidade';
-import { MercadoProdutoService } from '../../services/mercado-produto.service';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { DateAdapter } from '@angular/material';
-import { DateFormatPipe } from './dateFormat.pipe';
 
 @Component({
   selector: 'app-produtos-mercado',
@@ -24,9 +22,7 @@ export class ProdutosMercadoComponent implements OnInit {
 
   constructor(private formBuilder: FormBuilder, 
               private mercadoService: MercadoService,
-              private mercadoProdutoService:MercadoProdutoService,
-              private adapter: DateAdapter<any>,
-              private _dateFormatPipe:DateFormatPipe) {
+              private adapter: DateAdapter<any>) {
 
     this.formLocalidade = this.formBuilder.group({
       mercadoLocalidade: [{ value: '' }, [Validators.required]],
@@ -36,9 +32,7 @@ export class ProdutosMercadoComponent implements OnInit {
 
 
   ngOnInit() {
-    
     this.mercadoService.getMercadoLocalidade().subscribe(resp => {
-      console.log(resp.json());
       this.localidadesPorBairro = resp.json();
     })
   }
@@ -48,35 +42,33 @@ export class ProdutosMercadoComponent implements OnInit {
       console.log(salvo)
     }
   }
+  aoRemover(produtoRemovida){
+    this.mercadosprodutos = this.mercadosprodutos.filter(produto => produto != produtoRemovida);
+  }
 
   adicionarProdutoForm() {
     this.mercadosprodutos.unshift(new MercadoProduto());
   }
-
-  getLocalidade(localidade:any){
-    this.localidadeAtual = localidade;
-    this.mercadosprodutos = localidade.mercadoProdutos
-  }
-
     
   getDataEntrada(event: MatDatepickerInputEvent<Date>) {
-    
     this.adapter.setLocale('Pt');
-    //this.dtEntrada = this._dateFormatPipe.transform(event.value)
-    this.dtEntrada = new Date(event.value).toISOString()
-    console.log(this.dtEntrada)
+    this.formLocalidade.get('data_entrada').setValue(new Date(event.value).toISOString())
+  }
+
+  btnSalvarLocalidade(evento) {
+    this.localidadeAtual = evento.value.mercadoLocalidade;
+    this.mercadosprodutos =  evento.value.mercadoLocalidade.mercadoProdutos;
+    this.dtEntrada = evento.value.data_entrada;
+    let splitData = this.dtEntrada.split("T")
+    console.log(splitData[0]); 
+    this.mercadosprodutos = this.mercadosprodutos.filter(prod =>{
+      console.log(prod.dtEntrada + "--" +splitData[0]) 
+      return prod.dtEntrada === splitData[0];
+    })
+      
     
   }
 
-  btnSalvarLocalidade() {
-    
-    if (this.localidadeAtual.bairro === undefined){  
-      this.localidadeAtual = undefined;    
-    }
-  }
-
-
-  
   myFilter = (d: Date): boolean => {
     const day = d.getDay();
     // Só deixa selecionar terças e quintas

@@ -25,8 +25,8 @@
             <div fxLayout="row" fxLayoutWrap="wrap">
                 <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" style="margin-top:10px;">
                     <mat-form-field>
-                        <mat-select placeholder="Subcategorias" formControlName="subcategoria" [(ngModel)]="produto.subcategoria.idSubcategoria"
-                            (selectionChange)="atualizaSubcategoriaSelect($event.value)">
+                        <mat-select placeholder="Subcategorias" formControlName="subcategoria"
+                            (selectionChange)="atualizaSubcategoriaSelect($event.value)" [(ngModel)]="produto.subcategoria.idSubcategoria">
                             <mat-option *ngFor="let subcategoria of subcategorias" [value]="subcategoria.idSubcategoria"
                                 [disabled]="!subcategoria.fativo">{{
                                 subcategoria.nome }}</mat-option>
@@ -59,8 +59,8 @@
                 </div>
                 <div fxFlex.gt-sm="20" fxFlex.gt-xs="20">
                     <mat-form-field>
-                        <mat-select placeholder="UM" formControlName="unidadeMedida" [(ngModel)]="produto.unidadeMedida.idUnidade"
-                            (selectionChange)="atualizaUnidadeMedidaSelect($event.value)">
+                        <mat-select placeholder="UM" formControlName="unidadeMedida"
+                            (selectionChange)="atualizaUnidadeMedidaSelect($event.value)" [(ngModel)]="produto.subcategoria.idSubcategoria"> 
                             <mat-option *ngFor="let unidadeMedida of unidadesMedida" [value]="unidadeMedida.idUnidade">{{unidadeMedida.sigla}}</mat-option>
                         </mat-select>
                     </mat-form-field>

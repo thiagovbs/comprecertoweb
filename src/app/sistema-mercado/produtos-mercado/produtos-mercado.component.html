@@ -5,7 +5,7 @@
                 <mat-form-field class="m-r-0  m-t-10">
                     <mat-select placeholder="Localidade" formControlName="mercadoLocalidade">
                         <mat-option *ngFor="let localidade of localidadesPorBairro" [value]="localidade"
-                            (click)="getLocalidade(localidade)">
+                            (click)="localidade">
                             {{localidade.bairro.nome}}
                         </mat-option>
                     </mat-select>
@@ -13,7 +13,7 @@
             </div>
             <div fxFlex.gt-sm="40" fxFlex.gt-xs="40">
                 <mat-form-field class="m-l-10 m-t-10">
-                    <input matInput
+                    <input matInput formControlName="data_entrada"
                     [matDatepickerFilter]="myFilter"  [min]="minDate"
                     [matDatepicker]="picker" placeholder="Data de Entrada" readonly 
                     (dateChange)="getDataEntrada($event)">
@@ -23,14 +23,14 @@
             </div>
             <div fxFlex.gt-sm="20" fxFlex.gt-xs="20" class="m-t-20 ">
                 <button mat-raised-button class="m-l-20" style="background-color:transparent; color:#fff"
-                    [disabled]="formLocalidade.invalid" (click)="btnSalvarLocalidade()">ENVIAR
+                    [disabled]="formLocalidade.invalid" (click)="btnSalvarLocalidade(formLocalidade)">ENVIAR
                 </button>
             </div>
         </div>
     </form>
 </mat-toolbar>
 
-<mat-toolbar color="primary" style=" margin-top:10px;" class="little" *ngIf="localidadeAtual && dtEntrada">
+<mat-toolbar color="primary" style=" margin-top:10px;" class="little" *ngIf="localidadeAtual">
     <span>Cadastros de produtos</span>
     <span fxFlex></span>
     <button mat-button href="#" mat-icon-button (click)="adicionarProdutoForm()">
@@ -51,7 +51,8 @@
         <app-produtos-mercado-form [mercadoProduto]="produto" 
                                    [localidadeAtual]="localidadeAtual" 
                                    [dtEntrada]="dtEntrada"
-                                   (salvarProduto)="atualizaProduto($event)">
+                                   (salvarProduto)="atualizaProduto($event)"
+                                   (removerProduto)="aoRemover($event)">
         </app-produtos-mercado-form>
     </div>
 </div>

@@ -24,7 +24,7 @@ import swal from 'sweetalert2';
 export class ProdutosMercadoFormComponent implements OnInit {
 
   @Input()
-  mercadoProduto: MercadoProdutoFilter;
+  mercadoProduto: MercadoProduto;
   @Input()
   localidadeAtual: MercadoLocalidade;
   @Input()
@@ -32,6 +32,8 @@ export class ProdutosMercadoFormComponent implements OnInit {
 
   @Output("atualizaProduto")
   atualizaProduto = new EventEmitter();
+  @Output("removerProduto")
+  produtoRemovida = new EventEmitter();
 
   mercadoLocalidade: MercadoLocalidade = new MercadoLocalidade();
   produto: Produto = new Produto();
@@ -56,8 +58,13 @@ export class ProdutosMercadoFormComponent implements OnInit {
   caracteristicasNome: Array<string> = [];
   unidadesMedida: Array<{ unidade: string, valor: number }> = [];
   preco: any
-  boosts: Array<string> = ["Nenhum", "Destaque", "Super Destaque"]
+  boosts: Array<any> = [
+    { id: 1, name: "Nenhum" },
+    { id: 2, name: "Destaque" },
+    { id: 3, name: "Super Destaque" }
+  ];
 
+  boostOn: number;
   formulario: FormGroup;
 
   hasEdit: boolean = true;
@@ -83,23 +90,30 @@ export class ProdutosMercadoFormComponent implements OnInit {
     });
   }
 
-  ngOnInit() {
-    console.log(this.mercadoProduto.produto.idProduto)
-    this.getCategorias();
 
+  ngOnInit() {
+    this.getCategorias();
+    //pegando os produtos dos mercados listados
     if (this.mercadoProduto.idMercadoProduto) {
+      console.log(this.mercadoProduto.produto.subcategoria.idSubcategoria)
       this.myImage = `${environment.urlS3}/prod` + this.mercadoProduto.produto.idProduto + `.jpg`
-      console.log(this.mercadoProduto)
       this.formulario.disable();
       this.hasEdit = false;
-      this.unidadesMedida = undefined;
+
+      //set boost on select
+      if (this.mercadoProduto.fDestaque == null && this.mercadoProduto.fSuperDestaque == null) {
+        this.boostOn = 1;
+      } else if (this.mercadoProduto.fDestaque) {
+        this.boostOn = 2;
+      } else if (this.mercadoProduto.fSuperDestaque) {
+        this.boostOn = 3;
+      }
     }
   }
 
   getCategorias() {
     this.categoriaService.getCategorias().subscribe((data: any) => {
       this.categorias = Lodash.orderBy(data.json(), 'nome', 'asc');
-
     }, error => console.log(error))
   }
 
@@ -152,7 +166,6 @@ export class ProdutosMercadoFormComponent implements OnInit {
     console.log(this.categoriaId)
     this.subcategoriaService.getProdutosPorCategorias(this.categoriaId).subscribe(data => {
       produtos = data.json();
-
       //filtra todos os produtos por subcategorias
       this.filterProdutosPorSubcategoria = produtos.filter((prod: Produto) => prod.subcategoria.nome === subcategoria.nome);
 
@@ -235,54 +248,63 @@ export class ProdutosMercadoFormComponent implements OnInit {
   }
 
   atualizaPesoSelect(value: any) {
-    //this.filterProdsPorPeso[0]
     this.filterProdsPorPeso = this.filterProdsCaract.
       filter((prod: Produto) => prod.quantidade === value.valor && prod.unidadeMedida.sigla === value.unidade)
     this.myImage = `${environment.urlS3}/prod` + this.filterProdsPorPeso[0].idProduto + `.jpg`
-    console.log(this.myImage)
   }
 
 
   btnSalvar(form) {
-    let mercadoProduto2: MercadoProdutoFilter = new MercadoProdutoFilter();
-    mercadoProduto2.mercadoLocalidade = this.localidadeAtual
-    mercadoProduto2.produto = this.filterProdsPorPeso[0];
-    mercadoProduto2.preco = this.formulario.get('preco').value;
-    mercadoProduto2.observacao = this.formulario.get('observacao').value;
-    mercadoProduto2.dtEntrada = this.dtEntrada;
-
-    if (this.formulario.get('boost').value === 'Nenhum') {
-      mercadoProduto2.fDestaque = false;
-      mercadoProduto2.fSuperDestaque = false;
-    } else if (this.formulario.get('boost').value === 'Destaque') {
-      mercadoProduto2.fDestaque = true;
-      mercadoProduto2.fSuperDestaque = false
-    } else if (this.formulario.get('boost').value === 'Super Destaque') {
-      mercadoProduto2.fDestaque = false;
-      mercadoProduto2.fSuperDestaque = true;
-    }
-
-    this.mercadoProdutoService.salvarProdutosNoMercado(mercadoProduto2)
-      .subscribe(resp => {
+    if (this.mercadoProduto.idMercadoProduto) {
+      this.mercadoProdutoService.putProdutosMercado(this.mercadoProduto).subscribe(data => {
+        
         this.atualizaProduto.emit(true);
+      }, error => {
+        console.log(error.json());
+      }, () => {
+        this.formulario.disable();
+        this.hasEdit = false;
+        swal('Atualização', `O produto ${this.produto.nome} foi atualizado!`, "success")
+      }) 
+    } else {
+      let mercadoProduto2: MercadoProduto = new MercadoProduto();
+      mercadoProduto2.mercadoLocalidade = this.localidadeAtual
+      mercadoProduto2.produto = this.filterProdsPorPeso[0];
+      mercadoProduto2.preco = this.formulario.get('preco').value;
+      mercadoProduto2.observacao = this.formulario.get('observacao').value;
+      mercadoProduto2.dtEntrada = this.dtEntrada;
 
-        swal('Atualização', `O produto ${this.mercadoProduto.observacao} foi atualizado!`, "success")
-      }, erro => {
-        console.log(erro)
-      })
+      if (this.formulario.get('boost').value === 1) {
+        mercadoProduto2.fDestaque = false;
+        mercadoProduto2.fSuperDestaque = false;
+      } else if (this.formulario.get('boost').value === 2) {
+        mercadoProduto2.fDestaque = true;
+        mercadoProduto2.fSuperDestaque = false
+      } else if (this.formulario.get('boost').value === 3) {
+        mercadoProduto2.fDestaque = false;
+        mercadoProduto2.fSuperDestaque = true;
+      }
 
+      this.mercadoProdutoService.salvarProdutosNoMercado(mercadoProduto2)
+        .subscribe(resp => {
+          this.atualizaProduto.emit(true);
+          swal('Atualização', `O produto ${this.mercadoProduto.observacao} foi atualizado!`, "success")
+        }, erro => {
+          console.log(erro)
+        })
+    }
   }
 
-}
+  cancelar() {
 
-export class MercadoProdutoFilter {
-  idMercadoProduto: number;
-  mercadoLocalidade: any;
-  produto: any;
-  fAtivo: boolean;
-  preco: number;
-  observacao: string;
-  dtEntrada: Date;
-  fDestaque: boolean;
-  fSuperDestaque: boolean
+    if (this.mercadoProduto.idMercadoProduto) {
+      this.formulario.disable();
+      this.hasEdit = false;
+      this.atualizaProduto.emit(true);
+    } else {
+      console.log("remover")
+      this.produtoRemovida.emit(this.mercadoProduto);
+    }
+  }
+
 }

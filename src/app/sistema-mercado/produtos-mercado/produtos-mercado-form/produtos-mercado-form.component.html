@@ -7,15 +7,15 @@
         </div>
       </div>
 
-    </mat-card-title><!--  -->
+    </mat-card-title>
     <mat-card-content>
      
       <div fxLayout="row" fxLayoutWrap="wrap">
         <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" style="margin-top:30px;">
           <mat-form-field>
-            <mat-select placeholder="Categorias" formControlName="categoria">
+            <mat-select placeholder="Categorias" formControlName="categoria" >
               <mat-option *ngFor="let categoria of categorias"
-               (click)="atualizaCategoriaSelect(categoria)" [value]="categoria.nome">
+               (click)="atualizaCategoriaSelect(categoria)" [value]="categoria.idCategoria" >
                 {{categoria.nome}}
               </mat-option>
             </mat-select>
@@ -27,7 +27,8 @@
           <mat-form-field>
             <mat-select placeholder="Subcategorias" formControlName="subcategoria">
               <mat-option *ngFor="let subcategoria of subcategorias"
-                          (click)="atualizaSubcategoriaSelect(subcategoria)" [value]="subcategoria.nome">
+                          (click)="atualizaSubcategoriaSelect(subcategoria)" 
+                          [value]="subcategoria.idSubcategoria">
                 {{subcategoria.nome}}
               </mat-option>
             </mat-select>
@@ -107,9 +108,9 @@
         </div>
         <div fxFlex.gt-sm="100" fxFlex.gt-xs="100">
           <mat-form-field class="example-full-width">
-            <mat-select placeholder="boost" formControlName="boost" >
-              <mat-option *ngFor="let boost of boosts" [value]="boost">
-                {{boost}}
+            <mat-select placeholder="boost" formControlName="boost" [(ngModel)]="boostOn">
+              <mat-option *ngFor="let boost of boosts" [value]="boost.id">
+                {{boost.name}}
               </mat-option>
             </mat-select>
             <mat-hint class="text-danger font-14"
@@ -121,10 +122,10 @@
       </div>
     </mat-card-content>
     <mat-card-actions>
-      <button mat-raised-button color="warn">CANCELAR</button>
-      <button mat-raised-button color="warn">EXCLUIR</button>
+      <button mat-raised-button color="warn"  *ngIf="hasEdit" (click)="cancelar()">CANCELAR</button>
+      <button mat-raised-button color="warn" *ngIf="hasEdit && mercadoProduto.idMercadoProduto" (click)="excluir()">EXCLUIR</button>
       <button mat-raised-button color="primary" [disabled]="formulario.invalid" *ngIf="hasEdit" (click)="btnSalvar(formulario)">SALVAR</button>
-      <button mat-raised-button *ngIf="!hasEdit" color="primary">Editar</button>
+      <button mat-button color="primary" *ngIf="!hasEdit" (click)="formulario.enable(); hasEdit = true">Editar</button>
     </mat-card-actions>
     
   </form>
