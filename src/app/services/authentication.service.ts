@@ -13,9 +13,9 @@ import { Observable } from 'rxjs';
 })
 export class AuthenticationService {
 
-  oauthTokenUrl = `${environment.urlSpring}/oauth/token`;
+  oauthTokenUrl = `${environment.urlAuth}/oauth/token`;
   jwtPayload: any;
-  tokensRenokeUrl = `${environment.urlSpring}/tokens/revoke`;
+  tokensRenokeUrl = `${environment.urlAuth}/tokens/revoke`;
 
   jwtHelper: JwtHelper = new JwtHelper();
 

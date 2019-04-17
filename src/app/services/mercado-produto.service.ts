@@ -26,11 +26,18 @@ import { environment } from "../../environments/environment";
         return this.http.put(`${environment.urlSpring}/mercado-produtos/${mercadoProduto.idMercadoProduto}`,mercadoProduto,{ headers: hds, withCredentials: true })
   }
 
-    getBuscarMercadoProdutos(){
+    getBuscarMercadoProdutos(mercadoProduto){
       const hds = new Headers({
         'Authorization': `Bearer ${localStorage.getItem('token')}`
       });
-      return this.http.get(`${environment.urlSpring}/mercado-produtos`, { headers: hds, withCredentials: true })
+      return this.http.get(`${environment.urlSpring}/mercado-produtos?idMercadoLocalidade=${mercadoProduto}`, { headers: hds, withCredentials: true })
+    }
+
+    getBuscarMercadoProdutosPorData(mercadoProduto,dtEntrada){
+      const hds = new Headers({
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      });
+      return this.http.get(`${environment.urlSpring}/mercado-produtos?idMercadoLocalidade=${mercadoProduto}&dtEntrada=${dtEntrada}`, { headers: hds, withCredentials: true })
     }
 
     deleteMercadoProduto(){
