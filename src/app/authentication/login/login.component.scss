@@ -1,0 +1,21 @@
+.background-white{
+    background-color: #fff !important;
+    overflow: hidden !important;
+}
+
+    @media (max-width: 1200px) {
+        .show-lg{
+            display: none !important;
+        }
+        .center-cel{
+            margin: 0 auto;
+        }
+        .background-white{
+            background-color: #eee !important;
+        }
+    }
+    
+
+    
+
+

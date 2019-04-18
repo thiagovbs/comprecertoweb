@@ -47,15 +47,15 @@ html .page-wrapper{
     background-size:cover; 
     align-items: center;
     .mat-card{
-        margin: 0px 15px;
+        margin: 0px auto;
     }
     .mat-form-field{
         width: 100%;
     }
     .login-register-box{
-        max-width: 400px;
-        min-width: 280px;
-        margin: 0 auto;
+        max-width:600px;
+        min-width: 480px;
+        
         vertical-align: middle;
     }
     .support-text{
