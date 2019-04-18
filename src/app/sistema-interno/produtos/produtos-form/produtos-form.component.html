@@ -7,17 +7,22 @@
         </mat-card-title>
         <mat-card-content>
             <div fxLayout="row" fxLayoutWrap="wrap">
-                <img mat-card-md-image style="width:55%;margin: auto;" [src]="myImage" alt="">
-
-                <div *ngIf="hasEdit" style="margin: auto;">
-                    <image-cropper style="width:90%;margin: auto;" [imageChangedEvent]="imageChangedEvent"
-                        [resizeToWidth]="180" [maintainAspectRatio]="true" [aspectRatio]=" 1 / 1 " format="png"
-                        (imageCropped)="imageCropped($event)" (loadImageFailed)="loadImageFailed()">
-                    </image-cropper>
-                    <div class="form-field form-field-file wrap">
-                        <div class="upload-btn-wrapper" style="text-align:center">
-                            <button mat-button color="primary">Adicionar Imagem</button>
-                            <input type="file" formControlName="imagem" (change)="fileChangeEvent($event)" />
+                <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" class="img-card" style="margin: 10px auto;">
+                    <img mat-card-md-image [src]="myImage" alt="">
+                </div>
+            </div>
+            <div fxLayout="row" fxLayoutWrap="wrap">
+                <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" class="img-card" style="margin: 10px auto;">
+                    <div *ngIf="hasEdit">
+                        <image-cropper style="width:100%;margin:0 auto;" [imageChangedEvent]="imageChangedEvent"
+                            [resizeToWidth]="180" [maintainAspectRatio]="true" [aspectRatio]=" 1 / 1 " format="png"
+                            (imageCropped)="imageCropped($event)" (loadImageFailed)="loadImageFailed()">
+                        </image-cropper>
+                        <div class="form-field form-field-file wrap">
+                            <div class="upload-btn-wrapper" style="text-align:center">
+                                <button mat-button color="primary">Adicionar Imagem</button>
+                                <input type="file" formControlName="imagem" (change)="fileChangeEvent($event)" />
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -26,42 +31,52 @@
                 <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" style="margin-top:10px;">
                     <mat-form-field>
                         <mat-select placeholder="Subcategorias" formControlName="subcategoria"
-                            (selectionChange)="atualizaSubcategoriaSelect($event.value)" [(ngModel)]="produto.subcategoria.idSubcategoria">
+                            (selectionChange)="atualizaSubcategoriaSelect($event.value)"
+                            [(ngModel)]="produto.subcategoria.idSubcategoria">
                             <mat-option *ngFor="let subcategoria of subcategorias" [value]="subcategoria.idSubcategoria"
                                 [disabled]="!subcategoria.fativo">{{
                                 subcategoria.nome }}</mat-option>
                         </mat-select>
-                        <mat-hint *ngIf="formulario.controls['subcategoria'].hasError('required') && formulario.controls['subcategoria'].touched"
+                        <mat-hint
+                            *ngIf="formulario.controls['subcategoria'].hasError('required') && formulario.controls['subcategoria'].touched"
                             class="text-danger font-14">A subcategoria é obrigatória.</mat-hint>
                     </mat-form-field>
                     <mat-form-field class="example-full-width">
                         <input matInput placeholder="Nome" formControlName="nome" [(ngModel)]="produto.nome">
-                        <mat-hint *ngIf="formulario.controls['nome'].hasError('required') && formulario.controls['nome'].touched"
+                        <mat-hint
+                            *ngIf="formulario.controls['nome'].hasError('required') && formulario.controls['nome'].touched"
                             class="text-danger font-14">O nome é obrigatório.</mat-hint>
                     </mat-form-field>
                     <mat-form-field class="example-full-width">
                         <input matInput placeholder="Marca" formControlName="marca" [(ngModel)]="produto.marca">
-                        <mat-hint *ngIf="formulario.controls['marca'].hasError('required') && formulario.controls['marca'].touched"
+                        <mat-hint
+                            *ngIf="formulario.controls['marca'].hasError('required') && formulario.controls['marca'].touched"
                             class="text-danger font-14">A marca é obrigatória.</mat-hint>
                     </mat-form-field>
                     <mat-form-field class="example-full-width">
-                        <input matInput placeholder="Característica" formControlName="caracteristica" [(ngModel)]="produto.caracteristica">
-                        <mat-hint *ngIf="formulario.controls['caracteristica'].hasError('required') && formulario.controls['caracteristica'].touched"
+                        <input matInput placeholder="Característica" formControlName="caracteristica"
+                            [(ngModel)]="produto.caracteristica">
+                        <mat-hint
+                            *ngIf="formulario.controls['caracteristica'].hasError('required') && formulario.controls['caracteristica'].touched"
                             class="text-danger font-14">A caracteristica é obrigatória.</mat-hint>
                     </mat-form-field>
                 </div>
                 <div fxFlex.gt-sm="80" fxFlex.gt-xs="80">
                     <mat-form-field class="example-full-width">
-                        <input matInput type="number" placeholder="Quantidade" formControlName="quantidade" [(ngModel)]="produto.quantidade">
-                        <mat-hint *ngIf="formulario.controls['quantidade'].hasError('required') && formulario.controls['quantidade'].touched"
+                        <input matInput type="number" placeholder="Quantidade" formControlName="quantidade"
+                            [(ngModel)]="produto.quantidade">
+                        <mat-hint
+                            *ngIf="formulario.controls['quantidade'].hasError('required') && formulario.controls['quantidade'].touched"
                             class="text-danger font-14">A quantidade é obrigatória.</mat-hint>
                     </mat-form-field>
                 </div>
                 <div fxFlex.gt-sm="20" fxFlex.gt-xs="20">
                     <mat-form-field>
                         <mat-select placeholder="UM" formControlName="unidadeMedida"
-                            (selectionChange)="atualizaUnidadeMedidaSelect($event.value)" [(ngModel)]="produto.subcategoria.idSubcategoria"> 
-                            <mat-option *ngFor="let unidadeMedida of unidadesMedida" [value]="unidadeMedida.idUnidade">{{unidadeMedida.sigla}}</mat-option>
+                            (selectionChange)="atualizaUnidadeMedidaSelect($event.value)"
+                            [(ngModel)]="produto.unidadeMedida.idUnidade">
+                            <mat-option *ngFor="let unidadeMedida of unidadesMedida" [value]="unidadeMedida.idUnidade">
+                                {{unidadeMedida.sigla}}</mat-option>
                         </mat-select>
                     </mat-form-field>
                 </div>
@@ -70,9 +85,12 @@
         </mat-card-content>
         <mat-card-actions>
             <button mat-raised-button color="warn" *ngIf="hasEdit" (click)="cancelar()">CANCELAR</button>
-            <button mat-raised-button color="warn" *ngIf="hasEdit && produto.idProduto" (click)="excluir()">EXCLUIR</button>
-            <button mat-raised-button color="primary" *ngIf="hasEdit" [disabled]="formulario.invalid" (click)="salvar()">SALVAR</button>
-            <button mat-button color="primary" *ngIf="!hasEdit" (click)="formulario.enable(); hasEdit = true">EDITAR</button>
+            <button mat-raised-button color="warn" *ngIf="hasEdit && produto.idProduto"
+                (click)="excluir()">EXCLUIR</button>
+            <button mat-raised-button color="primary" *ngIf="hasEdit" [disabled]="formulario.invalid"
+                (click)="salvar()">SALVAR</button>
+            <button mat-button color="primary" *ngIf="!hasEdit"
+                (click)="formulario.enable(); hasEdit = true">EDITAR</button>
         </mat-card-actions>
     </form>
 </mat-card>

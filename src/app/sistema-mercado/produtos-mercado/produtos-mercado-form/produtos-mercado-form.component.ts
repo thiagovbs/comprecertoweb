@@ -61,7 +61,6 @@ export class ProdutosMercadoFormComponent implements OnInit {
   boosts: Array<any> = [
     { id: 1, name: "Nenhum" },
     { id: 2, name: "Destaque" },
-    { id: 3, name: "Super Destaque" }
   ];
 
   boostOn: number;
@@ -92,6 +91,9 @@ export class ProdutosMercadoFormComponent implements OnInit {
 
 
   ngOnInit() {
+    console.log(this.localidadeAtual)
+    console.log(this.mercadoProduto)
+    //console.log("mercado produto" + this.mercadoProduto)
     this.getCategorias();
     //pegando os produtos dos mercados listados
     if (this.mercadoProduto.idMercadoProduto) {
@@ -105,8 +107,6 @@ export class ProdutosMercadoFormComponent implements OnInit {
         this.boostOn = 1;
       } else if (this.mercadoProduto.fDestaque) {
         this.boostOn = 2;
-      } else if (this.mercadoProduto.fSuperDestaque) {
-        this.boostOn = 3;
       }
     }
   }
@@ -276,21 +276,16 @@ export class ProdutosMercadoFormComponent implements OnInit {
 
       if (this.formulario.get('boost').value === 1) {
         mercadoProduto2.fDestaque = false;
-        mercadoProduto2.fSuperDestaque = false;
       } else if (this.formulario.get('boost').value === 2) {
         mercadoProduto2.fDestaque = true;
-        mercadoProduto2.fSuperDestaque = false
-      } else if (this.formulario.get('boost').value === 3) {
-        mercadoProduto2.fDestaque = false;
-        mercadoProduto2.fSuperDestaque = true;
       }
-
+      console.log(mercadoProduto2);
       this.mercadoProdutoService.salvarProdutosNoMercado(mercadoProduto2)
         .subscribe(resp => {
           this.atualizaProduto.emit(true);
           swal('Atualização', `O produto ${this.mercadoProduto.observacao} foi atualizado!`, "success")
         }, erro => {
-          console.log(erro)
+          console.log(erro.json())
         })
     }
   }

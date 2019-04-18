@@ -24,7 +24,8 @@ export class ProdutosMercadoComponent implements OnInit {
   constructor(private formBuilder: FormBuilder,
     private mercadoService: MercadoService,
     private adapter: DateAdapter<any>,
-    private mercadoProdutoService: MercadoProdutoService) {
+    private mercadoProdutoService: MercadoProdutoService,
+  ) {
 
     this.formLocalidade = this.formBuilder.group({
       mercadoLocalidade: [{ value: '' }, [Validators.required]],
@@ -35,8 +36,8 @@ export class ProdutosMercadoComponent implements OnInit {
 
   ngOnInit() {
     this.mercadoService.getMercadoLocalidade().subscribe(resp => {
-      console.log(resp.json())
       this.localidadesPorBairro = resp.json();
+      console.log(this.localidadesPorBairro)
     })
   }
 
@@ -60,30 +61,22 @@ export class ProdutosMercadoComponent implements OnInit {
 
   btnSalvarLocalidade(evento) {
     this.localidadeAtual = evento.value.mercadoLocalidade;
+    this.dtEntrada = evento.value.data_entrada;
     //serviço para buscar os produtos do mercado produto
-/*     this.mercadoProdutoService.getBuscarMercadoProdutos(evento.value.mercadoLocalidade.idMercadoLocalidade)
-      .subscribe(resp => {
-        this.mercadosprodutos = resp.json();
-      }) */
-
-      this.dtEntrada = evento.value.data_entrada;
-      this.dtEntrada = new Date(this.dtEntrada).toISOString();
-      console.log(this.dtEntrada)
-       this.mercadoProdutoService.getBuscarMercadoProdutosPorData(evento.value.mercadoLocalidade.idMercadoLocalidade,this.dtEntrada)
-      .subscribe(resp=>{
-        console.log(resp.json())
-        this.mercadosprodutos = resp.json()
-      },erro=>{
-        console.log(erro.json())
-      }) 
-    //serviço que filtra os produtos do mercado produto por data  
+    /*     this.mercadoProdutoService.getBuscarMercadoProdutos(evento.value.mercadoLocalidade.idMercadoLocalidade)
+          .subscribe(resp => {
+            this.mercadosprodutos = resp.json();
+          }) */
     
-    //let splitData = this.dtEntrada.split("T")
-
-/*     this.mercadosprodutos = this.mercadosprodutos.filter(prod => {
-      console.log(prod.dtEntrada + "--" + splitData[0])
-      return prod.dtEntrada === splitData[0];
-    }) */
+    let splitData = this.dtEntrada.split("T")
+    
+    //serviço que filtra a dtEntrada para buscar os produtos do mercado produto 
+    this.mercadoProdutoService.getBuscarMercadoProdutosPorData(evento.value.mercadoLocalidade.idMercadoLocalidade, splitData[0])
+      .subscribe(resp => {
+        this.mercadosprodutos = resp.json()
+      }, erro => {
+        console.log(erro.json())
+      })
   }
 
   myFilter = (d: Date): boolean => {

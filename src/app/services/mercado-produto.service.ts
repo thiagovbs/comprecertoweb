@@ -33,11 +33,11 @@ import { environment } from "../../environments/environment";
       return this.http.get(`${environment.urlSpring}/mercado-produtos?idMercadoLocalidade=${mercadoProduto}`, { headers: hds, withCredentials: true })
     }
 
-    getBuscarMercadoProdutosPorData(mercadoProduto,dtEntrada){
+    getBuscarMercadoProdutosPorData(idMercadoLocalidade:number, dtEntrada:any){
       const hds = new Headers({
         'Authorization': `Bearer ${localStorage.getItem('token')}`
       });
-      return this.http.get(`${environment.urlSpring}/mercado-produtos?idMercadoLocalidade=${mercadoProduto}&dtEntrada=${dtEntrada}`, { headers: hds, withCredentials: true })
+      return this.http.get(`${environment.urlSpring}/mercado-produtos?idMercadoLocalidade=${idMercadoLocalidade}&dtEntrada=${dtEntrada}`, { headers: hds, withCredentials: true })
     }
 
     deleteMercadoProduto(){

@@ -36,3 +36,10 @@
     top: 0;
     opacity: 0;
   }
+
+  .img-card{
+    margin: 0px auto;
+    flex: 0 0 0% !important;
+    box-sizing: border-box;
+    max-width: 100%;
+  }

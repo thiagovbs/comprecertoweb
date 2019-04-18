@@ -16,7 +16,7 @@ export class UnidadeMedidaService {
       'Authorization': `Bearer ${localStorage.getItem('token')}`
     });
 
-    return this.http.get(`${environment.urlSpring}/unidadesMedida`, { headers: hds, withCredentials: true })
+    return this.http.get(`${environment.urlSpring}/unidades-medida`, { headers: hds, withCredentials: true })
   }
 
   postUnidadeMedida(unidadeMedida: UnidadeMedida) {
@@ -24,7 +24,7 @@ export class UnidadeMedidaService {
       'Authorization': `Bearer ${localStorage.getItem('token')}`
     });
 
-    return this.http.post(`${environment.urlSpring}/unidadesMedida`, unidadeMedida, { headers: hds, withCredentials: true })
+    return this.http.post(`${environment.urlSpring}/unidades-medida`, unidadeMedida, { headers: hds, withCredentials: true })
   }
 
   putUnidadeMedida(unidadeMedida: UnidadeMedida) {
@@ -32,7 +32,7 @@ export class UnidadeMedidaService {
       'Authorization': `Bearer ${localStorage.getItem('token')}`
     });
 
-    return this.http.put(`${environment.urlSpring}/unidadesMedida/${unidadeMedida.idUnidade}`, unidadeMedida, { headers: hds, withCredentials: true })
+    return this.http.put(`${environment.urlSpring}/unidades-medida/${unidadeMedida.idUnidade}`, unidadeMedida, { headers: hds, withCredentials: true })
   }
 
   deleteUnidadeMedida(idUnidade: number) {
@@ -40,7 +40,7 @@ export class UnidadeMedidaService {
       'Authorization': `Bearer ${localStorage.getItem('token')}`
     });
 
-    return this.http.delete(`${environment.urlSpring}/unidadesMedida/${idUnidade}`, { headers: hds, withCredentials: true })
+    return this.http.delete(`${environment.urlSpring}/unidades-medida/${idUnidade}`, { headers: hds, withCredentials: true })
   }
 
   getUnidadesMedidaPorSubcategoria(subcategoria: Subcategoria) {
@@ -48,6 +48,6 @@ export class UnidadeMedidaService {
       'Authorization': `Bearer ${localStorage.getItem('token')}`
     });
 
-    return this.http.get(`${environment.urlSpring}/unidadesMedida/buscarPorSubcategoria/${subcategoria.idSubcategoria}`, { headers: hds, withCredentials: true })
+    return this.http.get(`${environment.urlSpring}/unidades-medida/buscarPorSubcategoria/${subcategoria.idSubcategoria}`, { headers: hds, withCredentials: true })
   }
 }
