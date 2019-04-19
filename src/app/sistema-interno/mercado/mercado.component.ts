@@ -6,8 +6,7 @@ import { Mercado } from '../../models/mercado';
 import Swal from 'sweetalert2';
 import { ActivatedRoute } from '@angular/router';
 import { PacoteServico } from '../../models/pacote-servico';
-import { PreVisualizacaoComponent } from './tabs/pre-visualizacao/pre-visualizacao.component';
-import { environment } from '../../../environments/environment';
+
 
 @Component({
   selector: 'app-mercado',

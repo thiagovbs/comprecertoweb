@@ -21,7 +21,7 @@ export class PerfilMercadoComponent implements OnInit {
   constructor(private mercadoService: MercadoService) { }
   myImage:string
   ngOnInit() {
-    this.myImage = `${environment.urlS3}/mercado${this.mercado.idMercado}.jpg`;
+    this.myImage = this.mercado.imagemUrl;
   }
 
   getValorRegional(localidade: MercadoLocalidade) {

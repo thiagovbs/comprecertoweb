@@ -37,7 +37,8 @@ export class PreVisualizacaoComponent implements OnInit {
       this.formulario = this.formBuilder.group({
         imagem: ['']
       });
-      this.myImage = `${environment.urlS3}/mercado${this.mercadoComponent.mercado.idMercado}.jpg`;
+      console.log(this.mercadoComponent.mercado.imagemUrl)
+      this.myImage = this.mercadoComponent.mercado.imagemUrl;
     }else{
       this.formulario = this.formBuilder.group({
         imagem: ['', [Validators.required]]

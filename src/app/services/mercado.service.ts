@@ -87,7 +87,7 @@ export class MercadoService {
       const hds = new Headers({
         'Authorization': `Bearer ${localStorage.getItem('token')}`
       });
-      return this.http.post(`${environment.urlSpring}/mercados/picture`, formData, { headers: hds, withCredentials: true });
+      return this.http.post(`${environment.urlSpring}/mercados/upload-foto-mercado`, formData, { headers: hds, withCredentials: true });
     }else{
       console.log("não foi achado nem arquivo de imagem")
     }
