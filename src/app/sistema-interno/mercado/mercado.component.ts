@@ -69,8 +69,9 @@ export class MercadoComponent implements OnInit {
   }
 
   salvar() {
-    this.mercado.imagemUrl = this.mercadoService.file;
+    this.mercado.imageBase64 = this.mercadoService.croppedFile;
     console.log(this.mercado)
+
     if (this.mercado.idMercado) {
       this.mercadoService.putMercado(this.mercado).subscribe(data => {
         this.sendImage();
@@ -84,7 +85,7 @@ export class MercadoComponent implements OnInit {
         Swal('Atualização', `O mercado ${this.mercado.nomeFantasia} foi atualizado!`, "success")
       })
     } else {
-      
+      this.mercado.imageBase64 = this.mercadoService.croppedFile;
       this.mercadoService.postMercado(this.mercado).subscribe(data => {
         this.sendImage();
         // this.atualizaProduto.emit(true);

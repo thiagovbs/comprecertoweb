@@ -5,7 +5,7 @@ export class Mercado {
     idMercado: number;
     razaoSocial: string;
     nomeFantasia: string;
-    imagemUrl:string
+    imageBase64:any
     cnpj: number;
     telefone: string;
     email: string;

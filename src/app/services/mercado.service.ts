@@ -70,7 +70,9 @@ export class MercadoService {
 
   //inserir a imagem croppada que vem da pagina pré visualização e jogar no método postUploadFile()
   getCroppedImageFile(myCroppedFile: File) {
+    
     this.croppedFile = myCroppedFile;
+    console.log(this.croppedFile)
   }
 
   //pegar o path da imagem que vem da pagina pré visualização e jogar no mercado model
@@ -79,7 +81,7 @@ export class MercadoService {
   }
 
   postUploadFile() {
-    console.log(this.croppedFile + "meu aquivo")
+    
     if (this.croppedFile) {
       let pictureBlog = this.imageUtilService.dataUriToBlob(this.croppedFile);
       let formData: FormData = new FormData();
@@ -87,7 +89,7 @@ export class MercadoService {
       const hds = new Headers({
         'Authorization': `Bearer ${localStorage.getItem('token')}`
       });
-      return this.http.post(`${environment.urlSpring}/mercados/upload-foto-mercado`, formData, { headers: hds, withCredentials: true });
+      return this.http.post(`${environment.urlSpring}/mercados/upload-foto-mercado`, { headers: hds, withCredentials: true });
     }else{
       console.log("não foi achado nem arquivo de imagem")
     }
