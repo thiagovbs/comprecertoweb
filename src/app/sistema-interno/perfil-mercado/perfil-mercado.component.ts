@@ -21,7 +21,7 @@ export class PerfilMercadoComponent implements OnInit {
   constructor(private mercadoService: MercadoService) { }
   myImage:string
   ngOnInit() {
-    this.myImage = this.mercado.imagemUrl;
+    this.myImage = this.mercado.imageBase64;
   }
 
   getValorRegional(localidade: MercadoLocalidade) {
