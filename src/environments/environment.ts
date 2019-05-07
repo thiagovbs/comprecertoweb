@@ -6,8 +6,8 @@
 export const environment = {
   production: false,
   urlSpring: 'http://api.sheap.com.br/rest',
-  urlAuth:'http://api.sheap.com.br',
+  urlAuth: 'http://api.sheap.com.br',
   //urlAuth:'http://localhost:8080',
   //urlSpring: 'http://localhost:8080',
-  urlS3:'https://s3-sa-east-1.amazonaws.com/sheap-bucket'
+  urlS3: 'https://s3-sa-east-1.amazonaws.com/sheap-bucket'
 };
