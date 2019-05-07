@@ -24,22 +24,22 @@ export class MercadoComponent implements OnInit {
   tabs: any = [
     {
       key: 'dados',
-      nome: 'Cadastro Mercado',
+      nome: '1 - Dados Gerais',
       disabled: false
     },
     {
       key: 'localidade-filial',
-      nome: 'Localidade e Filiais',
+      nome: '2 - Localidade',
       disabled: true
     },
     {
       key: 'servicos',
-      nome: 'Pacotes de Serviços',
+      nome: '3 - Serviços',
       disabled: true
     },
     {
       key: 'finalizacao',
-      nome: 'Pré-visualização e Finalizar',
+      nome: '4 - Pré visualização',
       disabled: true
     }
   ];

@@ -6,4 +6,12 @@
 .mail-title {
   padding-left: 15px;
 }
-  
+
+.email-sidebar .selected .d-flex {
+  background-color: white !important;
+  color: #009b89;
+}
+
+.mat-drawer-container {
+  background-color: white !important;
+}
