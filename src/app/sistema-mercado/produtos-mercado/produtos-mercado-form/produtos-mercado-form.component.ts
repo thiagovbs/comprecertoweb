@@ -15,7 +15,6 @@ import { MercadoLocalidade } from '../../../models/mercado-localidade';
 import { MercadoProdutoService } from '../../../services/mercado-produto.service';
 import swal from 'sweetalert2';
 
-
 @Component({
   selector: 'app-produtos-mercado-form',
   templateUrl: './produtos-mercado-form.component.html',
@@ -24,50 +23,35 @@ import swal from 'sweetalert2';
 export class ProdutosMercadoFormComponent implements OnInit {
 
   @Input()
-  mercadoProduto: MercadoProduto;
+  mercadoProduto: MercadoProduto = new MercadoProduto();
   @Input()
   localidadeAtual: MercadoLocalidade;
   @Input()
   dtEntrada: Date;
 
-  @Output("atualizaProduto")
-  atualizaProduto = new EventEmitter();
-  @Output("removerProduto")
-  produtoRemovida = new EventEmitter();
+  @Output('atualizaMercadoProduto')
+  atualizaMercadoProduto = new EventEmitter();
+  @Output('removerMercadoProduto')
+  removerMercadoProduto = new EventEmitter();
 
-  mercadoLocalidade: MercadoLocalidade = new MercadoLocalidade();
   produto: Produto = new Produto();
+  produtos: Produto[] = [];
+  produtoImagem: string = null;
+  boostOn: number;
 
-  categoriaId: number;
   categorias: Categoria[] = [];
-
-  idSubcategoria: number;
   subcategorias: Subcategoria[] = [];
-
-  //filtros
-  filterProdutosPorSubcategoria: Produto[] = [];
-  filterProdsPorMarca: Produto[] = [];
-  filterProdsPorNome: Produto[] = [];
-  filterProdsCaract: Produto[] = []
-  filterProdsPorPeso: Produto[] = [];
-
-  //Arrays para apresentar nos selects
   marcas: Array<string> = [];
   produtosNome: Array<string> = [];
-  marcasNome: Array<string> = [];
-  caracteristicasNome: Array<string> = [];
+  caracteristicas: Array<string> = [];
   unidadesMedida: Array<{ unidade: string, valor: number }> = [];
-  preco: any
   boosts: Array<any> = [
-    { id: 1, name: "Nenhum" },
-    { id: 2, name: "Destaque" },
+    { id: 1, name: 'Nenhum' },
+    { id: 2, name: 'Destaque' },
   ];
 
-  boostOn: number;
   formulario: FormGroup;
-
-  hasEdit: boolean = true;
-  myImage: string = null;
+  hasEdit = true;
 
   constructor(private formBuilder: FormBuilder,
     private produtoService: ProdutoService,
@@ -89,20 +73,16 @@ export class ProdutosMercadoFormComponent implements OnInit {
     });
   }
 
-
   ngOnInit() {
-    console.log(this.localidadeAtual)
-    console.log(this.mercadoProduto)
-    //console.log("mercado produto" + this.mercadoProduto)
     this.getCategorias();
-    //pegando os produtos dos mercados listados
+
+    // pegando os produtos dos mercados listados
     if (this.mercadoProduto.idMercadoProduto) {
-      console.log(this.mercadoProduto.produto.subcategoria.idSubcategoria)
-      this.myImage = `${environment.urlS3}/prod` + this.mercadoProduto.produto.idProduto + `.jpg`
+      this.produtoImagem = `${environment.urlS3}/prod` + this.mercadoProduto.produto.idProduto + `.jpg`;
       this.formulario.disable();
       this.hasEdit = false;
 
-      //set boost on select
+      // set boost on select
       if (this.mercadoProduto.fDestaque == null && this.mercadoProduto.fSuperDestaque == null) {
         this.boostOn = 1;
       } else if (this.mercadoProduto.fDestaque) {
@@ -114,192 +94,140 @@ export class ProdutosMercadoFormComponent implements OnInit {
   getCategorias() {
     this.categoriaService.getCategorias().subscribe((data: any) => {
       this.categorias = Lodash.orderBy(data.json(), 'nome', 'asc');
-    }, error => console.log(error))
+    }, error => console.error(error)
+      , () => {
+        if (this.mercadoProduto.idMercadoProduto) {
+          this.categoriaService.getCategoriaPorSubcategoria(this.mercadoProduto.produto.subcategoria.idSubcategoria)
+            .subscribe(data => {
+              this.formulario.get('categoria').setValue(data.json().idCategoria);
+              this.formulario.updateValueAndValidity();
+
+              this.atualizaCategoriaSelect(data.json());
+              this.formulario.get('subcategoria').setValue(this.mercadoProduto.produto.subcategoria.idSubcategoria);
+              this.formulario.updateValueAndValidity();
+
+              this.getMarcasPorSubcategoria(this.mercadoProduto.produto.subcategoria.idSubcategoria);
+            }, error => console.error(error));
+        }
+      });
   }
 
-  //atualiza o select da CATEGORIA para habilitar as SUBCATEGORIAS
   atualizaCategoriaSelect(categoria: Categoria) {
-
-    //zerando os filtros de produtos
-    this.filterProdutosPorSubcategoria = [];
-    this.filterProdsPorMarca = [];
-    this.filterProdsPorNome = [];
-    this.filterProdsCaract = [];
-
-    //zerando os nomes de produtos
-    this.produtosNome = [];
-    this.marcasNome = [];
-    this.caracteristicasNome = [];
-    this.unidadesMedida = [];
-
     this.subcategorias = categoria.subcategorias;
-    this.categoriaId = categoria.idCategoria
-
   }
 
-  //atualiza o select da SUBCATEGORIA para habilitar as Marcas
-  atualizaSubcategoriaSelect(subcategoria: Subcategoria) {
-
-    //zerando os filtros de produtos
-    this.filterProdutosPorSubcategoria = [];
-    this.filterProdsPorMarca = [];
-    this.filterProdsPorNome = [];
-    this.filterProdsCaract = [];
-
-    //zerando os nomes de produtos
-    this.produtosNome = [];
-    this.marcasNome = [];
-    this.caracteristicasNome = [];
-    this.unidadesMedida = [];
-
-    this.idSubcategoria = subcategoria.idSubcategoria
-
-    //pega as marca pelas subcategorias
-    this.getMarcasPorSubcategoria(subcategoria.idSubcategoria);
-    //pega os produtos pelas subcategorias
-    this.getProdutosPorSubcategorias(subcategoria);
-  }
-
-  private getProdutosPorSubcategorias(subcategoria: Subcategoria) {
-    let produtos: Produto[];
-    //serviços que pega os produtos por categoria
-    console.log(this.categoriaId)
-    this.subcategoriaService.getProdutosPorCategorias(this.categoriaId).subscribe(data => {
-      produtos = data.json();
-      //filtra todos os produtos por subcategorias
-      this.filterProdutosPorSubcategoria = produtos.filter((prod: Produto) => prod.subcategoria.nome === subcategoria.nome);
-
-    }, erro => { console.log(erro) })
-  }
-
-  private getMarcasPorSubcategoria(idSubcategoria) {
-
+  getMarcasPorSubcategoria(idSubcategoria) {
     this.produtoService.getMarcasPorSubcategoria(idSubcategoria).subscribe(data => {
-      this.marcas = data.json();
+      this.marcas = data.json().filter((nome, i, el) => i === el.indexOf(nome));
+    }, erro => console.error(erro)
+      , () => {
+        if (this.mercadoProduto.idMercadoProduto) {
+          this.formulario.get('marca').setValue(this.mercadoProduto.produto.marca);
+          this.formulario.updateValueAndValidity();
 
-      //adicionar filtro para não repetir marcas com o mesmo nome  
-      this.marcas.filter((marca) => this.marcasNome.push(marca))
-      this.marcasNome = this.marcasNome.filter((nome, i, el) => {
-        return i === el.indexOf(nome)
-      })
-    }, erro => { console.log(erro) })
+          this.getProdutosPorSubcategorias();
+        }
+      });
   }
 
-  //Ao Atualizar o select da marca, preencher o select dos produtos
-  atualizaMarcaSelect(marca) {
+  getProdutosPorSubcategorias() {
+    this.subcategoriaService.getProdutosPorCategorias(this.formulario.get('categoria').value).subscribe(data => {
+      this.produtos = data.json();
+      this.produtosNome = data.json()
+        .filter((prod: Produto) => prod.marca === this.formulario.get('marca').value)
+        .map((produto) => produto.nome)
+        .filter((nome, i, el) => i === el.indexOf(nome));
+    }, erro => console.error(erro)
+      , () => {
+        if (this.mercadoProduto.idMercadoProduto) {
+          this.formulario.get('produto').setValue(this.mercadoProduto.produto.nome);
+          this.formulario.updateValueAndValidity();
 
-    //zerando os filtros de produtos  
-    this.filterProdsPorNome = [];
-    this.filterProdsCaract = [];
-    //zerando os nomes de produtos
-    //this.produtosNome = [];
-    this.caracteristicasNome = [];
-    this.unidadesMedida = [];
-
-    //filtro para pegar os produtos pelas marcas
-    this.filterProdsPorMarca = this.filterProdutosPorSubcategoria.filter((prod: Produto) => {
-      return prod.marca === marca;
-    });
-    //filtro os nomes dos produtos pelas marcas
-    this.filterProdsPorMarca.filter((prod: Produto) => {
-      this.produtosNome.push(prod.nome)
-    })
-    //filtro para não repetir os dos nomes dos produtos
-    this.produtosNome = this.produtosNome.filter((nome, i, el) => {
-      return i === el.indexOf(nome)
-    })
-
+          this.atualizaProdutoSelect(this.mercadoProduto.produto.nome);
+        }
+      });
   }
 
-  //Ao Atualizar os produtos, preencher o select das características 
   atualizaProdutoSelect(produtoNome: string) {
+    this.caracteristicas = this.produtos
+      .filter((prod: Produto) => prod.nome === produtoNome)
+      .map(produto => produto.caracteristica)
+      .filter((nome, i, el) => i === el.indexOf(nome));
 
-    //zerando os filtros de produtos  
-    this.filterProdsCaract = [];
+    if (this.mercadoProduto.idMercadoProduto) {
+      this.formulario.get('caracteristica').setValue(this.mercadoProduto.produto.caracteristica);
+      this.formulario.updateValueAndValidity();
 
-    //zerando os nomes de produtos
-    this.caracteristicasNome = [];
-
-    this.filterProdsPorNome = this.filterProdsPorMarca.filter((prod: Produto) => prod.nome === produtoNome)
-
-    this.filterProdsPorNome.filter((prod: Produto) => {
-      this.caracteristicasNome.push(prod.caracteristica);
-    })
-    this.caracteristicasNome = this.caracteristicasNome.filter((nome, i, el) => {
-      return i === el.indexOf(nome)
-    })
+      this.atualizaCaracteristicaSelect(this.mercadoProduto.produto.caracteristica);
+    }
   }
 
   atualizaCaracteristicaSelect(caracteristica: string) {
-
-    //zerando os nomes de produtos
-    this.unidadesMedida = [];
-
-    this.filterProdsCaract = this.filterProdsPorNome.filter((prod: Produto) => prod.caracteristica === caracteristica)
-    this.filterProdsCaract.filter((prod: Produto) => {
-      this.unidadesMedida.push({
+    this.unidadesMedida = this.produtos
+      .filter((prod: Produto) => prod.caracteristica === caracteristica)
+      .map((prod: Produto) => ({
         unidade: prod.unidadeMedida.sigla,
         valor: prod.quantidade
-      })
-    })
-    this.unidadesMedida.filter((nome, i, el) => {
-      return i === el.indexOf(nome)
-    })
+      }))
+      .filter((nome, i, el) => i === el.indexOf(nome));
+
+    if (this.mercadoProduto.idMercadoProduto) {
+      this.formulario.get('peso').setValue(this.mercadoProduto.produto.quantidade);
+      this.formulario.updateValueAndValidity();
+    }
   }
 
   atualizaPesoSelect(value: any) {
-    this.filterProdsPorPeso = this.filterProdsCaract.
-      filter((prod: Produto) => prod.quantidade === value.valor && prod.unidadeMedida.sigla === value.unidade)
-    this.myImage = `${environment.urlS3}/prod` + this.filterProdsPorPeso[0].idProduto + `.jpg`
-  }
-
-
-  btnSalvar(form) {
-    if (this.mercadoProduto.idMercadoProduto) {
-      this.mercadoProdutoService.putProdutosMercado(this.mercadoProduto).subscribe(data => {
-        
-        this.atualizaProduto.emit(true);
-      }, error => {
-        console.log(error.json());
-      }, () => {
-        this.formulario.disable();
-        this.hasEdit = false;
-        swal('Atualização', `O produto ${this.produto.nome} foi atualizado!`, "success")
-      }) 
-    } else {
-      let mercadoProduto2: MercadoProduto = new MercadoProduto();
-      mercadoProduto2.mercadoLocalidade = this.localidadeAtual
-      mercadoProduto2.produto = this.filterProdsPorPeso[0];
-      mercadoProduto2.preco = this.formulario.get('preco').value;
-      mercadoProduto2.observacao = this.formulario.get('observacao').value;
-      mercadoProduto2.dtEntrada = this.dtEntrada;
-
-      if (this.formulario.get('boost').value === 1) {
-        mercadoProduto2.fDestaque = false;
-      } else if (this.formulario.get('boost').value === 2) {
-        mercadoProduto2.fDestaque = true;
-      }
-      console.log(mercadoProduto2);
-      this.mercadoProdutoService.salvarProdutosNoMercado(mercadoProduto2)
-        .subscribe(resp => {
-          this.atualizaProduto.emit(true);
-          swal('Atualização', `O produto ${this.mercadoProduto.observacao} foi atualizado!`, "success")
-        }, erro => {
-          console.log(erro.json())
-        })
-    }
+    this.produto = this.produtos
+      .filter((prod: Produto) => prod.caracteristica === this.formulario.get('caracteristica').value)
+      .filter((prod: Produto) => prod.quantidade === value.valor && prod.unidadeMedida.sigla === value.unidade)[0];
+    this.produtoImagem = `${environment.urlS3}/prod` + this.produto.idProduto + `.jpg`;
   }
 
   cancelar() {
-
     if (this.mercadoProduto.idMercadoProduto) {
       this.formulario.disable();
       this.hasEdit = false;
-      this.atualizaProduto.emit(true);
+      this.atualizaMercadoProduto.emit(true);
     } else {
-      console.log("remover")
-      this.produtoRemovida.emit(this.mercadoProduto);
+      this.removerMercadoProduto.emit(this.mercadoProduto);
     }
   }
 
+  btnSalvar() {
+    this.mercadoProduto.mercadoLocalidade = this.localidadeAtual;
+    this.mercadoProduto.produto = this.produto;
+    this.mercadoProduto.preco = this.formulario.get('preco').value;
+    this.mercadoProduto.observacao = this.formulario.get('observacao').value;
+    this.mercadoProduto.dtEntrada = this.dtEntrada;
+
+    if (this.formulario.get('boost').value === 1) {
+      this.mercadoProduto.fDestaque = false;
+    } else if (this.formulario.get('boost').value === 2) {
+      this.mercadoProduto.fDestaque = true;
+    }
+
+    if (this.mercadoProduto.idMercadoProduto) {
+      this.mercadoProdutoService.putProdutosMercado(this.mercadoProduto).subscribe(data => {
+        this.atualizaMercadoProduto.emit(true);
+      }, error => {
+        console.error(error.json());
+      }, () => {
+        this.formulario.disable();
+        this.hasEdit = false;
+        swal('Atualização', `O produto ${this.produto.nome} foi atualizado!`, 'success');
+      });
+    } else {
+      this.mercadoProdutoService.salvarProdutosNoMercado(this.mercadoProduto)
+        .subscribe(resp => {
+          this.atualizaMercadoProduto.emit(true);
+        }, erro => {
+          console.error(erro.json());
+        }, () => {
+          this.formulario.disable();
+          this.hasEdit = false;
+          swal('Inclusão', `O produto ${this.mercadoProduto.observacao} foi salvo!`, 'success');
+        });
+    }
+  }
 }

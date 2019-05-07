@@ -1,15 +1,17 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { MatInputModule,
-         MatFormFieldModule, 
-         MatCardModule, 
-         MatButtonModule, 
-         MatSelectModule, 
-         MatCheckboxModule, 
-         MatToolbarModule, 
-         MatIconModule, 
-         MatDatepickerModule} from '@angular/material';
+import {
+  MatInputModule,
+  MatFormFieldModule,
+  MatCardModule,
+  MatButtonModule,
+  MatSelectModule,
+  MatCheckboxModule,
+  MatToolbarModule,
+  MatIconModule,
+  MatDatepickerModule
+} from '@angular/material';
 
 
 import { RouterModule } from '@angular/router';
@@ -29,6 +31,9 @@ import { ImageUtilService } from '../../services/image-util.service';
 import { ImageCropperModule } from 'ngx-image-cropper';
 import { MercadoProdutoService } from '../../services/mercado-produto.service';
 import { DateFormatPipe } from './dateFormat.pipe';
+import { EstadoService } from '../../services/estado.service';
+import { CidadeService } from '../../services/cidade.service';
+import { BairroService } from '../../services/bairro.service';
 
 
 @NgModule({
@@ -51,7 +56,7 @@ import { DateFormatPipe } from './dateFormat.pipe';
     ImageCropperModule,
     MatDatepickerModule,
   ],
-  declarations: [ProdutosMercadoComponent, ProdutosMercadoFormComponent,DateFormatPipe],
+  declarations: [ProdutosMercadoComponent, ProdutosMercadoFormComponent, DateFormatPipe],
   providers: [
     MercadoService,
     ProdutoService,
@@ -60,7 +65,10 @@ import { DateFormatPipe } from './dateFormat.pipe';
     CategoriaService,
     ImageUtilService,
     MercadoProdutoService,
-    DateFormatPipe
+    DateFormatPipe,
+    EstadoService,
+    CidadeService,
+    BairroService
   ]
 })
 export class ProdutosMercadoModule { }

@@ -1,58 +1,74 @@
-<mat-toolbar class="box-superior">
-    <form [formGroup]="formLocalidade" autocomplete="off">
-        <div fxLayout="row" fxLayoutWrap="wrap">
-            <div fxFlex.gt-sm="40" fxFlex.gt-xs="40">
-                <mat-form-field class="m-r-0  m-t-10">
-                    <mat-select placeholder="Localidade" formControlName="mercadoLocalidade">
-                        <mat-option *ngFor="let localidade of localidadesPorBairro" [value]="localidade"
-                            (click)="localidade">
-                            {{localidade.bairro.nome}}
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field>
-            </div>
-            <div fxFlex.gt-sm="40" fxFlex.gt-xs="40">
-                <mat-form-field class="m-l-10 m-t-10">
-                    <input matInput formControlName="data_entrada"
-                    [matDatepickerFilter]="myFilter"  [min]="minDate"
-                    [matDatepicker]="picker" placeholder="Data de Entrada" readonly 
-                    (dateChange)="getDataEntrada($event)">
-                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                    <mat-datepicker #picker></mat-datepicker>
-                </mat-form-field>
-            </div>
-            <div fxFlex.gt-sm="20" fxFlex.gt-xs="20" class="m-t-20 ">
-                <button mat-raised-button class="m-l-20" style="background-color:transparent; color:#fff"
-                    [disabled]="formLocalidade.invalid" (click)="btnSalvarLocalidade(formLocalidade)">PESQUISAR
-                </button>
+<form [formGroup]="formLocalidade" autocomplete="off">
+    <mat-toolbar class="box-superior">
+        <div fxFlex.gt-sm="100" fxFlex.gt-xs="100">
+            <div fxLayout="row" fxLayoutWrap="wrap">
+                <div fxFlex.gt-sm="20" fxFlex.gt-xs="20">
+                    <mat-form-field class="m-r-0  m-t-10">
+                        <mat-select placeholder="Estado" formControlName="estado">
+                            <mat-option *ngFor="let estado of listaEstados" [value]="estado"
+                                (click)="atualizaCidadeSelect(estado)">
+                                {{estado.nome}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div fxFlex.gt-sm="20" fxFlex.gt-xs="20">
+                    <mat-form-field class="m-r-0  m-t-10">
+                        <mat-select placeholder="Cidade" formControlName="cidade">
+                            <mat-option *ngFor="let cidade of listaCidades" [value]="cidade"
+                                (click)="atualizaBairroSelect(cidade)">
+                                {{cidade.nome}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div fxFlex.gt-sm="20" fxFlex.gt-xs="20">
+                    <mat-form-field class="m-r-0  m-t-10">
+                        <mat-select placeholder="Bairro" formControlName="bairro">
+                            <mat-option *ngFor="let bairro of listaBairros" [value]="bairro">
+                                {{bairro.nome}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div fxFlex.gt-sm="20" fxFlex.gt-xs="20">
+                    <mat-form-field class="m-l-10 m-t-10">
+                        <input matInput formControlName="dataEntrada" [matDatepickerFilter]="myFilter" [min]="minDate"
+                            [matDatepicker]="picker" placeholder="Data de Entrada" readonly
+                            (dateChange)="getDataEntrada($event)">
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                    </mat-form-field>
+                </div>
+                <div fxFlex.gt-sm="20" fxFlex.gt-xs="20" class="m-t-20 ">
+                    <button mat-raised-button class="m-l-20" style="background-color:transparent; color:#fff"
+                        [disabled]="formLocalidade.invalid" (click)="pesquisarMercadoProdutos()">PESQUISAR
+                    </button>
+                </div>
             </div>
         </div>
-    </form>
-</mat-toolbar>
+    </mat-toolbar>
+</form>
 
-<mat-toolbar color="primary" style=" margin-top:10px;" class="little" *ngIf="localidadeAtual">
+<mat-toolbar color="primary" style=" margin-top:10px;" class="little" *ngIf="mercadoprodutos">
     <span>Cadastros de produtos</span>
     <span fxFlex></span>
     <button mat-button href="#" mat-icon-button (click)="adicionarProdutoForm()">
         <mat-icon>add</mat-icon>
     </button>
-    <button mat-button href="#" mat-icon-button>
+    <!-- <button mat-button href="#" mat-icon-button>
         <mat-icon>refresh</mat-icon>
     </button>
     <button mat-button href="#" mat-icon-button>
         <mat-icon>filter_list</mat-icon>
-    </button>
+    </button> -->
 </mat-toolbar>
 
-
-
 <div fxLayout="row" fxLayoutWrap="wrap">
-    <div fxFlex.gt-sm="33.33%" fxFlex="100" *ngFor="let produto of mercadosprodutos">
-        <app-produtos-mercado-form [mercadoProduto]="produto" 
-                                   [localidadeAtual]="localidadeAtual" 
-                                   [dtEntrada]="dtEntrada"
-                                   (salvarProduto)="atualizaProduto($event)"
-                                   (removerProduto)="aoRemover($event)">
+    <div fxFlex.gt-sm="33.33%" fxFlex="100" *ngFor="let mercadoProduto of mercadoprodutos">
+        <app-produtos-mercado-form [mercadoProduto]="mercadoProduto" [localidadeAtual]="localidade"
+            [dtEntrada]="dtEntrada" (salvarMercadoProduto)="atualizaMercadoProduto($event)"
+            (removerMercadoProduto)="aoRemover($event)">
         </app-produtos-mercado-form>
     </div>
 </div>

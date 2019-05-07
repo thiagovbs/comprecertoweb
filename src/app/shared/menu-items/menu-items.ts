@@ -151,10 +151,12 @@ export class MenuItems {
   constructor(private usuarioService: UsuarioService) { }
 
   getMenuitem(): Menu[] {
-    if (this.usuarioService.getUsuarioLogged() && this.usuarioService.getUsuarioLogged().permissoes.find(p => p.descricao == 'MERCADO_ADMIN')) {
+    if (this.usuarioService.getUsuarioLogged()
+      && this.usuarioService.getUsuarioLogged().permissoes.find(p => p.descricao === 'MERCADO_ADMIN')) {
       return MERCADO_ADMIN_MENU_ITEMS;
     }
-    if (this.usuarioService.getUsuarioLogged() && this.usuarioService.getUsuarioLogged().permissoes.find(p => p.descricao == 'MERCADO_OPERADOR')) {
+    if (this.usuarioService.getUsuarioLogged()
+      && this.usuarioService.getUsuarioLogged().permissoes.find(p => p.descricao === 'MERCADO_OPERADOR')) {
       return MERCADO_MENU_ITEMS;
     }
   }

@@ -50,11 +50,10 @@ export class SubcategoriaService {
     return this.http.get(`${environment.urlSpring}/subcategorias/categoria/${idCategoria}`, { headers: hds, withCredentials: true })
   }
 
-  
-  getProdutosPorCategorias(categoriaId){
+  getProdutosPorCategorias(idCategoria) {
     const hds = new Headers({
       'Authorization': `Bearer ${localStorage.getItem('token')}`
     });
-    return this.http.get(`${environment.urlSpring}/produtos/categoria/${categoriaId}`, { headers: hds, withCredentials: true });
-}
+    return this.http.get(`${environment.urlSpring}/produtos/categoria/${idCategoria}`, { headers: hds, withCredentials: true });
+  }
 }

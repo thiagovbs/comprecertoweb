@@ -1,5 +1,6 @@
 import { Permissao } from './permissao';
 import { Sexo } from './sexo';
+import { Mercado } from './mercado';
 
 export class Usuario {
 
@@ -13,4 +14,5 @@ export class Usuario {
     nome: string;
     permissoes: Permissao[] = [];
     sexo: Sexo;
+    mercado: Mercado = new Mercado();
 }

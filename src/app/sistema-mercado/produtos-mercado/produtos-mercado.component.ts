@@ -1,11 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import { MercadoProduto } from '../../models/mercado-produto';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MercadoService } from '../../services/mercado.service';
 import { MercadoLocalidade } from '../../models/mercado-localidade';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { DateAdapter } from '@angular/material';
 import { MercadoProdutoService } from '../../services/mercado-produto.service';
+import { Estado } from '../../models/estado';
+import { EstadoService } from '../../services/estado.service';
+import { Cidade } from '../../models/cidade';
+import { Bairro } from '../../models/bairro';
+import { CidadeService } from '../../services/cidade.service';
+import { BairroService } from '../../services/bairro.service';
+import { MercadoLocalidadeService } from '../../services/mercado-localidade.service';
+import { UsuarioService } from '../../services/usuario.service';
 
 @Component({
   selector: 'app-produtos-mercado',
@@ -14,74 +21,114 @@ import { MercadoProdutoService } from '../../services/mercado-produto.service';
 })
 export class ProdutosMercadoComponent implements OnInit {
 
-  mercadosprodutos: MercadoProduto[] = [];
-  formLocalidade: FormGroup;
-  localidadesPorBairro: MercadoLocalidade[]
-  localidadeAtual: MercadoLocalidade;
+  mercadoprodutos: MercadoProduto[];
+  localidade: MercadoLocalidade;
   dtEntrada: any;
   minDate = new Date();
+  listaEstados: Estado[] = [];
+  listaCidades: Cidade[] = [];
+  listaBairros: Bairro[] = [];
 
-  constructor(private formBuilder: FormBuilder,
-    private mercadoService: MercadoService,
+  formLocalidade: FormGroup;
+
+  constructor(
+    private formBuilder: FormBuilder,
     private adapter: DateAdapter<any>,
     private mercadoProdutoService: MercadoProdutoService,
+    private estadoService: EstadoService,
+    private cidadeService: CidadeService,
+    private bairroService: BairroService,
+    private mercadoLocalidadeService: MercadoLocalidadeService,
+    private usuarioService: UsuarioService
   ) {
 
     this.formLocalidade = this.formBuilder.group({
-      mercadoLocalidade: [{ value: '' }, [Validators.required]],
-      data_entrada: [{ value: '' }, [Validators.required]]
+      estado: [{ value: '' }, [Validators.required]],
+      cidade: [{ value: '' }, [Validators.required]],
+      bairro: [{ value: '' }, [Validators.required]],
+      dataEntrada: [{ value: '' }, [Validators.required]]
     });
   }
 
 
   ngOnInit() {
-    this.mercadoService.getMercadoLocalidade().subscribe(resp => {
-      this.localidadesPorBairro = resp.json();
-      console.log(this.localidadesPorBairro)
-    })
+    this.getEstados();
   }
 
-  atualizaProduto(salvo) {
-    if (salvo) {
-      console.log(salvo)
-    }
-  }
-  aoRemover(produtoRemovida) {
-    this.mercadosprodutos = this.mercadosprodutos.filter(produto => produto != produtoRemovida);
+  getEstados() {
+    this.estadoService.getEstados().subscribe(data => {
+      this.listaEstados = data.json();
+    }, erro => {
+      console.error(erro.json());
+    });
   }
 
-  adicionarProdutoForm() {
-    this.mercadosprodutos.unshift(new MercadoProduto());
+  atualizaCidadeSelect(estado: Estado) {
+    this.getCidadesPorEstado(estado.idEstado);
+  }
+
+  getCidadesPorEstado(idEstado: number) {
+    this.cidadeService.getCidadesPorEstado(idEstado).subscribe(data => {
+      this.listaCidades = data.json();
+    }, erro => {
+      console.error(erro.json());
+    });
+  }
+
+  atualizaBairroSelect(cidade: Cidade) {
+    this.getBairrosPorCidade(cidade.idCidade);
+  }
+
+  getBairrosPorCidade(idCidade: number) {
+    this.bairroService.getBairrosPorCidade(idCidade).subscribe(data => {
+      this.listaBairros = data.json();
+    }, erro => {
+      console.error(erro.json());
+    });
   }
 
   getDataEntrada(event: MatDatepickerInputEvent<Date>) {
     this.adapter.setLocale('Pt');
-    this.formLocalidade.get('data_entrada').setValue(new Date(event.value).toISOString())
-  }
-
-  btnSalvarLocalidade(evento) {
-    this.localidadeAtual = evento.value.mercadoLocalidade;
-    this.dtEntrada = evento.value.data_entrada;
-    //serviço para buscar os produtos do mercado produto
-    /*     this.mercadoProdutoService.getBuscarMercadoProdutos(evento.value.mercadoLocalidade.idMercadoLocalidade)
-          .subscribe(resp => {
-            this.mercadosprodutos = resp.json();
-          }) */
-    
-    let splitData = this.dtEntrada.split("T")
-    
-    //serviço que filtra a dtEntrada para buscar os produtos do mercado produto 
-    this.mercadoProdutoService.getBuscarMercadoProdutosPorData(evento.value.mercadoLocalidade.idMercadoLocalidade, splitData[0])
-      .subscribe(resp => {
-        this.mercadosprodutos = resp.json()
-      }, erro => {
-        console.log(erro.json())
-      })
+    this.formLocalidade.get('dataEntrada').setValue(new Date(event.value).toISOString());
   }
 
   myFilter = (d: Date): boolean => {
     const day = d.getDay();
     // Só deixa selecionar terças e quintas
     return day === 2 || day === 5;
-  };
+  }
+
+  pesquisarMercadoProdutos() {
+    this.dtEntrada = this.formLocalidade.get('dataEntrada').value.split('T')[0];
+    const splitData = this.formLocalidade.get('dataEntrada').value.split('T');
+
+    //serviço que filtra a dtEntrada para buscar os produtos do mercado produto 
+    this.mercadoProdutoService.getBuscarMercadoProdutosPorBairroEDtEntrada(this.formLocalidade.get('bairro').value.idBairro, splitData[0])
+      .subscribe(resp => {
+        this.mercadoprodutos = resp.json();
+      }, erro => {
+        console.error(erro.json());
+      }, () => {
+        if (this.mercadoprodutos.length === 0) {
+          this.mercadoprodutos = [];
+        }
+      });
+
+    this.mercadoLocalidadeService.getMercadoLocalidadePorMercadoEBairro(this.usuarioService.getUsuarioLogged().mercado.idMercado, this.formLocalidade.get('bairro').value.idBairro)
+      .subscribe(data => this.localidade = data.json()[0], erro => console.error(erro.json()));
+  }
+
+  atualizaProduto(salvo) {
+    if (salvo) {
+      this.pesquisarMercadoProdutos();
+    }
+  }
+
+  aoRemover(produtoRemovida) {
+    this.mercadoprodutos = this.mercadoprodutos.filter(produto => produto !== produtoRemovida);
+  }
+
+  adicionarProdutoForm() {
+    this.mercadoprodutos.unshift(new MercadoProduto());
+  }
 }
