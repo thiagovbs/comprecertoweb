@@ -1,9 +1,53 @@
+<form [formGroup]="formLocalidade" autocomplete="off">
+    <mat-toolbar class="box-superior">
+        <div fxFlex.gt-sm="100" fxFlex.gt-xs="100">
+            <div fxLayout="row" fxLayoutWrap="wrap">
+                <div fxFlex.gt-sm="20" fxFlex.gt-xs="20">
+                    <mat-form-field class="m-r-0  m-t-10">
+                        <mat-select placeholder="Estado" formControlName="estado">
+                            <mat-option *ngFor="let estado of listaEstados" [value]="estado"
+                                (click)="atualizaCidadeSelect(estado)">
+                                {{estado.nome}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div fxFlex.gt-sm="20" fxFlex.gt-xs="20">
+                    <mat-form-field class="m-r-0  m-t-10">
+                        <mat-select placeholder="Cidade" formControlName="cidade">
+                            <mat-option *ngFor="let cidade of listaCidades" [value]="cidade"
+                                (click)="atualizaBairroSelect(cidade)">
+                                {{cidade.nome}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div fxFlex.gt-sm="20" fxFlex.gt-xs="20">
+                    <mat-form-field class="m-r-0  m-t-10">
+                        <mat-select placeholder="Bairro" formControlName="bairro">
+                            <mat-option *ngFor="let bairro of listaBairros" [value]="bairro">
+                                {{bairro.nome}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div fxFlex.gt-sm="40" fxFlex.gt-xs="20" class="m-t-20">
+                    <button mat-raised-button class="m-l-20" style="background-color:transparent; color:#fff; float: right;"
+                        [disabled]="formLocalidade.invalid" (click)="pesquisarMercados()">PESQUISAR
+                    </button>
+                </div>
+            </div>
+        </div>
+    </mat-toolbar>
+</form>
+
 <div *ngIf="mercados">
-    <app-perfil-mercado *ngFor="let mercado of mercados" [mercado]="mercado" (atualiza)="getMercados()"></app-perfil-mercado>
+    <app-perfil-mercado *ngFor="let mercado of mercados" [mercado]="mercado" (atualiza)="getMercados()">
+    </app-perfil-mercado>
 </div>
 
 <mat-card *ngIf="mercados.length ===0">
-    <mat-card-content fxLayout="row" >
+    <mat-card-content fxLayout="row">
         <p> Não existem mercados cadastrados</p>
     </mat-card-content>
 </mat-card>

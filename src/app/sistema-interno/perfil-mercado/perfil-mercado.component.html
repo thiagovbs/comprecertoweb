@@ -8,7 +8,8 @@
 
       </div>
       <div fxFlex.gt-sm="50" fxFlex.gt-xs="50">
-        <p style="font-weight: 500">{{ mercado.nomeFantasia }} <span *ngIf="mercado.fativo === false">(Inativo)</span></p>
+        <p style="font-weight: 500">{{ mercado.nomeFantasia }} <span *ngIf="mercado.fativo === false">(Inativo)</span>
+        </p>
         <a [routerLink]="['/secure/cadastro-mercado', mercado.idMercado]" *ngIf="mercado.fativo === true">
           <span class="label label-success">Editar</span>
         </a>

@@ -7,14 +7,23 @@ import { HttpModule } from '@angular/http';
 import { MercadoService } from '../../services/mercado.service';
 import { PerfilMercadoModule } from '../perfil-mercado/perfil-mercado.module';
 import { ImageUtilService } from '../../services/image-util.service';
-import { MatCardModule} from '@angular/material';
+import { MatCardModule, MatIconModule, MatToolbarModule, MatButtonModule, MatOptionModule, MatSelectModule} from '@angular/material';
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { ReactiveFormsModule } from '@angular/forms';
 @NgModule({
   imports: [
     CommonModule,
     RouterModule.forChild(ListaPerfilMercadoRoutes),
     HttpModule,
     PerfilMercadoModule,
-    MatCardModule
+    MatCardModule,
+    MatIconModule,
+    MatToolbarModule,
+    MatButtonModule,
+    FlexLayoutModule,
+    MatOptionModule,
+    MatSelectModule,
+    ReactiveFormsModule
   ],
   declarations: [ListaPerfilMercadoComponent],
   providers: [
