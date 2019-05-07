@@ -69,7 +69,13 @@ const MERCADO_ADMIN_MENU_ITEMS = [
   },
   {
     state: 'cadastro-mercado',
-    name: 'Cadastro de Supermercado',
+    name: 'Cadastro de Cliente',
+    type: 'link',
+    icon: 'add'
+  },
+  {
+    state: 'perfil-mercado',
+    name: 'Histórico de Clientes',
     type: 'link',
     icon: 'add'
   },
@@ -81,37 +87,25 @@ const MERCADO_ADMIN_MENU_ITEMS = [
   },
   {
     state: 'cadastro-categorias',
-    name: 'Categorias e Subcategorias',
+    name: 'Categorias e Sub',
+    type: 'link',
+    icon: 'add'
+  },
+  {
+    state: 'cadastro-unidades-medida',
+    name: 'Unidade de Medida',
     type: 'link',
     icon: 'add'
   },
   {
     state: 'cadastro-faq',
-    name: 'FAQ',
+    name: 'Cadastro de FAQ',
     type: 'link',
     icon: 'add'
   },
   {
     state: 'liberacao-push',
     name: 'Liberação de PUSHs',
-    type: 'link',
-    icon: 'add'
-  },
-  {
-    state: 'perfil-mercado',
-    name: 'Perfil dos Mercados',
-    type: 'link',
-    icon: 'add'
-  },
-  {
-    state: 'cadastro-unidades-medida',
-    name: 'Unidades de Medida',
-    type: 'link',
-    icon: 'add'
-  },
-  {
-    state: 'perfil-ferramentas',
-    name: 'Perfil e Ferramentas',
     type: 'link',
     icon: 'add'
   }
