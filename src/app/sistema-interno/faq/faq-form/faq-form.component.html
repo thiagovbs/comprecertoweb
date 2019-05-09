@@ -34,9 +34,9 @@
       </div>
     </mat-card-content>
     <mat-card-actions>
-      <button mat-raised-button color="warn" *ngIf="hasEdit" (click)="cancelar()">CANCELAR</button>
-      <button mat-raised-button color="warn" *ngIf="hasEdit && faq.idFaq" (click)="excluir()">EXCLUIR</button>
-      <button mat-raised-button color="primary" *ngIf="hasEdit" [disabled]="formulario.invalid" (click)="salvar()">SALVAR</button>
+      <button mat-button color="warn" *ngIf="hasEdit" (click)="cancelar()">CANCELAR</button>
+      <button mat-button color="warn" *ngIf="hasEdit && faq.idFaq" (click)="excluir()">EXCLUIR</button>
+      <button mat-button color="primary" *ngIf="hasEdit" [disabled]="formulario.invalid" (click)="salvar()">SALVAR/OK</button>
       <button mat-button color="primary" *ngIf="!hasEdit" (click)="formulario.enable(); hasEdit = true">EDITAR</button>
     </mat-card-actions>
   </form>
