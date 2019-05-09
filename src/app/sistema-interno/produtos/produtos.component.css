@@ -1,0 +1,14 @@
+.box-superior{
+    background:#004D40 !important;  
+    border-radius: 5px;
+} 
+
+.mat-toolbar{
+    color: #eee;
+    font-size: 1em;
+}
+
+mat-toolbar mat-form-field {
+    padding-left: 10px;
+    padding-right: 10px;
+}

@@ -27,6 +27,11 @@
     position: relative;
     overflow: hidden;
     display: inline-block;
+    width: 100%;
+  }
+
+  .upload-btn-wrapper button {
+      width: 100%;
   }
   
   .upload-btn-wrapper input[type=file] {

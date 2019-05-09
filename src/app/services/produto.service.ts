@@ -61,12 +61,12 @@ export class ProdutoService {
     return this.http.get(`${environment.urlSpring}/produtos/marcas/subcategoria/${idSubcategoria}/marca/${marca}`, { headers: hds, withCredentials: true })
   }
 
-  postFiltrar(filter: any) {
+  getProdutosPorCategoria(idCategoria: any) {
     const hds = new Headers({
       'Authorization': `Bearer ${localStorage.getItem('token')}`
     });
 
-    return this.http.post(`${environment.urlSpring}/produtos/filter`, filter, { headers: hds, withCredentials: true })
+    return this.http.get(`${environment.urlSpring}/produtos/categoria/${idCategoria}`, { headers: hds, withCredentials: true })
   }
 
   postUploadFile() {

@@ -11,18 +11,20 @@
                     <img mat-card-md-image [src]="myImage" alt="">
                 </div>
             </div>
-            <div fxLayout="row" fxLayoutWrap="wrap">
+            <div fxLayout="row" fxLayoutWrap="wrap" *ngIf="hasEdit">
                 <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" class="img-card" style="margin: 10px auto;">
-                    <div *ngIf="hasEdit">
+                    <div>
                         <image-cropper style="width:100%;margin:0 auto;" [imageChangedEvent]="imageChangedEvent"
                             [resizeToWidth]="180" [maintainAspectRatio]="true" [aspectRatio]=" 1 / 1 " format="png"
                             (imageCropped)="imageCropped($event)" (loadImageFailed)="loadImageFailed()">
                         </image-cropper>
-                        <div class="form-field form-field-file wrap">
-                            <div class="upload-btn-wrapper" style="text-align:center">
-                                <button mat-button color="primary">Adicionar Imagem</button>
-                                <input type="file" formControlName="imagem" (change)="fileChangeEvent($event)" />
-                            </div>
+                    </div>
+                </div>
+                <div fxFlex.gt-sm="100" fxFlex.gt-xs="100">
+                    <div class="form-field form-field-file wrap">
+                        <div class="upload-btn-wrapper" style="text-align:center">
+                            <button mat-raised-button color="primary">Adicionar Imagem</button>
+                            <input type="file" formControlName="imagem" (change)="fileChangeEvent($event)" />
                         </div>
                     </div>
                 </div>
@@ -84,11 +86,11 @@
             </div>
         </mat-card-content>
         <mat-card-actions>
-            <button mat-raised-button color="warn" *ngIf="hasEdit" (click)="cancelar()">CANCELAR</button>
-            <button mat-raised-button color="warn" *ngIf="hasEdit && produto.idProduto"
+            <button mat-button color="warn" *ngIf="hasEdit" (click)="cancelar()">CANCELAR</button>
+            <button mat-button color="warn" *ngIf="hasEdit && produto.idProduto"
                 (click)="excluir()">EXCLUIR</button>
-            <button mat-raised-button color="primary" *ngIf="hasEdit" [disabled]="formulario.invalid"
-                (click)="salvar()">SALVAR</button>
+            <button mat-button color="primary" *ngIf="hasEdit" [disabled]="formulario.invalid"
+                (click)="salvar()">SALVAR/OK</button>
             <button mat-button color="primary" *ngIf="!hasEdit"
                 (click)="formulario.enable(); hasEdit = true">EDITAR</button>
         </mat-card-actions>

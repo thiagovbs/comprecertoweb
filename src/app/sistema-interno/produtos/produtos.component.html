@@ -1,21 +1,31 @@
-<mat-toolbar color="primary" class="little">
-    <span>Cadastros de produtos</span>
-    <span fxFlex></span>
-    <button mat-button href="#" mat-icon-button (click)="adicionarProdutoForm()">
-        <mat-icon>add</mat-icon>
-    </button>
-    <button mat-button href="#" mat-icon-button (click)="getProdutos()">
-        <mat-icon>refresh</mat-icon>
-    </button>
-    <button mat-button href="#" mat-icon-button (click)="filterShow = !filterShow">
-        <mat-icon>filter_list</mat-icon>
-    </button>
+<mat-toolbar class="box-superior">
+    <div fxFlex.gt-sm="100" fxFlex.gt-xs="100">
+        <div fxLayout="row" fxLayoutWrap="wrap">
+            <div fxFlex.gt-sm="30" fxFlex.gt-xs="30">
+                <mat-form-field class="m-r-0  m-t-10">
+                    <mat-select placeholder="Categoria" [(ngModel)]="categoria">
+                        <mat-option [value]="undefined">Selecione uma opção</mat-option>
+                        <mat-option *ngFor="let categoria of categorias" [value]="categoria">
+                            {{categoria.nome}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div fxFlex.gt-sm="70" fxFlex.gt-xs="70" class="m-t-20">
+                <button mat-raised-button class="m-l-20" style="background-color:transparent; color:#fff; float: right;"
+                    (click)="filtrar()">PESQUISAR
+                </button>
+            </div>
+        </div>
+    </div>
 </mat-toolbar>
+
 <form *ngIf="filterShow" style="padding: 10px">
     <div fxLayout="row" fxLayoutWrap="wrap">
         <div fxFlex.gt-sm="20" fxFlex.gt-xs="20">
             <mat-form-field>
-                <mat-select placeholder="Selecione" name="categoria" [(ngModel)]="filter.categoria" (selectionChange)="carregaSubcategorias($event.value)">
+                <mat-select placeholder="Selecione" name="categoria" [(ngModel)]="filter.categoria"
+                    (selectionChange)="carregaSubcategorias($event.value)">
                     <mat-option *ngFor="let categoria of categorias" [value]="categoria" [disabled]="!categoria.fativo">
                         {{ categoria.nome }}
                     </mat-option>
@@ -26,7 +36,8 @@
             <mat-form-field>
                 <mat-select placeholder="Selecione" name="subcategoria" [(ngModel)]="filter.subcategoria"
                     (selectionChange)="carregaMarcas($event.value)" [disabled]="subcategorias.length === 0">
-                    <mat-option *ngFor="let subcategoria of subcategorias" [value]="subcategoria" [disabled]="!subcategoria.fativo">
+                    <mat-option *ngFor="let subcategoria of subcategorias" [value]="subcategoria"
+                        [disabled]="!subcategoria.fativo">
                         {{ subcategoria.nome }}
                     </mat-option>
                 </mat-select>
@@ -34,7 +45,8 @@
         </div>
         <div fxFlex.gt-sm="20" fxFlex.gt-xs="20">
             <mat-form-field>
-                <mat-select placeholder="Selecione" name="marca" [(ngModel)]="filter.marca" [disabled]="marcas.length === 0"
+                <mat-select placeholder="Selecione" name="marca" [(ngModel)]="filter.marca"
+                    [disabled]="marcas.length === 0"
                     (selectionChange)="carregaUnidadesMedida(filter.subcategoria, $event.value)">
                     <mat-option *ngFor="let marca of marcas" [value]="marca">
                         {{ marca }}
@@ -44,7 +56,8 @@
         </div>
         <div fxFlex.gt-sm="20" fxFlex.gt-xs="20">
             <mat-form-field>
-                <mat-select placeholder="Selecione" name="unidadeMedida" [(ngModel)]="filter.unidadeMedida" [disabled]="unidadesMedida.length === 0">
+                <mat-select placeholder="Selecione" name="unidadeMedida" [(ngModel)]="filter.unidadeMedida"
+                    [disabled]="unidadesMedida.length === 0">
                     <mat-option *ngFor="let unidadeMedida of unidadesMedida" [value]="unidadeMedida">
                         {{ unidadeMedida.quantidade + ' ' + unidadeMedida.unidadeMedida }}
                     </mat-option>
@@ -70,6 +83,7 @@
 
 <div fxLayout="row" fxLayoutWrap="wrap">
     <div fxFlex.gt-sm="33.33%" fxFlex="100" *ngFor="let produto of produtos">
-        <app-produtos-form [produto]="produto" (removerProduto)="aoRemover($event)" (salvarProduto)="atualizaProduto($event)"></app-produtos-form>
+        <app-produtos-form [produto]="produto" (removerProduto)="aoRemover($event)"
+            (salvarProduto)="atualizaProduto($event)"></app-produtos-form>
     </div>
 </div>
