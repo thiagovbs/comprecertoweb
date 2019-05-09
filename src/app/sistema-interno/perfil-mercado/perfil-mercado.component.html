@@ -10,12 +10,12 @@
       <div fxFlex.gt-sm="50" fxFlex.gt-xs="50">
         <p style="font-weight: 500">{{ mercado.nomeFantasia }} <span *ngIf="mercado.fativo === false">(Inativo)</span>
         </p>
-        <a [routerLink]="['/secure/cadastro-mercado', mercado.idMercado]" *ngIf="mercado.fativo === true">
-          <span class="label label-success">Editar</span>
+        <a [routerLink]="['/secure/cadastro-mercado', mercado.idMercado]" style="padding: 5px;"
+          *ngIf="mercado.fativo === true">
+          <span class="btn-success">Editar</span>
         </a>
-        <a (click)="desativar()" *ngIf="mercado.fativo === true">
-          <span class="label label-danger pointer">Desativar</span>
-        </a>
+        <span (click)="desativar()" style="padding: 5px; cursor: pointer;"
+          *ngIf="mercado.fativo === true">Desativar</span>
       </div>
       <div fxFlex.gt-sm="30" fxFlex.gt-xs="30" class="text-right">
         <p>Valor da conta total: {{ getValorTotal() | currency:'BRL':true }}</p>
@@ -28,8 +28,8 @@
         {{ mercado.razaoSocial }}
       </div>
       <div fxFlex.gt-sm="50" fxFlex.gt-xs="50">
-        <span style="font-weight: 500; padding-right: 10px">Senha: </span>
-        {{ mercado.senha }}
+        <span style="font-weight: 500; padding-right: 10px">Telefone: </span>
+        {{ mercado.telefone }}
       </div>
       <div fxFlex.gt-sm="50" fxFlex.gt-xs="50">
         <span style="font-weight: 500; padding-right: 10px">Nome fantasia:
@@ -37,16 +37,16 @@
         {{ mercado.nomeFantasia }}
       </div>
       <div fxFlex.gt-sm="50" fxFlex.gt-xs="50">
-        <span style="font-weight: 500; padding-right: 10px">Telefone: </span>
-        {{ mercado.telefone }}
+        <span style="font-weight: 500; padding-right: 10px">E-mail: </span>
+        {{ mercado.email }}
       </div>
       <div fxFlex.gt-sm="50" fxFlex.gt-xs="50">
         <span style="font-weight: 500; padding-right: 10px">CNPJ: </span>
         {{ mercado.cnpj }}
       </div>
       <div fxFlex.gt-sm="50" fxFlex.gt-xs="50">
-        <span style="font-weight: 500; padding-right: 10px">E-mail: </span>
-        {{ mercado.email }}
+        <span style="font-weight: 500; padding-right: 10px">Senha: </span>
+        {{ mercado.senha }}
       </div>
     </div>
     <hr>
@@ -57,10 +57,10 @@
         </ng-template>
         <div class="demo-tab-content">
           <div fxLayout="row" fxLayoutWrap="wrap">
-            <div fxFlex.gt-sm="50" fxFlex.gt-xs="50">
+            <!-- <div fxFlex.gt-sm="50" fxFlex.gt-xs="50">
               {{ localidade.googlemapsLinks.split(',').length === 1 ? '- 1 Filial' :
               ('- ' + localidade.googlemapsLinks.split(',').length + ' filiais') }}
-            </div>
+            </div> -->
             <div fxFlex.gt-sm="50" fxFlex.gt-xs="50" *ngFor="let servico of localidade.mercadoServicos">
               {{ '- ' + servico.pacoteServico.nome }}
             </div>

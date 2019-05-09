@@ -14,3 +14,7 @@
 .pointer {
     cursor: pointer;
 }
+
+.btn-success {
+    color: #009b89;
+}
