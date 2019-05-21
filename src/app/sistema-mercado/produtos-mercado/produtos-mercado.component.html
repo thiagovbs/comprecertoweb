@@ -41,7 +41,8 @@
                     </mat-form-field>
                 </div>
                 <div fxFlex.gt-sm="20" fxFlex.gt-xs="20" class="m-t-20 ">
-                    <button mat-raised-button class="m-l-20" style="background-color:transparent; color:#fff"
+                    <button mat-raised-button class="m-l-20"
+                        style="background-color:transparent; color:#fff; float: right; margin-right: 32px;"
                         [disabled]="formLocalidade.invalid" (click)="pesquisarMercadoProdutos()">PESQUISAR
                     </button>
                 </div>
@@ -50,18 +51,30 @@
     </mat-toolbar>
 </form>
 
-<mat-toolbar color="primary" style=" margin-top:10px;" class="little" *ngIf="mercadoprodutos">
-    <span>Cadastros de produtos</span>
+<mat-toolbar color="primary" style=" margin:10px 15px" class="little" *ngIf="mercadoprodutos">
+    <div fxFlex.gt-sm="100" fxFlex.gt-xs="100">
+        <div fxLayout="row" fxLayoutWrap="wrap">
+            <div fxFlex.gt-sm="30" fxFlex.gt-xs="30">
+                <mat-form-field class="m-r-0  m-t-10">
+                    <mat-select placeholder="Categoria">
+                        <mat-option *ngFor="let categoria of listaCategorias" [value]="categoria"
+                            (click)="atualizaCategoriaSelect(categoria)">
+                            {{categoria.nome}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div fxFlex.gt-sm="30" fxFlex.gt-xs="30" style="padding: 0px 20px">
+                <div style="margin-top: 22px;">
+                    Qd Produtos: {{mercadoprodutos.length}}
+                </div>
+            </div>
+        </div>
+    </div>
     <span fxFlex></span>
     <button mat-button href="#" mat-icon-button (click)="adicionarProdutoForm()">
         <mat-icon>add</mat-icon>
     </button>
-    <!-- <button mat-button href="#" mat-icon-button>
-        <mat-icon>refresh</mat-icon>
-    </button>
-    <button mat-button href="#" mat-icon-button>
-        <mat-icon>filter_list</mat-icon>
-    </button> -->
 </mat-toolbar>
 
 <div fxLayout="row" fxLayoutWrap="wrap">

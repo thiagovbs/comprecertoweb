@@ -13,6 +13,8 @@ import { CidadeService } from '../../services/cidade.service';
 import { BairroService } from '../../services/bairro.service';
 import { MercadoLocalidadeService } from '../../services/mercado-localidade.service';
 import { UsuarioService } from '../../services/usuario.service';
+import { CategoriaService } from '../../services/categoria.service';
+import { Categoria } from '../../models/categoria';
 
 @Component({
   selector: 'app-produtos-mercado',
@@ -28,6 +30,7 @@ export class ProdutosMercadoComponent implements OnInit {
   listaEstados: Estado[] = [];
   listaCidades: Cidade[] = [];
   listaBairros: Bairro[] = [];
+  listaCategorias: Categoria[] = [];
 
   formLocalidade: FormGroup;
 
@@ -39,7 +42,8 @@ export class ProdutosMercadoComponent implements OnInit {
     private cidadeService: CidadeService,
     private bairroService: BairroService,
     private mercadoLocalidadeService: MercadoLocalidadeService,
-    private usuarioService: UsuarioService
+    private usuarioService: UsuarioService,
+    private categoriaService: CategoriaService
   ) {
 
     this.formLocalidade = this.formBuilder.group({
@@ -112,6 +116,8 @@ export class ProdutosMercadoComponent implements OnInit {
         if (this.mercadoprodutos.length === 0) {
           this.mercadoprodutos = [];
         }
+
+        this.getCategorias();
       });
 
     this.mercadoLocalidadeService.getMercadoLocalidadePorMercadoEBairro(this.usuarioService.getUsuarioLogged().mercado.idMercado, this.formLocalidade.get('bairro').value.idBairro)
@@ -130,5 +136,12 @@ export class ProdutosMercadoComponent implements OnInit {
 
   adicionarProdutoForm() {
     this.mercadoprodutos.unshift(new MercadoProduto());
+  }
+
+  getCategorias() {
+    this.categoriaService.getCategorias()
+      .subscribe(data => {
+        this.listaCategorias = data.json();
+      }, error => console.log(error));
   }
 }

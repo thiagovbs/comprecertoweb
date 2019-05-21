@@ -83,8 +83,12 @@ export class ListaPerfilMercadoComponent implements OnInit {
   }
 
   pesquisarMercados() {
-    this.observable = this.mercadoService.getMercadosPorBairro(this.formLocalidade.get('bairro').value.idBairro).subscribe(data => {
-      this.mercados = data.json();
-    }, error => console.log(error));
+    if (this.formLocalidade.get('bairro').value.idBairro) {
+      this.observable = this.mercadoService.getMercadosPorBairro(this.formLocalidade.get('bairro').value.idBairro).subscribe(data => {
+        this.mercados = data.json();
+      }, error => console.log(error));
+    } else {
+      this.getMercados();
+    }
   }
 }

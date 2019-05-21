@@ -1,12 +1,11 @@
 import { MercadoService } from '../../services/mercado.service';
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
 import { Mercado } from '../../models/mercado';
 
 import Swal from 'sweetalert2';
 import { ActivatedRoute } from '@angular/router';
 import { PacoteServico } from '../../models/pacote-servico';
-
 
 @Component({
   selector: 'app-mercado',
@@ -70,61 +69,53 @@ export class MercadoComponent implements OnInit {
 
   salvar() {
     this.mercado.imageBase64 = this.mercadoService.croppedFile;
-    console.log(this.mercado)
 
     if (this.mercado.idMercado) {
-      this.mercadoService.putMercado(this.mercado).subscribe(data => {
-        this.sendImage();
-        console.log(data.json())
+      this.mercadoService.putMercado(this.mercado).subscribe(() => {
+        // this.sendImage();
         // this.atualizaProduto.emit(true);
       }, error => {
         console.log(error.json());
       }, () => {
         // this.formulario.disable();
         // this.hasEdit = false;
-        Swal('Atualização', `O mercado ${this.mercado.nomeFantasia} foi atualizado!`, "success")
-      })
+        Swal('Atualização', `O mercado ${this.mercado.nomeFantasia} foi atualizado!`, 'success');
+      });
     } else {
-      this.mercado.imageBase64 = this.mercadoService.croppedFile;
-      this.mercadoService.postMercado(this.mercado).subscribe(data => {
-        this.sendImage();
+      this.mercadoService.postMercado(this.mercado).subscribe(() => {
+        // this.sendImage();
         // this.atualizaProduto.emit(true);
       }, error => {
         console.log(error.json());
       }, () => {
         // this.formulario.disable();
         // this.hasEdit = false;
-        Swal('Inclusão', `O mercado ${this.mercado.nomeFantasia} foi salvo!`, "success")
-      })
+        Swal('Inclusão', `O mercado ${this.mercado.nomeFantasia} foi salvo!`, 'success');
+      });
     }
   }
 
   getMercadoPorId() {
     this.mercadoService.getMercadoPorId(this.mercado.idMercado).subscribe(data => {
       this.mercado = data.json();
-      console.log(data.json())
     }, error => {
       console.log(error.json());
     }, () => {
       this.mercado.mercadoLocalidades.forEach(localidade => {
-        let localidades = localidade.googlemapsLinks.split(',');
+        const localidades = localidade.googlemapsLinks.split(',');
         localidade.googlemapsLinksTemp = localidades.map((loc, index) => ({ id: index, value: loc }));
 
         localidade.servicosTemp.forEach(servicoTemp => {
           if (!servicoTemp.pacoteSelecionado || servicoTemp.pacoteSelecionado === null) {
             servicoTemp.pacoteSelecionado = new PacoteServico();
           }
-        })
-      })
-    })
+        });
+      });
+    });
   }
 
-  //envia upload da imagem
+  // envia upload da imagem
   sendImage() {
-    this.mercadoService.postUploadFile().subscribe(resp => {
-      console.log(resp)
-    }, erro => {
-
-    });
+    this.mercadoService.postUploadFile();
   }
 }

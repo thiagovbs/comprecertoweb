@@ -13,3 +13,7 @@ mat-toolbar mat-form-field {
     padding-left: 10px;
     padding-right: 10px;
 }
+
+.mat-toolbar.little {
+    border-radius: 15px;
+}

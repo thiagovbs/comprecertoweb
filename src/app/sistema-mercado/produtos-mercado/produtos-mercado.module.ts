@@ -35,7 +35,6 @@ import { EstadoService } from '../../services/estado.service';
 import { CidadeService } from '../../services/cidade.service';
 import { BairroService } from '../../services/bairro.service';
 
-
 @NgModule({
   imports: [
     CommonModule,

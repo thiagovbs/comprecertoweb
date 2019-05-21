@@ -73,9 +73,7 @@ export class MercadoService {
 
   // inserir a imagem croppada que vem da pagina pré visualização e jogar no método postUploadFile()
   getCroppedImageFile(myCroppedFile: File) {
-
     this.croppedFile = myCroppedFile;
-    console.log(this.croppedFile);
   }
 
   // pegar o path da imagem que vem da pagina pré visualização e jogar no mercado model

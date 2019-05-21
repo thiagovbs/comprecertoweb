@@ -1,9 +1,8 @@
-
-<div fxLayout="row" class="background-white"  fxLayoutWrap="wrap">
+<div fxLayout="row" class="background-white" fxLayoutWrap="wrap">
     <div fxFlex.gt-sm="50%" class="show-lg">
         <img src="assets/images/login-cut.jpg" alt="" style="height: 105%;">
     </div>
-    <div fxFlex.gt-sm="50" fxFlex.gt-xs="50" fxLayoutWrap="wrap" class="center-cel"> 
+    <div fxFlex.gt-sm="50" fxFlex.gt-xs="50" fxLayoutWrap="wrap" class="center-cel">
         <div class="login-register">
             <div class="login-register-box">
                 <mat-card style="box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.05) !important;">
@@ -13,8 +12,7 @@
                                 <img alt="homepage" src="assets/images/Logo Sheap-04.svg" height="150">
                             </div>
 
-                            <div fxLayout="row" fxLayoutWrap="wrap" >
-                                <!-- col full-->
+                            <div fxLayout="row" fxLayoutWrap="wrap">
                                 <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100">
                                     <mat-form-field>
                                         <input matInput placeholder="Username"
@@ -24,7 +22,6 @@
                                         *ngIf="form.controls['username'].hasError('required') && form.controls['username'].touched"
                                         class="text-danger support-text">Username is required.</small>
                                 </div>
-                                <!-- col full-->
                                 <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100">
                                     <mat-form-field>
                                         <input matInput type="password" placeholder="Password"
@@ -34,30 +31,18 @@
                                         *ngIf="form.controls['password'].hasError('required') && form.controls['password'].touched"
                                         class="text-danger support-text">Password is required.</small>
                                 </div>
-                                <!-- col half-->
-                               <!--  <div fxFlex.gt-sm="50" fxFlex.gt-xs="50">
-                                    <mat-checkbox color="warn">Remember me</mat-checkbox>
-                                </div> -->
-                                <!-- col half-->
-                               <!--  <div fxFlex.gt-sm="50" fxFlex.gt-xs="50" class="text-right">
-                                    <a [routerLink]="['/authentication/forgot']" class="link">Forgot pwd?</a>
-                                </div> -->
-                                <!-- col full-->
                                 <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100" class="text-center"
                                     *ngIf="error">
                                     <br>
                                     <span style="color: red">Usuário ou senha inválida</span>
                                 </div>
-                                <!-- col full-->
                                 <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100" class="text-center">
-                                    <button mat-raised-button class=" btn-lg m-t-20 m-b-20 login-btn"
-                                        type="submit" [disabled]="!form.valid">Entrar</button>
+                                    <button mat-raised-button class=" btn-lg m-t-20 m-b-20 login-btn" type="submit"
+                                        [disabled]="!form.valid">Entrar</button>
                                 </div>
-                                <!-- col full-->
                                 <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100" class="text-center">
                                     <span>Precisando de
-                                        <a [routerLink]="['/authentication/register']"
-                                            class="text-info link">Ajuda?</a>
+                                        <a [routerLink]="['/authentication/register']" class="text-info link">Ajuda?</a>
                                     </span>
                                 </div>
                             </div>
