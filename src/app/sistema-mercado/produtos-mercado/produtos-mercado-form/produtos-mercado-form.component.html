@@ -116,9 +116,11 @@
       </div>
     </mat-card-content>
     <mat-card-actions>
-      <button color="warn" *ngIf="hasEdit" (click)="cancelar()">CANCELAR</button>
-      <button color="warn" *ngIf="hasEdit && mercadoProduto.idMercadoProduto" (click)="excluir()">EXCLUIR</button>
-      <button color="primary" [disabled]="formulario.invalid" *ngIf="hasEdit" (click)="btnSalvar()">SALVAR</button>
+      <button mat-button color="warn" *ngIf="hasEdit" (click)="cancelar()">CANCELAR</button>
+      <button mat-button color="warn" *ngIf="hasEdit && mercadoProduto.idMercadoProduto"
+        (click)="excluir()">EXCLUIR</button>
+      <button mat-button color="primary" [disabled]="formulario.invalid" *ngIf="hasEdit"
+        (click)="btnSalvar()">SALVAR</button>
       <button mat-button color="primary" *ngIf="!hasEdit" (click)="formulario.enable(); hasEdit = true">Editar</button>
     </mat-card-actions>
 

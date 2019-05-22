@@ -41,8 +41,8 @@
                     </mat-form-field>
                 </div>
                 <div fxFlex.gt-sm="20" fxFlex.gt-xs="20" class="m-t-20 ">
-                    <button mat-raised-button class="m-l-20"
-                        style="background-color:transparent; color:#fff; float: right; margin-right: 32px;"
+                    <button mat-raised-button
+                        style="background-color:transparent; color:#fff; float: right; margin-right: 15%;"
                         [disabled]="formLocalidade.invalid" (click)="pesquisarMercadoProdutos()">PESQUISAR
                     </button>
                 </div>
@@ -51,7 +51,7 @@
     </mat-toolbar>
 </form>
 
-<mat-toolbar color="primary" style=" margin:10px 15px" class="little" *ngIf="mercadoprodutos">
+<mat-toolbar color="primary" style=" margin-top:10px" class="little" *ngIf="mercadoprodutos">
     <div fxFlex.gt-sm="100" fxFlex.gt-xs="100">
         <div fxLayout="row" fxLayoutWrap="wrap">
             <div fxFlex.gt-sm="30" fxFlex.gt-xs="30">
