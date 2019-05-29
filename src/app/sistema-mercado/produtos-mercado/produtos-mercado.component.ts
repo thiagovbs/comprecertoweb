@@ -60,7 +60,7 @@ export class ProdutosMercadoComponent implements OnInit {
   }
 
   getEstados() {
-    this.estadoService.getEstados().subscribe(data => {
+    this.estadoService.getEstadosPorMercado().subscribe(data => {
       this.listaEstados = data.json();
     }, erro => {
       console.error(erro.json());
