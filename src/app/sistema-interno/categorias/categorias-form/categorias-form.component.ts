@@ -1,7 +1,7 @@
 import { CategoriaService } from './../../../services/categoria.service';
 import { Component, OnInit, Input, Output, EventEmitter, Inject } from '@angular/core';
 import { Categoria } from '../../../models/categoria';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { ENTER, COMMA } from '@angular/cdk/keycodes';
 import { MatChipInputEvent } from '@angular/material';
 import { UnidadeMedida } from '../../../models/unidade-medida';
@@ -42,14 +42,14 @@ export class CategoriasFormComponent implements OnInit {
   // Enter, comma
   separatorKeysCodes = [ENTER, COMMA];
 
-  constructor(private formBuilder: FormBuilder,
+  constructor(
     private categoriaService: CategoriaService,
     private unidadeMedidaService: UnidadeMedidaService) {
 
-    this.formulario = this.formBuilder.group({
-      fativo: ['', [Validators.required]],
-      nome: ['', [Validators.required]],
-      imagem: ['', [Validators.required]]
+    this.formulario = new FormGroup({
+      fativo: new FormControl(''),
+      nome:  new FormControl ('', [Validators.required]),
+      imagem:  new FormControl('', [Validators.required])
     });
   }
 

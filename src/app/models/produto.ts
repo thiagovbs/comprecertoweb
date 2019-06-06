@@ -10,6 +10,7 @@ export class Produto {
     marca: string;
     nome: string;
     quantidade: number;
+    imageBase64:any
     subcategoria: Subcategoria = new Subcategoria();
     unidadeMedida: UnidadeMedida = new UnidadeMedida();
     categoria: Categoria = new Categoria();

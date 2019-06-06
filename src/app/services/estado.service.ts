@@ -22,6 +22,7 @@ export class EstadoService {
   }
 
   getEstadosPorMercado() {
+    console.log(this.usuarioService.getUsuarioLogged().mercado.idMercado)
     const hds = new Headers({
       'Authorization': `Bearer ${localStorage.getItem('token')}`
     });

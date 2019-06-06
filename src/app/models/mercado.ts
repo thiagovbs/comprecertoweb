@@ -10,6 +10,7 @@ export class Mercado {
     telefone: string;
     email: string;
     fativo: boolean;
+    imagemUrl?:any
 
     mercadoLocalidades: MercadoLocalidade[] = [];
 }

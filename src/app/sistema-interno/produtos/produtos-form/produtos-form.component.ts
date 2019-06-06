@@ -60,6 +60,7 @@ export class ProdutosFormComponent implements OnInit {
 
   ngOnInit() {
     this.getSubcategorias();
+
     if (this.produto.idProduto) {
       console.log(this.produto)
       this.getUnidadesMedidaPorSubcategoria(this.produto.subcategoria)
@@ -85,13 +86,13 @@ export class ProdutosFormComponent implements OnInit {
   }
 
   salvar() {
-
-    this.produto.imagemUrl = this.formulario.value.imagem;
+    this.produto.imageBase64 =this.produtoService.croppedFile
+    
     console.log(this.produto)
     if (this.formulario.valid) {
       if (this.produto.idProduto) {
         this.produtoService.putProduto(this.produto).subscribe(data => {
-          this.sendImage();
+          
           this.atualizaProduto.emit(true);
         }, error => {
           console.log(error.json());
@@ -178,5 +179,9 @@ export class ProdutosFormComponent implements OnInit {
     }, erro => {
       console.log(erro)
     });
+  }
+
+  loadImageFailed(){
+
   }
 }

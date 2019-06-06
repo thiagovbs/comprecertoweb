@@ -5,7 +5,7 @@ import { MercadoService } from '../../../../services/mercado.service';
 
 import { ImageCroppedEvent } from 'ngx-image-cropper';
 import { Mercado } from '../../../../models/mercado';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-pre-visualizacao',
@@ -25,19 +25,20 @@ export class PreVisualizacaoComponent implements OnInit {
 
   constructor(
     @Inject(MercadoComponent) private mercadoComponent: MercadoComponent,
-    private mercadoService: MercadoService,
-    private formBuilder: FormBuilder
+    private mercadoService: MercadoService
   ) { }
 
   ngOnInit() {
+    console.log(this.mercadoComponent.mercado)
     if (this.mercadoComponent.mercado.idMercado) {
-      this.formulario = this.formBuilder.group({
-        imagem: ['']
+      
+      this.formulario = new FormGroup({
+        imagem: new FormControl('')
       });
-      this.myImage = this.mercadoComponent.mercado.imageBase64;
+      this.myImage = this.mercadoComponent.mercado.imagemUrl;
     } else {
-      this.formulario = this.formBuilder.group({
-        imagem: ['', [Validators.required]]
+      this.formulario = new FormGroup({
+        imagem:new FormControl ('', [Validators.required])
       });
     }
   }
