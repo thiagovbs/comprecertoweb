@@ -7,7 +7,6 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DemoMaterialModule } from './demo-material-module';
 import { SharedModule } from './shared/shared.module';
-import { NgxLoadingModule } from 'ngx-loading';
 import { SpinnerComponent } from './shared/spinner.component';
 import { AppSidebarComponent } from './layouts/full/sidebar/sidebar.component';
 import { AppHeaderComponent } from './layouts/full/header/header.component';
@@ -36,6 +35,7 @@ import { HttpModule } from '@angular/http';
     HttpClientModule,
     SharedModule,
     RouterModule.forRoot(AppRoutes),
+
     ImageCropperModule,
     HttpModule
   ],
