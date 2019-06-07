@@ -4,7 +4,7 @@ import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
 import { Mercado } from '../../models/mercado';
 
 import Swal from 'sweetalert2';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { PacoteServico } from '../../models/pacote-servico';
 
 @Component({
@@ -17,7 +17,7 @@ export class MercadoComponent implements OnInit {
   private mediaMatcher: MediaQueryList = matchMedia(`(max-width: 960px)`);
 
   public config: PerfectScrollbarConfigInterface = {};
-
+  loading: boolean = false;
   displayMode = 'default';
 
   tabs: any = [
@@ -50,7 +50,8 @@ export class MercadoComponent implements OnInit {
 
   constructor(
     private mercadoService: MercadoService,
-    private activeRoute: ActivatedRoute) { }
+    private activeRoute: ActivatedRoute,
+    private router: Router) { }
 
   ngOnInit() {
     this.activeRoute.params.subscribe(params => {
@@ -68,29 +69,30 @@ export class MercadoComponent implements OnInit {
   }
 
   salvar() {
+    this.loading = true;
     this.mercado.imageBase64 = this.mercadoService.croppedFile;
 
     if (this.mercado.idMercado) {
       this.mercadoService.putMercado(this.mercado).subscribe(() => {
-        // this.sendImage();
         // this.atualizaProduto.emit(true);
       }, error => {
-        console.log(error.json());
+        this.loading = false
+        Swal('Alteração', `O mercado ${this.mercado.nomeFantasia} não pode ser editado, verifique se está tudo preenchido corretamente!`, 'warning');
       }, () => {
-        // this.formulario.disable();
-        // this.hasEdit = false;
+        this.loading = false
         Swal('Atualização', `O mercado ${this.mercado.nomeFantasia} foi atualizado!`, 'success');
+        this.router.navigate(['/secure/perfil-mercado'])
       });
     } else {
       this.mercadoService.postMercado(this.mercado).subscribe(() => {
-        // this.sendImage();
-        // this.atualizaProduto.emit(true);
+
       }, error => {
-        console.log(error.json());
+        this.loading = false
+        Swal('Inclusão', `O mercado não pode ser salvo, verifique se está tudo preenchido corretamente!`, 'warning');
       }, () => {
-        // this.formulario.disable();
-        // this.hasEdit = false;
+        this.loading = false
         Swal('Inclusão', `O mercado ${this.mercado.nomeFantasia} foi salvo!`, 'success');
+        this.router.navigate(['/perfil-mercado'])
       });
     }
   }
@@ -112,10 +114,5 @@ export class MercadoComponent implements OnInit {
         });
       });
     });
-  }
-
-  // envia upload da imagem
-  sendImage() {
-    this.mercadoService.postUploadFile();
   }
 }

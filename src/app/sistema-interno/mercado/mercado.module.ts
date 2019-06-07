@@ -18,6 +18,7 @@ import { ServicoService } from '../../services/servico.service';
 import { PreVisualizacaoComponent } from './tabs/pre-visualizacao/pre-visualizacao.component';
 import { ImageCropperModule } from 'ngx-image-cropper';
 import { ImageUtilService } from '../../services/image-util.service';
+import { NgxLoadingModule } from 'ngx-loading';
 
 @NgModule({
   imports: [
@@ -43,7 +44,9 @@ import { ImageUtilService } from '../../services/image-util.service';
     MatSelectModule,
     MatCheckboxModule,
     MatSlideToggleModule,
-    ImageCropperModule
+    ImageCropperModule,
+    NgxLoadingModule.forRoot({})
+    
   ],
   declarations: [MercadoComponent, CadastroMercadoComponent, LocalidadeFilialComponent, PacoteServicosComponent, PreVisualizacaoComponent]
   , providers: [

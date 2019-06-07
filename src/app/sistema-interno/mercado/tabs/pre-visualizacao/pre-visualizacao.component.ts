@@ -15,7 +15,7 @@ import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms'
 export class PreVisualizacaoComponent implements OnInit {
 
   formulario: FormGroup;
-
+ 
   // upload file
   imageChangedEvent: File = null;
   croppedImage: any = '';

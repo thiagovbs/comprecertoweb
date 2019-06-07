@@ -33,4 +33,8 @@
       </div>
     </mat-sidenav-container>
   </mat-card-content>
+  <ngx-loading [show]="loading"
+  [config]="{ primaryColour:'#009b89',secondaryColour:'#009b89',tertiaryColour:'#009b89'}"
+  [template]="customLoadingTemplate">
+</ngx-loading>
 </mat-card>
