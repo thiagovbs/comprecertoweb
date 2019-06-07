@@ -36,7 +36,6 @@ import { HttpModule } from '@angular/http';
     HttpClientModule,
     SharedModule,
     RouterModule.forRoot(AppRoutes),
-    NgxLoadingModule.forRoot({}),
     ImageCropperModule,
     HttpModule
   ],
