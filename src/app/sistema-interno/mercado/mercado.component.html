@@ -4,15 +4,18 @@
 
 <mat-card>
   <mat-card-content>
-    <mat-sidenav-container class="email-box" [ngClass]="{ 'side-panel-opened': sidePanelOpened, 'side-panel-closed': !sidePanelOpened }">
+    <mat-sidenav-container class="email-box"
+      [ngClass]="{ 'side-panel-opened': sidePanelOpened, 'side-panel-closed': !sidePanelOpened }">
       <mat-sidenav #mercadonav [mode]="isOver() ? 'over' : 'side'" [opened]="!isOver()" (open)="sidePanelOpened = true"
-        (close)="sidePanelOpened = false" class="mail-sidebar" [perfectScrollbar]="config" [disabled]="isOver()" class="email-sidebar">
+        (close)="sidePanelOpened = false" class="mail-sidebar" [perfectScrollbar]="config" [disabled]="isOver()"
+        class="email-sidebar">
 
         <div *ngFor="let tab of tabs; let i = index" [class.selected]="selectedTab == tab">
           <div (click)="!tab.disabled && selectedTab = tab">
             <div class="d-flex">
               <div>
-                <div class="mail-title" fxShow="false" fxShow.gt-xs style="min-width: 120px;" [ngStyle]="{'opacity' : tab.disabled ? '0.5' : '1'}">
+                <div class="mail-title" fxShow="false" fxShow.gt-xs style="min-width: 120px;"
+                  [ngStyle]="{'opacity' : tab.disabled ? '0.5' : '1'}">
                   <span>{{ tab.nome }}</span>
                 </div>
               </div>
@@ -33,8 +36,8 @@
       </div>
     </mat-sidenav-container>
   </mat-card-content>
-  <ngx-loading [show]="loading"
+  <!--   <ngx-loading [show]="loading"
   [config]="{ primaryColour:'#009b89',secondaryColour:'#009b89',tertiaryColour:'#009b89'}"
   [template]="customLoadingTemplate">
-</ngx-loading>
+</ngx-loading> -->
 </mat-card>
