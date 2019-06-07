@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Produto } from '../../../models/produto';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { ProdutoService } from '../../../services/produto.service';
 
 import { Subcategoria } from '../../../models/subcategoria';
@@ -21,6 +21,8 @@ import { environment } from '../../../../environments/environment';
 })
 export class ProdutosFormComponent implements OnInit {
 
+  loading = false;
+
   @Input("produto")
   produto: Produto = new Produto();
   subcategorias: Subcategoria[] = [];
@@ -29,7 +31,7 @@ export class ProdutosFormComponent implements OnInit {
   @Output("removerProduto")
   produtoRemovida = new EventEmitter();
 
-  @Output("atualizaProduto")
+  @Output("salvarProduto")
   atualizaProduto = new EventEmitter();
 
   formulario: FormGroup;
@@ -47,76 +49,94 @@ export class ProdutosFormComponent implements OnInit {
     private subcategoriaService: SubcategoriaService,
     private unidadeMedidaService: UnidadeMedidaService) {
 
-    this.formulario = this.formBuilder.group({
-      caracteristica: ['', [Validators.required]],
-      marca: ['', [Validators.required]],
-      nome: ['', [Validators.required]],
-      quantidade: ['', [Validators.required, Validators.min(0.1)]],
-      subcategoria: ['', [Validators.required]],
-      unidadeMedida: [{ value: '', disable: true }, [Validators.required]],
-      imagem: ['', [Validators.required]]
+    this.formulario = new FormGroup({
+      caracteristica: new FormControl ('', [Validators.required]),
+      marca: new FormControl ('', [Validators.required]),
+      nome: new FormControl ('', [Validators.required]),
+      quantidade: new FormControl ('', [Validators.required, Validators.min(0.1)]),
+      subcategoria: new FormControl ('', [Validators.required]),
+      unidadeMedida: new FormControl ({ value: '', disable: true }, [Validators.required]),
+      imagem: new FormControl ('', [Validators.required])
     });
   }
 
   ngOnInit() {
+
     this.getSubcategorias();
 
     if (this.produto.idProduto) {
-      console.log(this.produto)
+
       this.getUnidadesMedidaPorSubcategoria(this.produto.subcategoria)
       this.formulario.disable();
       this.hasEdit = false;
+      
+      this.formulario = new FormGroup({
+        caracteristica: new FormControl ('', [Validators.required]),
+        marca: new FormControl ('', [Validators.required]),
+        nome: new FormControl ('', [Validators.required]),
+        quantidade: new FormControl ('', [Validators.required, Validators.min(0.1)]),
+        subcategoria: new FormControl ('', [Validators.required]),
+        unidadeMedida: new FormControl ({ value: '', disable: true }, [Validators.required]),
+        imagem: new FormControl ('')
+      });
+      
     }
 
-    this.myImage = `${environment.urlS3}/prod${this.produto.idProduto}.jpg`;
+    this.myImage = this.produto.imagemUrl;
 
   }
 
   cancelar() {
-    this.formulario.value.imagem = '';
+    this.produtoService.croppedFile = null
     if (this.produto.idProduto) {
       this.formulario.disable();
       this.hasEdit = false;
       this.atualizaProduto.emit(true);
 
-      this.myImage = `${environment.urlS3}/prod${this.produto.idProduto}.jpg`;
+      this.myImage = this.produto.imagemUrl;
     } else {
       this.produtoRemovida.emit(this.produto);
     }
   }
 
   salvar() {
-    this.produto.imageBase64 =this.produtoService.croppedFile
-    
-    console.log(this.produto)
+    this.loading = true;
+    this.produto.imageBase64 = this.produtoService.croppedFile
+
     if (this.formulario.valid) {
       if (this.produto.idProduto) {
         this.produtoService.putProduto(this.produto).subscribe(data => {
-          
+
+          this.loading = false;
+          Swal('Atualização', `O produto ${this.produto.nome} foi atualizado!`, "success")
           this.atualizaProduto.emit(true);
         }, error => {
-          console.log(error.json());
+          this.loading = false;
+          Swal('Atualização', `O produto ${this.produto.nome} NÃO foi atualizado!`, "warning")
+
         }, () => {
           this.formulario.disable();
           this.hasEdit = false;
-          Swal('Atualização', `O produto ${this.produto.nome} foi atualizado!`, "success")
         })
       } else {
-        this.produtoService.postProduto(this.produto).subscribe(data => {
-          this.sendImage();
+        this.produtoService.postProduto(this.produto).subscribe(() => {
+
+          this.loading = false;
+          Swal('Inclusão', `O produto ${this.produto.nome} foi salvo!`, "success")
           this.atualizaProduto.emit(true);
         }, error => {
-          console.log(error.json());
+          this.loading = false;
+          Swal('Inclusão', `O produto ${this.produto.nome} NÃO foi salvo!`, "warning")
         }, () => {
           this.formulario.disable();
           this.hasEdit = false;
-          Swal('Inclusão', `O produto ${this.produto.nome} foi salvo!`, "success")
         })
       }
     }
   }
 
   excluir() {
+
     Swal({
       title: 'Exclusão de produto',
       text: `Deseja excluir o produto: ${this.produto.nome}?`,
@@ -125,13 +145,18 @@ export class ProdutosFormComponent implements OnInit {
       confirmButtonText: 'Sim',
       cancelButtonText: 'Não'
     }).then((result) => {
+      this.loading = true;
       if (result.value) {
         this.produtoService.deleteProduto(this.produto.idProduto).subscribe(data => {
-        }, error => {
-          console.log(error.json())
-        }, () => {
+          console.log(data)
+          this.loading = false;
+          Swal('Exclusão', 'O produto foi excluído!', "success")
           this.atualizaProduto.emit(true);
-          Swal('Exclusão', 'O produto foi deletado!', "success")
+
+        }, error => {
+          Swal('Exclusão', 'O produto não pode ser excluído, tente mais tarde!', "warning")
+          this.loading = false;
+          console.log(error.json())
         })
       }
     })
@@ -172,16 +197,7 @@ export class ProdutosFormComponent implements OnInit {
     this.myImage = this.produtoService.croppedFile;
   }
 
-  //envia upload da imagem
-  private sendImage() {
-    this.produtoService.postUploadFile().subscribe(resp => {
-      console.log(resp)
-    }, erro => {
-      console.log(erro)
-    });
-  }
-
-  loadImageFailed(){
+  loadImageFailed() {
 
   }
 }

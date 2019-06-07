@@ -12,7 +12,7 @@
                 </div>
                 <image-cropper style="width:100%;margin:0 auto;" [imageChangedEvent]="imageChangedEvent"
                     [resizeToWidth]="180" [maintainAspectRatio]="true" [aspectRatio]=" 1 / 1 " format="png"
-                    (imageCropped)="imageCropped($event)" (loadImageFailed)="loadImageFailed()">
+                    (imageCropped)="imageCropped($event)" (loadImageFailed)="loadImageFailed()" *ngIf="hasEdit">
                 </image-cropper>
             </div>
             <div fxLayout="row" fxLayoutWrap="wrap" *ngIf="hasEdit">
@@ -98,4 +98,9 @@
                 (click)="formulario.enable(); hasEdit = true">EDITAR</button>
         </mat-card-actions>
     </form>
+
+    <ngx-loading [show]="loading"
+        [config]="{ primaryColour:'#43a047',secondaryColour:'#43a047',tertiaryColour:'#43a047'}"
+        [template]="customLoadingTemplate">
+    </ngx-loading>
 </mat-card>

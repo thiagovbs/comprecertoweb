@@ -14,6 +14,7 @@ import { UnidadeMedidaService } from '../../services/unidade-medida.service';
 import { CategoriaService } from '../../services/categoria.service';
 import { ImageUtilService } from '../../services/image-util.service';
 import { ImageCropperModule } from 'ngx-image-cropper';
+import { NgxLoadingModule } from 'ngx-loading';
 
 @NgModule({
   imports: [
@@ -32,7 +33,8 @@ import { ImageCropperModule } from 'ngx-image-cropper';
     MatToolbarModule,
     MatCheckboxModule,
     HttpModule,
-    ImageCropperModule
+    ImageCropperModule,
+    NgxLoadingModule.forRoot({})
   ],
   declarations: [ProdutosComponent, ProdutosFormComponent],
   providers: [

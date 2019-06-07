@@ -12,7 +12,7 @@ import * as Lodash from 'lodash';
   styleUrls: ['./produtos.component.css']
 })
 export class ProdutosComponent implements OnInit {
-
+  public loading = false;
   produtos: Produto[] = [];
 
   categorias: Categoria[] = [];
@@ -26,6 +26,7 @@ export class ProdutosComponent implements OnInit {
   ngOnInit() {
     this.getProdutos();
     this.getCategorias();
+    
   }
 
   getProdutos() {
@@ -43,6 +44,7 @@ export class ProdutosComponent implements OnInit {
   }
 
   atualizaProduto(salvo) {
+    console.log(salvo)
     if (salvo) {
       this.getProdutos();
     }
