@@ -40,13 +40,16 @@ export class ListaPerfilMercadoComponent implements OnInit {
   }
 
   ngOnInit() {
+    
     this.getMercados();
+    
     this.getEstados();
   }
 
   getMercados() {
     this.observable = this.mercadoService.getMercados().subscribe(data => {
       this.mercados = data.json();
+      console.log( this.mercados)
     }, error => console.log(error));
   }
 

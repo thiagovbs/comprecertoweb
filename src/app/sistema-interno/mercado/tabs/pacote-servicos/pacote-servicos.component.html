@@ -14,46 +14,46 @@
         </div>
 
         <mat-tab-group class="demo-tab-group" *ngIf="mercadoComponent.mercado.mercadoLocalidades.length !== 0">
-          <mat-tab *ngFor="let localidade of mercadoComponent.mercado.mercadoLocalidades">
+
+          <mat-tab *ngFor="let localidade of mercadoComponent.mercado.mercadoLocalidades; let l = index">
             <ng-template mat-tab-label>
               {{ localidade.bairro.cidade.nome }} - {{ localidade.bairro.nome }}
             </ng-template>
-            <div class="demo-tab-content">
-              <div *ngFor="let servico of localidade.servicosTemp">
-                <div fxLayout="row" fxLayoutWrap="wrap">
-                  <div fxFlex.gt-sm="50" fxFlex.gt-xs="50">
-                    <h5>{{ servico.nome }}</h5>
-                  </div>
-                  <div fxFlex.gt-sm="30" fxFlex.gt-xs="30">
-                    <mat-form-field>
-                      <mat-select placeholder="Selecione um pacote" [(ngModel)]="servico.pacoteSelecionado.idPacoteServico"
-                        [ngModelOptions]="{standalone: true}">
-                        <mat-option *ngFor="let pacote of servico.pacoteServicos" [value]="pacote.idPacoteServico"
-                          [disabled]="!pacote.fativo">
-                          {{ pacote.nome }}
-                        </mat-option>
-                      </mat-select>
-                    </mat-form-field>
-                  </div>
-                  <div fxFlex.gt-sm="20" fxFlex.gt-xs="20" class="toggle">
-                    <mat-slide-toggle (change)="adicionaRemoveServico($event, localidade, servico.pacoteSelecionado)"
-                      [disabled]="!servico.pacoteSelecionado" [checked]="mercadoComponent.mercado.idMercado && servico.pacoteSelecionado.idPacoteServico"></mat-slide-toggle>
+            <form>
+              <div class="demo-tab-content">
+                <div *ngFor="let servico of localidade.servicosTemp ; let s = index">
+                  <div fxLayout="row" fxLayoutWrap="wrap">
+                    <div fxFlex.gt-sm="50" fxFlex.gt-xs="50">
+                      <h5>{{ servico.nome }}</h5>
+                    </div>
+                    <div fxFlex.gt-sm="30" fxFlex.gt-xs="30">
+                      <mat-form-field>
+                        <mat-select placeholder="Selecione um pacote" [ngModelOptions]="{standalone: true}"
+                          (ngModelChange)="mudarSelect($event, localidade, servico.pacoteServicos)" 
+                          [(ngModel)]="servico.pacoteSelecionado.idPacoteServico">
+                          <mat-option *ngFor="let pacoteServico of servico.pacoteServicos" [value]="pacoteServico.idPacoteServico">
+                            {{pacoteServico.nome}}
+                          </mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                    </div>
+                    <div fxFlex.gt-sm="20" fxFlex.gt-xs="20" class="toggle">
+                      <mat-slide-toggle></mat-slide-toggle>
+                    </div>
                   </div>
                 </div>
-                <hr>
-                <p *ngIf="servico.pacoteSelecionado" class="subtitle">
-                  {{ servico.pacoteSelecionado.descricao }}
-                </p>
-                <br>
               </div>
-            </div>
+            </form>
           </mat-tab>
         </mat-tab-group>
+        <mat-card-actions>
+          <button mat-button color="warn" (click)="anteriorTab()">ANTERIOR</button>
+          <button mat-button color="primary" (click)="proximaTab()">SEGUINTE</button>
+        </mat-card-actions>
+
       </div>
     </div>
   </mat-card-content>
-  <mat-card-actions>
-    <button mat-button color="warn">ANTERIOR</button>
-    <button mat-button color="primary" (click)="proximaTab()">SEGUINTE</button>
-  </mat-card-actions>
+
+
 </mat-card>

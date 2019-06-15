@@ -1,16 +1,19 @@
-<mat-card [ngStyle]="{ 'opacity': mercado.fativo === false ? '0.5' : '1' }">
+<mat-card [ngStyle]="{ 'background': mercado.fativo === false ? 'rgb(255, 255, 255,0.4)' : 'rgb(255, 255, 255,1)' }">
   <mat-card-content>
     <!-- <h4>Pré visualização</h4> -->
     <div fxLayout="row" fxLayoutWrap="wrap">
-      <div fxFlex.gt-sm="20" fxFlex.gt-xs="20">
-        <img height="100" [src]="mercado.imagemUrl" width="100px">
+      <div fxFlex.gt-sm="20" fxFlex.gt-xs="20"  >
+        <img height="100" [src]="mercado.imagemUrl" width="100px" [ngStyle]="{ 'opacity': mercado.fativo === false ? '.4' : '1' }">
       </div>
       <div fxFlex.gt-sm="80" fxFlex.gt-xs="80">
         <div fxLayout="row" fxLayoutWrap="wrap">
           <div fxFlex.gt-sm="60" fxFlex.gt-xs="60">
             <div fxLayout="row" fxLayoutWrap="wrap">
               <span style="font-weight: 500; padding-left: 5px;">{{ mercado.nomeFantasia }}
-                <span *ngIf="mercado.fativo === false">(Inativo)</span>
+                <span *ngIf="mercado.fativo === false">
+                  <span (click)="ativar()" style="padding: 5px; cursor: pointer;"
+                  *ngIf="mercado.fativo === false" class="ativarOpacidade">Ativar</span>
+                </span>
               </span>
             </div>
             <div fxLayout="row" fxLayoutWrap="wrap">

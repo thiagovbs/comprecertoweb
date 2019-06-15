@@ -65,7 +65,7 @@
     </div>
   </mat-card-content>
   <mat-card-actions>
-    <button mat-button color="warn">ANTERIOR</button>
+    <button mat-button color="warn" (click)="anteriorTab()">ANTERIOR</button>
     <button mat-button color="primary" (click)="proximaTab()" [disabled]="mercadoComponent.mercado.mercadoLocalidades.length === 0">SEGUINTE</button>
   </mat-card-actions>
 </mat-card>

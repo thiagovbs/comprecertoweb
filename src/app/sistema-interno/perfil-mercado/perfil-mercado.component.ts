@@ -23,6 +23,7 @@ export class PerfilMercadoComponent implements OnInit {
   constructor(private mercadoService: MercadoService) { }
 
   ngOnInit() {
+    
     this.myImage = this.mercado.imageBase64;
   }
 
@@ -35,6 +36,27 @@ export class PerfilMercadoComponent implements OnInit {
   getValorTotal() {
     return this.mercado.mercadoLocalidades.map(localidade =>
       this.getValorRegional(localidade)).reduce((total, valor) => total += valor);
+  }
+
+  ativar(){
+    swal({
+      title: 'Ativação de mercado',
+      text: `Deseja ativar o mercado: ${this.mercado.nomeFantasia}?`,
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Sim',
+      cancelButtonText: 'Não'
+    }).then((result) => {
+      if (result.value) {
+        this.mercadoService.ativarMercado(this.mercado.idMercado).subscribe(() => {
+        }, error => {
+          console.log(error.json());
+        }, () => {
+          this.atualizaMercado.emit(true);
+          swal('Ativação', 'O mercado foi ativado!', 'success');
+        });
+      }
+    });
   }
 
   desativar() {

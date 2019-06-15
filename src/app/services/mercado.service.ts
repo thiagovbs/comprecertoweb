@@ -71,6 +71,13 @@ export class MercadoService {
     return this.http.get(`${environment.urlSpring}/mercado-localidades`, { headers: hds, withCredentials: true });
   }
 
+  ativarMercado(id:number){
+    const hds = new Headers({
+      'Authorization': `Bearer ${localStorage.getItem('token')}`
+    });  
+    return this.http.put(`${environment.urlSpring}/mercados/ativar/${id}`, { headers: hds, withCredentials: true });
+  }
+
   // inserir a imagem croppada que vem da pagina pré visualização e jogar no método postUploadFile()
   getCroppedImageFile(myCroppedFile: File) {
     this.croppedFile = myCroppedFile;

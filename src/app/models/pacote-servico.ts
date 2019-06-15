@@ -6,4 +6,5 @@ export class PacoteServico {
     valor: number;
     acrescimo: number;
     desconto: number;
+    idMercadoServico?:number = null;
 }

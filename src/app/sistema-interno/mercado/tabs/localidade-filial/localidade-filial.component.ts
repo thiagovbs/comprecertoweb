@@ -6,6 +6,7 @@ import { NgxViacepService, Endereco, ErroCep } from '@brunoc/ngx-viacep';
 import { Bairro } from '../../../../models/bairro';
 import { Pais } from '../../../../models/pais';
 import { MercadoLocalidade } from '../../../../models/mercado-localidade';
+import { ServicoService } from '../../../../services/servico.service';
 
 @Component({
   selector: 'app-localidade-filial',
@@ -17,12 +18,16 @@ export class LocalidadeFilialComponent implements OnInit {
   cep: string;
   enderecoTemp: Bairro;
   cepNotFound: string;
-
+  localidadeServicoTemp:any
   static cepMask = [/\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/];
 
-  constructor(@Inject(MercadoComponent) private mercadoComponent: MercadoComponent, private viacep: NgxViacepService) { }
+  constructor(@Inject(MercadoComponent) 
+              private mercadoComponent: MercadoComponent, 
+              private viacep: NgxViacepService,
+              private servicoService: ServicoService) { }
 
   ngOnInit() {
+    this.getServicos()
   }
 
   buscarCep() {
@@ -123,13 +128,24 @@ export class LocalidadeFilialComponent implements OnInit {
     }
   }
 
+  getServicos() {
+    this.servicoService.getServicos().subscribe(data => {
+        this.localidadeServicoTemp = data.json();
+        console.log(this.localidadeServicoTemp)
+    }, error => {
+      console.log(error);
+    })
+  }
+
   addEndereco() {
     this.mercadoComponent.mercado.mercadoLocalidades.push({
       idMercadoLocalidade: undefined,
       googlemapsLinks: '',
       googlemapsLinksTemp: [{ id: 0, value: '' }, { id: 1, value: '' }],
       mercadoServicos: [],
-      bairro: this.enderecoTemp
+      bairro: this.enderecoTemp,
+      servicosTemp: this.localidadeServicoTemp,
+      pacoteServicos:this.localidadeServicoTemp.pacoteServicos
     });
     this.cep = undefined;
     this.enderecoTemp = undefined;
@@ -149,5 +165,9 @@ export class LocalidadeFilialComponent implements OnInit {
 
   addGoogleMapsLink(localidade: MercadoLocalidade) {
     localidade.googlemapsLinksTemp.push({ id: localidade.googlemapsLinksTemp.length - 1, value: '' });
+  }
+
+  anteriorTab(){
+    this.mercadoComponent.selectedTab = this.mercadoComponent.tabs.filter(tab => tab.key === 'dados')[0];
   }
 }

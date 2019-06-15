@@ -18,3 +18,9 @@
 .btn-success {
     color: #009b89;
 }
+
+.ativarOpacidade{
+    background-color: #009b89;
+    border-radius: 5px;
+    color: #fff;
+}

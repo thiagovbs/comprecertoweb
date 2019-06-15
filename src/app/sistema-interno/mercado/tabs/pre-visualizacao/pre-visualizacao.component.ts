@@ -6,6 +6,8 @@ import { MercadoService } from '../../../../services/mercado.service';
 import { ImageCroppedEvent } from 'ngx-image-cropper';
 import { Mercado } from '../../../../models/mercado';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
+import { PacoteServicosComponent } from '../pacote-servicos/pacote-servicos.component';
+import { ServicoService } from '../../../../services/servico.service';
 
 @Component({
   selector: 'app-pre-visualizacao',
@@ -23,13 +25,23 @@ export class PreVisualizacaoComponent implements OnInit {
   change = true;
   myImage: string;
 
+  localidades:MercadoLocalidade[]= []
+
   constructor(
     @Inject(MercadoComponent) private mercadoComponent: MercadoComponent,
+    private servicoService: ServicoService,
     private mercadoService: MercadoService
   ) { }
 
   ngOnInit() {
-    console.log(this.mercadoComponent.mercado)
+    
+    console.log(this.servicoService.localidadesEnvio)
+    if(this.servicoService.localidadesEnvio.length === 0){
+      this.localidades = this.mercadoComponent.mercado.mercadoLocalidades
+    }else{
+      this.localidades = this.servicoService.localidadesEnvio
+
+    }
     if (this.mercadoComponent.mercado.idMercado) {
       
       this.formulario = new FormGroup({
@@ -44,13 +56,13 @@ export class PreVisualizacaoComponent implements OnInit {
   }
 
   getValorTotal() {
-    return this.mercadoComponent.mercado.mercadoLocalidades.map(localidade => this.getValorRegional(localidade)).reduce((total, valor) => total += valor);
+    //return this.mercadoComponent.mercado.mercadoLocalidades.map(localidade => this.getValorRegional(localidade)).reduce((total, valor) => total += valor);
   }
 
-  getValorRegional(localidade: MercadoLocalidade) {
+/*   getValorRegional(localidade: MercadoLocalidade) {
     // tslint:disable-next-line: max-line-length
     return localidade.mercadoServicos.map(servico => (servico.pacoteServico.valor - servico.pacoteServico.acrescimo) - servico.pacoteServico.desconto).reduce((total, valor) => total += valor);
-  }
+  } */
 
   fileChangeEvent(event: any): void {
     this.imageChangedEvent = event;
@@ -66,4 +78,7 @@ export class PreVisualizacaoComponent implements OnInit {
     this.mercadoService.getCroppedImageFile(this.croppedImage);
   }
 
+  anteriorTab(){
+    this.mercadoComponent.selectedTab = this.mercadoComponent.tabs.filter(tab => tab.key === 'servicos')[0];
+  }
 }

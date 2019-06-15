@@ -54,6 +54,7 @@ export class MercadoComponent implements OnInit {
     private router: Router) { }
 
   ngOnInit() {
+    console.log("entrei")
     this.activeRoute.params.subscribe(params => {
       if (params['idMercado'] !== undefined) {
         this.mercado.idMercado = params['idMercado'];
@@ -100,15 +101,18 @@ export class MercadoComponent implements OnInit {
   getMercadoPorId() {
     this.mercadoService.getMercadoPorId(this.mercado.idMercado).subscribe(data => {
       this.mercado = data.json();
+      
     }, error => {
       console.log(error.json());
     }, () => {
       this.mercado.mercadoLocalidades.forEach(localidade => {
         const localidades = localidade.googlemapsLinks.split(',');
         localidade.googlemapsLinksTemp = localidades.map((loc, index) => ({ id: index, value: loc }));
-
+        
         localidade.servicosTemp.forEach(servicoTemp => {
+          
           if (!servicoTemp.pacoteSelecionado || servicoTemp.pacoteSelecionado === null) {
+            
             servicoTemp.pacoteSelecionado = new PacoteServico();
           }
         });

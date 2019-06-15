@@ -1,5 +1,6 @@
 import { Bairro } from './bairro';
 import { MercadoServico } from "./mercado-servico";
+import { PacoteServico } from './pacote-servico';
 
 export class MercadoLocalidade {
 
@@ -11,4 +12,6 @@ export class MercadoLocalidade {
 
     servicosTemp?: any[] = [];
     googlemapsLinksTemp?: any[] = [];
+    
+    //pacoteServicos?:any = []
 }
