@@ -75,30 +75,36 @@
                 ('- ' + localidade.googlemapsLinks.split(',').length + ' filiais') }}
               </div>
               <!-- Sem edição -->
-              <div fxFlex.gt-sm="50" *ngIf="this.servicoService.localidadesEnvio.length === 0">
-                <div *ngFor="let servico of localidade.pacoteServicos">
+              <div fxFlex.gt-sm="100" *ngIf="this.servicoService.localidadesEnvio.length === 0">
+                <div *ngFor="let servico of localidade.mercadoServicos">
                   {{ '- ' + servico.pacoteServico.nome }}
+                </div>
+                <div>
+                  Valor da conta regional:
+                  {{ getValorRegional(localidade) | currency:'BRL':true }}
                 </div>
               </div>
               <!-- Fim sem edição -->
 
               <!-- Com edição -->
-              <div fxFlex.gt-sm="50" *ngIf="this.servicoService.localidadesEnvio.length !== 0">
-                <div *ngFor="let servico of localidade.pacoteServicos">
-                  {{ '- ' + servico.nome }}
+              <div fxFlex.gt-sm="100" *ngIf="this.servicoService.localidadesEnvio.length !== 0">
+                <div *ngFor="let pacote of localidade.pacoteServicos">
+                  {{ '- ' + pacote.nome }}
+                </div>
+                <div>
+                  Valor da conta regional:
+                  {{ getValorRegionalComEdicao(localidade) | currency:'BRL':true }}
                 </div>
               </div>
               <!-- Fim Com edição -->
-              <div fxFlex.gt-sm="50" fxFlex.gt-xs="50">
-                Valor da conta regional:
-                <!--  {{ getValorRegional(localidade) | currency:'BRL':true }} -->
-              </div>
+
             </div>
           </div>
         </mat-tab>
       </mat-tab-group>
     </mat-card-content>
     <mat-card-actions>
+      <button mat-button color="warn" (click)="teste()">Testar</button>
       <button mat-button color="warn" (click)="anteriorTab()">Voltar</button>
       <button mat-button color="primary" [disabled]="formulario.invalid"
         (click)="mercadoComponent.salvar()">CONCLUIR</button>

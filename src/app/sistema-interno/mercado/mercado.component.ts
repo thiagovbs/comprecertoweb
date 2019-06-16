@@ -6,6 +6,7 @@ import { Mercado } from '../../models/mercado';
 import Swal from 'sweetalert2';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PacoteServico } from '../../models/pacote-servico';
+import { ServicoService } from '../../services/servico.service';
 
 @Component({
   selector: 'app-mercado',
@@ -51,10 +52,11 @@ export class MercadoComponent implements OnInit {
   constructor(
     private mercadoService: MercadoService,
     private activeRoute: ActivatedRoute,
-    private router: Router) { }
+    private router: Router,
+    private servicoService: ServicoService) { }
 
   ngOnInit() {
-    console.log("entrei")
+    
     this.activeRoute.params.subscribe(params => {
       if (params['idMercado'] !== undefined) {
         this.mercado.idMercado = params['idMercado'];
@@ -74,6 +76,7 @@ export class MercadoComponent implements OnInit {
     this.mercado.imageBase64 = this.mercadoService.croppedFile;
 
     if (this.mercado.idMercado) {
+      this.servicoService.localidadesEnvio
       this.mercadoService.putMercado(this.mercado).subscribe(() => {
         // this.atualizaProduto.emit(true);
       }, error => {

@@ -34,10 +34,11 @@ export class PreVisualizacaoComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+
     
-    console.log(this.servicoService.localidadesEnvio)
     if(this.servicoService.localidadesEnvio.length === 0){
       this.localidades = this.mercadoComponent.mercado.mercadoLocalidades
+      console.log(this.localidades)
     }else{
       this.localidades = this.servicoService.localidadesEnvio
 
@@ -59,10 +60,14 @@ export class PreVisualizacaoComponent implements OnInit {
     //return this.mercadoComponent.mercado.mercadoLocalidades.map(localidade => this.getValorRegional(localidade)).reduce((total, valor) => total += valor);
   }
 
-/*   getValorRegional(localidade: MercadoLocalidade) {
+  getValorRegional(localidade: MercadoLocalidade) {
     // tslint:disable-next-line: max-line-length
     return localidade.mercadoServicos.map(servico => (servico.pacoteServico.valor - servico.pacoteServico.acrescimo) - servico.pacoteServico.desconto).reduce((total, valor) => total += valor);
-  } */
+  }
+
+  getValorRegionalComEdicao(localidade: MercadoLocalidade){
+    return localidade.pacoteServicos.map(pacote => (pacote.valor - pacote.acrescimo) - pacote.desconto).reduce((total, valor) => total += valor);
+  }
 
   fileChangeEvent(event: any): void {
     this.imageChangedEvent = event;
@@ -80,5 +85,10 @@ export class PreVisualizacaoComponent implements OnInit {
 
   anteriorTab(){
     this.mercadoComponent.selectedTab = this.mercadoComponent.tabs.filter(tab => tab.key === 'servicos')[0];
+  }
+
+  teste(){
+    console.log(this.servicoService.localidadesEnvio)
+    
   }
 }
