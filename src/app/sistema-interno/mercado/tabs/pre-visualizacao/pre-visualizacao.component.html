@@ -64,7 +64,7 @@
       </div>
       <hr>
       <mat-tab-group class="demo-tab-group">
-        <mat-tab *ngFor="let localidade of localidades">
+        <mat-tab *ngFor="let localidade of mercadoComponent.mercado.mercadoLocalidades">
           <ng-template mat-tab-label>
             {{ localidade.bairro.cidade.nome }} - {{ localidade.bairro.nome }}
           </ng-template>
@@ -75,7 +75,7 @@
                 ('- ' + localidade.googlemapsLinks.split(',').length + ' filiais') }}
               </div>
               <!-- Sem edição -->
-              <div fxFlex.gt-sm="100" *ngIf="this.servicoService.localidadesEnvio.length === 0">
+              <div fxFlex.gt-sm="100" >
                 <div *ngFor="let servico of localidade.mercadoServicos">
                   {{ '- ' + servico.pacoteServico.nome }}
                 </div>
@@ -92,8 +92,9 @@
                   {{ '- ' + pacote.nome }}
                 </div>
                 <div>
-                  Valor da conta regional:
+                <!--   Valor da conta regional:
                   {{ getValorRegionalComEdicao(localidade) | currency:'BRL':true }}
+                 -->
                 </div>
               </div>
               <!-- Fim Com edição -->

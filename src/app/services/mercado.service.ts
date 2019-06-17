@@ -36,8 +36,8 @@ export class MercadoService {
     const hds = new Headers({
       'Authorization': `Bearer ${localStorage.getItem('token')}`
     });
-
-    return this.http.get(`${environment.urlSpring}/mercados`, { headers: hds, withCredentials: true });
+        /////////////////////////////////////////////////////////////
+    return this.http.get(`${environment.urlSpring}/mercados/?fativo=${false}`, { headers: hds, withCredentials: true });
   }
 
   getMercadoPorId(idMercado: number) {
@@ -108,6 +108,6 @@ export class MercadoService {
       'Authorization': `Bearer ${localStorage.getItem('token')}`
     });
 
-    return this.http.get(`${environment.urlSpring}/mercados?idBairro=${idBairro}`, { headers: hds, withCredentials: true });
+    return this.http.get(`${environment.urlSpring}/mercados?idBairro=${idBairro}&fativo=${false}`, { headers: hds, withCredentials: true });
   }
 }

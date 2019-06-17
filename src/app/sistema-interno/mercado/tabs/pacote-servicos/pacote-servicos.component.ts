@@ -2,7 +2,6 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { MercadoComponent } from '../../mercado.component';
 import { ServicoService } from '../../../../services/servico.service';
 import { MercadoLocalidade } from '../../../../models/mercado-localidade';
-import { PacoteServico } from '../../../../models/pacote-servico';
 import { MercadoServico } from '../../../../models/mercado-servico';
 
 
@@ -14,84 +13,71 @@ import { MercadoServico } from '../../../../models/mercado-servico';
 
 export class PacoteServicosComponent implements OnInit {
 
-  pacotesPorServicoAtual: Array<PacoteServico> = [];
-  localidadesServicoBd: Array<MercadoLocalidade> = [];
-  //simular o component
-  mercadoComponentLocalidadeBd: Array<any> = [];
-  //objeto criado com a localidade e o pacote dos servicos
-  pacotesPorServicoBd: Array<{
-    pacote: PacoteServico,
-    idPacoteAntigo: number,
-    mercadoLocalidade: MercadoLocalidade
-  }> = []
-
-  localidadesEnvio: MercadoLocalidade[] = [];
-
+  idServMercado: number;
 
   constructor(@Inject(MercadoComponent) private mercadoComponent: MercadoComponent,
     private servicoService: ServicoService) {
-
-    this.mercadoComponentLocalidadeBd = this.mercadoComponent.mercado.mercadoLocalidades
-
   }
 
   ngOnInit() {
+    console.log(this.mercadoComponent.mercado.mercadoLocalidades[0].servicosTemp);
+    this.mercadoComponent.mercado.mercadoLocalidades.map(localidade => {
+      //console.log(localidade.servicosTemp)
+      //console.log(localidade.mercadoServicos)
+      let idPacote;
+      let fativo;
+      localidade.mercadoServicos.map(servico => {
+        idPacote = servico.pacoteServico.idPacoteServico;
+        fativo = servico.fativo;  
+       });
 
-    console.log(this.mercadoComponent.mercado.mercadoLocalidades
-      )
-    //verificar as localidades da base e adiciona no objeto
-    for (let localidade of this.mercadoComponent.mercado.mercadoLocalidades) {
-      this.localidadesServicoBd.push(localidade)
 
-      if (localidade.idMercadoLocalidade !== undefined) {
-        for (let servico of localidade.mercadoServicos) {
-          console.log(servico)
-          this.pacotesPorServicoBd.push({
-            pacote: servico.pacoteServico,
-            idPacoteAntigo: servico.pacoteServico.idPacoteServico,
-            mercadoLocalidade: localidade
-          })
-        }
-      }
-    }
+     localidade.servicosTemp.map(servicotmp => {    
+       //console.log(servicotmp)
+       if(servicotmp.pacoteSelecionado.idPacoteServico === idPacote){
+         servicotmp.pacoteSelecionado.fativo = fativo;
+       }
+     });
+
+    });
   }
 
-  mudarSelect(pacoteIdEscolhido, localidade: MercadoLocalidade, pacotesServicos: PacoteServico[]) {
+  mudarSelect(pacoteIdEscolhido, localidade: MercadoLocalidade, servicoAtivo: MercadoServico) {
     
-    let verificaMudancaPacote: Boolean = false;
+    let pacotesServicos = servicoAtivo.pacoteServicos;
+    let idPacoteAntigo = servicoAtivo.pacoteSelecionado.idPacoteServico;
+    
+    let novoServico=new MercadoServico();
+    
     let pacoteAtivo: any = pacotesServicos.find(pacoteServico => pacoteServico.idPacoteServico === pacoteIdEscolhido);
-
-
-    //editar localidade existente
+        
     if (localidade.idMercadoLocalidade) {
-      //mapeia os pacotes existentes     
-      pacotesServicos.map(servico => {
-        this.pacotesPorServicoBd.map(servicoBd => {
-          //se o pacote existir no banco, muda o valor dele, se não existir, adiciona outro
-          if (servico.idPacoteServico === servicoBd.idPacoteAntigo) {
-            servicoBd.pacote = pacoteAtivo
-            verificaMudancaPacote = true
+      let achou=false;  
+      localidade.mercadoServicos.map(servicotmp => {
+        //console.log(servicotmp)
+        if(servicotmp.pacoteServico.idPacoteServico === idPacoteAntigo){
+          this.idServMercado = servicotmp.idMercadoServico;
+          //console.log(idServMercado);
+          if(servicotmp.idMercadoServico === this.idServMercado){          
+            servicotmp.pacoteServico = pacoteAtivo;
+            achou=true;
           }
-        })
-      })
+        }
+        });
+      if(!achou){
+          //console.log(novoServico);
+          novoServico.pacoteServico=pacoteAtivo;
+          novoServico.saldo=pacoteAtivo.valor;
+          localidade.mercadoServicos.push(novoServico);
+        }
+        achou=false;
     } else {
-      //adicina um servico por mercado localidade
-      localidade.mercadoServicos.push(pacoteAtivo)
-    }
-    if (!verificaMudancaPacote) {
-      this.pacotesPorServicoBd.push({
-        pacote: pacoteAtivo,
-        idPacoteAntigo: pacoteAtivo.idPacoteServico,
-        mercadoLocalidade: localidade
-      })
-    }
-
-    verificaMudancaPacote = false;
-    //transforma o objeto criado inicialmente para o que posso enviar para o mercado component
-    this.servicoService.getAtualLocalidadePacoteServico(localidade, this.pacotesPorServicoBd)
-
-    console.log(this.mercadoComponentLocalidadeBd)
-
+      novoServico.pacoteServico=pacoteAtivo;
+      novoServico.saldo=pacoteAtivo.valor;
+      localidade.mercadoServicos.push(novoServico);
+    }  
+    //console.log(localidade);
+    
   }
 
   proximaTab() {
@@ -103,6 +89,27 @@ export class PacoteServicosComponent implements OnInit {
   anteriorTab() {
     this.mercadoComponent.selectedTab = this.mercadoComponent.tabs.filter(tab => tab.key === 'localidade-filial')[0];
   }
+
+  toogleServico(valor, localidade: MercadoLocalidade, servicoAtivo: MercadoServico) {  
+    //console.log(this.idServMercado);
+    
+    let idPacoteAntigo = servicoAtivo.pacoteSelecionado.idPacoteServico;
+    if (localidade.idMercadoLocalidade) {      
+      localidade.mercadoServicos.map(servicotmp => {
+        //console.log(servicotmp);
+        if(servicotmp.pacoteServico.idPacoteServico === idPacoteAntigo){
+          this.idServMercado = servicotmp.idMercadoServico;
+          //console.log(idServMercado);
+          if(servicotmp.idMercadoServico === this.idServMercado){          
+            servicotmp.fativo =valor.checked;
+          } 
+          }
+        
+        });
+     
+    //console.log(localidade);
+  }
+}
 
 
 

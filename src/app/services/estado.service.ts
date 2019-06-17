@@ -17,8 +17,8 @@ export class EstadoService {
     const hds = new Headers({
       'Authorization': `Bearer ${localStorage.getItem('token')}`
     });
-
-    return this.http.get(`${environment.urlSpring}/estados`, { headers: hds, withCredentials: true });
+    //////////////////////////////////////////////////////////
+    return this.http.get(`${environment.urlSpring}/estados/?fativo=${false}`, { headers: hds, withCredentials: true });
   }
 
   getEstadosPorMercado() {

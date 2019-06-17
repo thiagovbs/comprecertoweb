@@ -144,8 +144,7 @@ export class LocalidadeFilialComponent implements OnInit {
       googlemapsLinksTemp: [{ id: 0, value: '' }, { id: 1, value: '' }],
       mercadoServicos: [],
       bairro: this.enderecoTemp,
-      servicosTemp: this.localidadeServicoTemp,
-      pacoteServicos:this.localidadeServicoTemp.pacoteServicos
+      servicosTemp: this.localidadeServicoTemp
     });
     this.cep = undefined;
     this.enderecoTemp = undefined;

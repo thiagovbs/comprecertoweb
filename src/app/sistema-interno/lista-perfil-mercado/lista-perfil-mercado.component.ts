@@ -44,6 +44,7 @@ export class ListaPerfilMercadoComponent implements OnInit {
     this.getMercados();
     
     this.getEstados();
+    
   }
 
   getMercados() {
@@ -62,7 +63,7 @@ export class ListaPerfilMercadoComponent implements OnInit {
   }
 
   atualizaCidadeSelect(estado: Estado) {
-    this.getCidadesPorEstado(estado.idEstado);
+    this.getCidadesPorEstado(estado.idEstado);    
   }
 
   getCidadesPorEstado(idEstado: number) {
@@ -74,11 +75,14 @@ export class ListaPerfilMercadoComponent implements OnInit {
   }
 
   atualizaBairroSelect(cidade: Cidade) {
+    console.log(cidade.idCidade)
     this.getBairrosPorCidade(cidade.idCidade);
+    
   }
 
   getBairrosPorCidade(idCidade: number) {
     this.bairroService.getBairrosPorCidade(idCidade).subscribe(data => {
+      console.log(data.json())
       this.listaBairros = data.json();
     }, erro => {
       console.error(erro.json());

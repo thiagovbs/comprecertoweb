@@ -13,5 +13,5 @@ export class MercadoLocalidade {
     servicosTemp?: any[] = [];
     googlemapsLinksTemp?: any[] = [];
     
-    pacoteServicos?:any = []
+    //pacoteServicos?:any = []
 }

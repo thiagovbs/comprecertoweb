@@ -96,7 +96,7 @@ export class MercadoComponent implements OnInit {
       }, () => {
         this.loading = false
         Swal('Inclusão', `O mercado ${this.mercado.nomeFantasia} foi salvo!`, 'success');
-        this.router.navigate(['/perfil-mercado'])
+        this.router.navigate(['/secure/perfil-mercado'])
       });
     }
   }

@@ -31,19 +31,19 @@ export class ServicoService {
 
   
   getAtualLocalidadePacoteServico(localidade: MercadoLocalidade, pacotesPorServicoBd:any[]) {
+    console.log(pacotesPorServicoBd);
     let pacotes: any[] = []
     pacotesPorServicoBd.map(resp => {
       if (localidade.idMercadoLocalidade === resp.mercadoLocalidade.idMercadoLocalidade) {
         pacotes.push(resp.pacote)
         this.localidadesEnvio.push(resp.mercadoLocalidade)
         this.localidadesEnvio.map(localidade => {
-          localidade.pacoteServicos = pacotes
+          localidade.mercadoServicos = pacotes
         })
       }
     })
-    
+    console.log(pacotes);
     //filtra o array para que não haja localidades repetidas
-    this.localidadesEnvio = this.localidadesEnvio.filter((el, i, a) => i === a.indexOf(el))
-    
+    this.localidadesEnvio = this.localidadesEnvio.filter((el, i, a) => i === a.indexOf(el))    
   }
 }

@@ -6,6 +6,9 @@ export class MercadoServico {
     dtInicioServico: Date;
     dtFimServico: Date;
     pacoteServico: PacoteServico;
+    pacoteServicos: PacoteServico[];
+    pacoteSelecionado: PacoteServico;
+    fativo: boolean;
 
     saldo: number;
 }

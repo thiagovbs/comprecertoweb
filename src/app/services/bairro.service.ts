@@ -15,7 +15,7 @@ export class BairroService {
     const hds = new Headers({
       'Authorization': `Bearer ${localStorage.getItem('token')}`
     });
-
-    return this.http.get(`${environment.urlSpring}/bairros/cidade/${idCidade}`, { headers: hds, withCredentials: true });
+////////////////////////////////
+    return this.http.get(`${environment.urlSpring}/bairros/cidade/${idCidade}&${false}`, { headers: hds, withCredentials: true });
   }
 }
