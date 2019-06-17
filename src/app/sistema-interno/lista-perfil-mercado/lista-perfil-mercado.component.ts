@@ -19,7 +19,7 @@ export class ListaPerfilMercadoComponent implements OnInit {
   observable: any;
 
   mercados: Mercado[] = [];
-
+  ativarMercado: boolean;
   formLocalidade: FormGroup;
   listaEstados: Estado[] = [];
   listaCidades: Cidade[] = [];
@@ -35,24 +35,28 @@ export class ListaPerfilMercadoComponent implements OnInit {
     this.formLocalidade = this.formBuilder.group({
       estado: [{ value: '' }, [Validators.required]],
       cidade: [{ value: '' }, [Validators.required]],
-      bairro: [{ value: '' }, [Validators.required]]
+      bairro: [{ value: '' }, [Validators.required]],
+      ativar: [false]
     });
   }
 
   ngOnInit() {
-    
-    this.getMercados();
-    
+
+    //this.getMercados();
+
     this.getEstados();
-    
+
   }
 
-  getMercados() {
-    this.observable = this.mercadoService.getMercados().subscribe(data => {
-      this.mercados = data.json();
-      console.log( this.mercados)
-    }, error => console.log(error));
-  }
+  /*   getMercados(evento) {
+      if(evento){
+        this.observable = this.mercadoService.getMercados(true).subscribe(data => {
+          this.mercados = data.json();
+          console.log( this.mercados)
+        }, error => console.log(error));
+      }
+      
+    } */
 
   getEstados() {
     this.estadoService.getEstados().subscribe(data => {
@@ -63,7 +67,7 @@ export class ListaPerfilMercadoComponent implements OnInit {
   }
 
   atualizaCidadeSelect(estado: Estado) {
-    this.getCidadesPorEstado(estado.idEstado);    
+    this.getCidadesPorEstado(estado.idEstado);
   }
 
   getCidadesPorEstado(idEstado: number) {
@@ -77,7 +81,7 @@ export class ListaPerfilMercadoComponent implements OnInit {
   atualizaBairroSelect(cidade: Cidade) {
     console.log(cidade.idCidade)
     this.getBairrosPorCidade(cidade.idCidade);
-    
+
   }
 
   getBairrosPorCidade(idCidade: number) {
@@ -90,12 +94,22 @@ export class ListaPerfilMercadoComponent implements OnInit {
   }
 
   pesquisarMercados() {
-    if (this.formLocalidade.get('bairro').value.idBairro) {
-      this.observable = this.mercadoService.getMercadosPorBairro(this.formLocalidade.get('bairro').value.idBairro).subscribe(data => {
+    let fAtivo = this.formLocalidade.get('ativar').value;
+    let bairro = this.formLocalidade.get('bairro').value.idBairro
+
+    if (bairro) {
+      this.observable = this.mercadoService.getMercadosPorBairro(bairro, !fAtivo).subscribe(data => {
         this.mercados = data.json();
       }, error => console.log(error));
     } else {
-      this.getMercados();
+      this.getMercados(!fAtivo);
     }
   }
+
+  getMercados(evento) {
+    if (evento) {
+      this.pesquisarMercados()
+    }
+  }
+
 }

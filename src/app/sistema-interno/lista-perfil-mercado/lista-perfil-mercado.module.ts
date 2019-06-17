@@ -7,9 +7,16 @@ import { HttpModule } from '@angular/http';
 import { MercadoService } from '../../services/mercado.service';
 import { PerfilMercadoModule } from '../perfil-mercado/perfil-mercado.module';
 import { ImageUtilService } from '../../services/image-util.service';
-import { MatCardModule, MatIconModule, MatToolbarModule, MatButtonModule, MatOptionModule, MatSelectModule} from '@angular/material';
+import { MatCardModule, 
+         MatIconModule, 
+         MatToolbarModule, 
+         MatButtonModule, 
+         MatOptionModule, 
+         MatSelectModule, 
+         MatCheckboxModule} from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { ReactiveFormsModule } from '@angular/forms';
+
 @NgModule({
   imports: [
     CommonModule,
@@ -23,7 +30,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     FlexLayoutModule,
     MatOptionModule,
     MatSelectModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatCheckboxModule
   ],
   declarations: [ListaPerfilMercadoComponent],
   providers: [

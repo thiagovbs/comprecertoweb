@@ -12,3 +12,8 @@ mat-toolbar mat-form-field {
     padding-left: 10px;
     padding-right: 10px;
 }
+
+::ng-deep .mat-checkbox .mat-checkbox-frame {
+    border-color: #fff;
+    border:1px solid;
+  }

@@ -31,8 +31,12 @@
                         </mat-select>
                     </mat-form-field>
                 </div>
-                <div fxFlex.gt-sm="40" fxFlex.gt-xs="20" class="m-t-20">
-                    <button mat-raised-button class="m-l-20" style="background-color:transparent; color:#fff; float: right;"
+                <div fxFlex.gt-sm="10" fxFlex.gt-xs="10" class="m-t-20 p-l-20 ">
+                    <mat-checkbox class="check-border" formControlName="ativar"  [value]="ativarMercado">Mostrar Inativos</mat-checkbox>
+                </div>
+                <div fxFlex.gt-sm="30" fxFlex.gt-xs="20" class="m-t-20">
+                    <button mat-raised-button class="m-l-20"
+                        style="background-color:transparent; color:#fff; float: right;"
                         [disabled]="formLocalidade.invalid" (click)="pesquisarMercados()">PESQUISAR
                     </button>
                 </div>
@@ -42,12 +46,12 @@
 </form>
 
 <div *ngIf="mercados">
-    <app-perfil-mercado *ngFor="let mercado of mercados" [mercado]="mercado" (atualiza)="getMercados()">
+    <app-perfil-mercado *ngFor="let mercado of mercados" [mercado]="mercado" (atualiza)="getMercados($event)">
     </app-perfil-mercado>
 </div>
 
 <mat-card *ngIf="mercados.length ===0">
     <mat-card-content fxLayout="row">
-        <p> Não existem mercados cadastrados</p>
+        <p> Pesquise os mercados cadastrados</p>
     </mat-card-content>
 </mat-card>
