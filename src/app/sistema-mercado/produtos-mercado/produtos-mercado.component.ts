@@ -31,6 +31,8 @@ export class ProdutosMercadoComponent implements OnInit {
   listaCidades: Cidade[] = [];
   listaBairros: Bairro[] = [];
   listaCategorias: Categoria[] = [];
+  categoriaEscolhida: Categoria;
+  
 
   formLocalidade: FormGroup;
 
@@ -116,7 +118,6 @@ export class ProdutosMercadoComponent implements OnInit {
         if (this.mercadoprodutos.length === 0) {
           this.mercadoprodutos = [];
         }
-
         this.getCategorias();
       });
 
@@ -135,7 +136,13 @@ export class ProdutosMercadoComponent implements OnInit {
   }
 
   adicionarProdutoForm() {
-    this.mercadoprodutos.unshift(new MercadoProduto());
+    if (this.categoriaEscolhida) {
+      this.mercadoprodutos.unshift(new MercadoProduto());
+    }
+  }
+
+  atualizaCategoriaSelect(categoria) {
+    this.categoriaEscolhida = categoria
   }
 
   getCategorias() {
@@ -143,5 +150,22 @@ export class ProdutosMercadoComponent implements OnInit {
       .subscribe(data => {
         this.listaCategorias = data.json();
       }, error => console.log(error));
+  }
+
+  enviarProdutosCadastradosFiltrados() {
+    let filterProdutos: MercadoProduto[]= [];
+    if (this.categoriaEscolhida) {
+      this.categoriaEscolhida.subcategorias.map(subcategoria => {
+       let filtro = this.mercadoprodutos.find((prod: MercadoProduto) => 
+          prod.produto.subcategoria.idSubcategoria === subcategoria.idSubcategoria
+        )
+        if(filtro){
+          filterProdutos.push(filtro);
+        }
+        
+      });
+      
+      return filterProdutos
+    }
   }
 }

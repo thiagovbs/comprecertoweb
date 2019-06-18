@@ -25,6 +25,8 @@ export class ProdutosMercadoFormComponent implements OnInit {
   @Input()
   mercadoProduto: MercadoProduto = new MercadoProduto();
   @Input()
+  mercadoCategoria: Categoria = {} as Categoria;
+  @Input()
   localidadeAtual: MercadoLocalidade;
   @Input()
   dtEntrada: Date;
@@ -61,7 +63,6 @@ export class ProdutosMercadoFormComponent implements OnInit {
   ) {
 
     this.formulario = this.formBuilder.group({
-      categoria: [{ value: '' }, [Validators.required]],
       subcategoria: [{ value: '' }, [Validators.required]],
       marca: [{ value: '', disable: true }, [Validators.required]],
       caracteristica: ['', [Validators.required]],
@@ -74,47 +75,30 @@ export class ProdutosMercadoFormComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getCategorias();
 
     // pegando os produtos dos mercados listados
     if (this.mercadoProduto.idMercadoProduto) {
-      console.log(this.mercadoProduto.produto)
       this.produtoImagem = this.mercadoProduto.produto.imagemUrl
       this.formulario.disable();
       this.hasEdit = false;
-
       // set boost on select
       if (this.mercadoProduto.fDestaque == null && this.mercadoProduto.fSuperDestaque == null) {
         this.boostOn = 1;
       } else if (this.mercadoProduto.fDestaque) {
         this.boostOn = 2;
       }
+
+      this.subcategorias = this.mercadoCategoria.subcategorias
+      
+      this.categoriaService.getCategoriaPorSubcategoria(this.mercadoProduto.produto.subcategoria.idSubcategoria)
+      .subscribe(() => {
+        this.formulario.get('subcategoria').setValue(this.mercadoProduto.produto.subcategoria.idSubcategoria);
+        this.formulario.updateValueAndValidity();
+        this.getMarcasPorSubcategoria(this.mercadoProduto.produto.subcategoria.idSubcategoria);
+      })
+      
+
     }
-  }
-
-  getCategorias() {
-    this.categoriaService.getCategorias().subscribe((data: any) => {
-      this.categorias = Lodash.orderBy(data.json(), 'nome', 'asc');
-    }, error => console.error(error)
-      , () => {
-        if (this.mercadoProduto.idMercadoProduto) {
-          this.categoriaService.getCategoriaPorSubcategoria(this.mercadoProduto.produto.subcategoria.idSubcategoria)
-            .subscribe(data => {
-              this.formulario.get('categoria').setValue(data.json().idCategoria);
-              this.formulario.updateValueAndValidity();
-
-              this.atualizaCategoriaSelect(data.json());
-              this.formulario.get('subcategoria').setValue(this.mercadoProduto.produto.subcategoria.idSubcategoria);
-              this.formulario.updateValueAndValidity();
-
-              this.getMarcasPorSubcategoria(this.mercadoProduto.produto.subcategoria.idSubcategoria);
-            }, error => console.error(error));
-        }
-      });
-  }
-
-  atualizaCategoriaSelect(categoria: Categoria) {
-    this.subcategorias = categoria.subcategorias;
   }
 
   getMarcasPorSubcategoria(idSubcategoria) {
@@ -132,7 +116,7 @@ export class ProdutosMercadoFormComponent implements OnInit {
   }
 
   getProdutosPorSubcategorias() {
-    this.subcategoriaService.getProdutosPorCategorias(this.formulario.get('categoria').value).subscribe(data => {
+    this.subcategoriaService.getProdutosPorCategorias(this.mercadoCategoria.idCategoria).subscribe(data => {
       this.produtos = data.json();
       this.produtosNome = data.json()
         .filter((prod: Produto) => prod.marca === this.formulario.get('marca').value)
@@ -208,8 +192,7 @@ export class ProdutosMercadoFormComponent implements OnInit {
     } else if (this.formulario.get('boost').value === 2) {
       this.mercadoProduto.fDestaque = true;
     }
-
-    console.log(this.mercadoProduto)
+    
     if (this.mercadoProduto.idMercadoProduto) {
       this.mercadoProdutoService.putProdutosMercado(this.mercadoProduto).subscribe(data => {
         this.atualizaMercadoProduto.emit(true);
