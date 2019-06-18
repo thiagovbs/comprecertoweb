@@ -8,6 +8,7 @@ import { CidadeService } from '../../services/cidade.service';
 import { Cidade } from '../../models/cidade';
 import { Bairro } from '../../models/bairro';
 import { BairroService } from '../../services/bairro.service';
+import swal from 'sweetalert2';
 
 @Component({
   selector: 'app-lista-perfil-mercado',
@@ -100,6 +101,15 @@ export class ListaPerfilMercadoComponent implements OnInit {
     if (bairro) {
       this.observable = this.mercadoService.getMercadosPorBairro(bairro, !fAtivo).subscribe(data => {
         this.mercados = data.json();
+        if(this.mercados.length === 0){
+          swal({
+            title: 'Listagem de mercados',
+            text: `Nenhum mercado foi achado`,
+            type: 'warning',
+            confirmButtonText: 'ok',
+           
+          })
+        }
       }, error => console.log(error));
     } else {
       this.getMercados(!fAtivo);

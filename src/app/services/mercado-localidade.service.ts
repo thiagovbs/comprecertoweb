@@ -18,4 +18,28 @@ export class MercadoLocalidadeService {
     // tslint:disable-next-line: max-line-length
     return this.http.get(`${environment.urlSpring}/mercado-localidades?idMercado=${idMercado}&idBairro=${idBairro}`, { headers: hds, withCredentials: true });
   }
+
+  getEstadoPorMercadoLocalidade(idMercado) {
+    const hds = new Headers({
+      'Authorization': `Bearer ${localStorage.getItem('token')}`
+    });
+    // tslint:disable-next-line: max-line-length
+    return this.http.get(`${environment.urlSpring}/mercado-localidades?idMercado=${idMercado}`, { headers: hds, withCredentials: true });
+  }
+
+  getCidadePorMercadoLocalidade(idMercado,idEstado:number) {
+    const hds = new Headers({
+      'Authorization': `Bearer ${localStorage.getItem('token')}`
+    });
+    // tslint:disable-next-line: max-line-length
+    return this.http.get(`${environment.urlSpring}/mercado-localidades?idMercado=${idMercado}&${idEstado}`, { headers: hds, withCredentials: true });
+  }
+
+  getBairroPorMercadoLocalidade(idMercado,idCidade:number) {
+    const hds = new Headers({
+      'Authorization': `Bearer ${localStorage.getItem('token')}`
+    });
+    // tslint:disable-next-line: max-line-length
+    return this.http.get(`${environment.urlSpring}/mercado-localidades?idMercado=${idMercado}&${idCidade}`, { headers: hds, withCredentials: true });
+  }
 }

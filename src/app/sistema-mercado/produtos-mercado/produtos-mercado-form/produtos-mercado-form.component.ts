@@ -78,7 +78,8 @@ export class ProdutosMercadoFormComponent implements OnInit {
 
     // pegando os produtos dos mercados listados
     if (this.mercadoProduto.idMercadoProduto) {
-      this.produtoImagem = `${environment.urlS3}/prod` + this.mercadoProduto.produto.idProduto + `.jpg`;
+      console.log(this.mercadoProduto.produto)
+      this.produtoImagem = this.mercadoProduto.produto.imagemUrl
       this.formulario.disable();
       this.hasEdit = false;
 
@@ -181,7 +182,7 @@ export class ProdutosMercadoFormComponent implements OnInit {
     this.produto = this.produtos
       .filter((prod: Produto) => prod.caracteristica === this.formulario.get('caracteristica').value)
       .filter((prod: Produto) => prod.quantidade === value.valor && prod.unidadeMedida.sigla === value.unidade)[0];
-    this.produtoImagem = `${environment.urlS3}/prod` + this.produto.idProduto + `.jpg`;
+    this.produtoImagem = this.produto.imagemUrl;
   }
 
   cancelar() {
@@ -201,12 +202,14 @@ export class ProdutosMercadoFormComponent implements OnInit {
     this.mercadoProduto.observacao = this.formulario.get('observacao').value;
     this.mercadoProduto.dtEntrada = this.dtEntrada;
 
+
     if (this.formulario.get('boost').value === 1) {
       this.mercadoProduto.fDestaque = false;
     } else if (this.formulario.get('boost').value === 2) {
       this.mercadoProduto.fDestaque = true;
     }
 
+    console.log(this.mercadoProduto)
     if (this.mercadoProduto.idMercadoProduto) {
       this.mercadoProdutoService.putProdutosMercado(this.mercadoProduto).subscribe(data => {
         this.atualizaMercadoProduto.emit(true);
@@ -215,7 +218,7 @@ export class ProdutosMercadoFormComponent implements OnInit {
       }, () => {
         this.formulario.disable();
         this.hasEdit = false;
-        swal('Atualização', `O produto ${this.produto.nome} foi atualizado!`, 'success');
+        swal('Atualização', `O produto ${this.mercadoProduto.produto.marca} foi atualizado!`, 'success');
       });
     } else {
       this.mercadoProdutoService.salvarProdutosNoMercado(this.mercadoProduto)
@@ -226,7 +229,7 @@ export class ProdutosMercadoFormComponent implements OnInit {
         }, () => {
           this.formulario.disable();
           this.hasEdit = false;
-          swal('Inclusão', `O produto ${this.mercadoProduto.observacao} foi salvo!`, 'success');
+          swal('Inclusão', `O produto ${this.mercadoProduto.produto.marca} foi salvo!`, 'success');
         });
     }
   }

@@ -6,6 +6,7 @@ import {
   AfterViewInit
 } from '@angular/core';
 import { MenuItems } from '../../shared/menu-items/menu-items';
+import { UsuarioService } from '../../services/usuario.service';
 
 
 /** @title Responsive sidenav */
@@ -20,18 +21,25 @@ export class FullComponent implements OnDestroy, AfterViewInit {
   sidebarOpened;
   private _mobileQueryListener: () => void;
 
+  user: string
+
   constructor(
     changeDetectorRef: ChangeDetectorRef,
     media: MediaMatcher,
-    public menuItems: MenuItems
+    public menuItems: MenuItems,
+    private usuarioService: UsuarioService
   ) {
     this.mobileQuery = media.matchMedia('(min-width: 768px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
+
+    this.user = this.usuarioService.getUsuarioLogged().nome
   }
 
   ngOnDestroy(): void {
     this.mobileQuery.removeListener(this._mobileQueryListener);
   }
-  ngAfterViewInit() {}
+  ngAfterViewInit() {
+    
+  }
 }
