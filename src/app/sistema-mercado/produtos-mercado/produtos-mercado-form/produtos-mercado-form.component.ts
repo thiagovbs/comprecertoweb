@@ -6,10 +6,9 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ProdutoService } from '../../../services/produto.service';
 import { SubcategoriaService } from '../../../services/subcategoria.service';
 
-import * as Lodash from 'lodash';
+
 import { Categoria } from '../../../models/categoria';
 import { CategoriaService } from '../../../services/categoria.service';
-import { environment } from '../../../../environments/environment';
 import { MercadoProduto } from '../../../models/mercado-produto';
 import { MercadoLocalidade } from '../../../models/mercado-localidade';
 import { MercadoProdutoService } from '../../../services/mercado-produto.service';
@@ -21,6 +20,8 @@ import swal from 'sweetalert2';
   styleUrls: ['./produtos-mercado-form.component.css']
 })
 export class ProdutosMercadoFormComponent implements OnInit {
+
+  maskMoney = ['(', /\d/, /\d/, ')', /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]
 
   @Input()
   mercadoProduto: MercadoProduto = new MercadoProduto();
@@ -39,14 +40,14 @@ export class ProdutosMercadoFormComponent implements OnInit {
   produto: Produto = new Produto();
   produtos: Produto[] = [];
   produtoImagem: string = null;
-  boostOn: number;
+
 
   categorias: Categoria[] = [];
   subcategorias: Subcategoria[] = [];
   marcas: Array<string> = [];
   produtosNome: Array<string> = [];
   caracteristicas: Array<string> = [];
-  unidadesMedida: Array<{ unidade: string, valor: number }> = [];
+  unidadesMedida: Array<{ unidadeMedida: string, quantidade: number }> = [];
   boosts: Array<any> = [
     { id: 1, name: 'Nenhum' },
     { id: 2, name: 'Destaque' },
@@ -68,7 +69,7 @@ export class ProdutosMercadoFormComponent implements OnInit {
       caracteristica: ['', [Validators.required]],
       produto: [{ value: '', disable: true }, [Validators.required]],
       peso: [{ value: '', disable: true }, [Validators.required]],
-      preco: [{ value: '' }, [Validators.required]],
+      preco: [{ value: 0 }, [Validators.required]],
       observacao: [{ value: '' }],
       boost: [{ value: '', disable: true }, [Validators.required]]
     });
@@ -81,45 +82,25 @@ export class ProdutosMercadoFormComponent implements OnInit {
       this.produtoImagem = this.mercadoProduto.produto.imagemUrl
       this.formulario.disable();
       this.hasEdit = false;
-      // set boost on select
-      if (this.mercadoProduto.fDestaque == null && this.mercadoProduto.fSuperDestaque == null) {
-        this.boostOn = 1;
-      } else if (this.mercadoProduto.fDestaque) {
-        this.boostOn = 2;
-      }
-
       this.subcategorias = this.mercadoCategoria.subcategorias
-      
-      this.categoriaService.getCategoriaPorSubcategoria(this.mercadoProduto.produto.subcategoria.idSubcategoria)
-      .subscribe(() => {
-        this.formulario.get('subcategoria').setValue(this.mercadoProduto.produto.subcategoria.idSubcategoria);
-        this.formulario.updateValueAndValidity();
-        this.getMarcasPorSubcategoria(this.mercadoProduto.produto.subcategoria.idSubcategoria);
-      })
-      
 
-    }else{
+      this.getProdutosPorSubcategorias();
+      this.getMarcasPorSubcategoria(this.mercadoProduto.produto.subcategoria.idSubcategoria);
+      this.getUnidadesDeMedidaPorSubCategoriaEMarca(this.mercadoProduto.produto.subcategoria.idSubcategoria, this.mercadoProduto.produto.marca)
+
+      this.formulario.get('subcategoria').setValue(this.mercadoProduto.produto.subcategoria.idSubcategoria);
+      this.formulario.get('produto').setValue(this.mercadoProduto.produto.nome);
+      this.formulario.get('marca').setValue(this.mercadoProduto.produto.marca);
+      this.formulario.get('caracteristica').setValue(this.mercadoProduto.produto.caracteristica);
+      this.formulario.get('peso').setValue(this.mercadoProduto.produto.unidadeMedida.sigla);
+      this.formulario.updateValueAndValidity();
+
+    } else {
       this.subcategoriaService.getSubcategoriasByCategoria(this.mercadoCategoria.idCategoria)
-      .subscribe((data) => {
-        this.subcategorias =data.json()
-        console.log(data.json())
-        //this.getMarcasPorSubcategoria(this.mercadoProduto.produto.subcategoria.idSubcategoria);
-      })
+        .subscribe((data) => {
+          this.subcategorias = data.json()
+        })
     }
-  }
-
-  getMarcasPorSubcategoria(idSubcategoria) {
-    this.produtoService.getMarcasPorSubcategoria(idSubcategoria).subscribe(data => {
-      this.marcas = data.json().filter((nome, i, el) => i === el.indexOf(nome));
-    }, erro => console.error(erro)
-      , () => {
-        if (this.mercadoProduto.idMercadoProduto) {
-          this.formulario.get('marca').setValue(this.mercadoProduto.produto.marca);
-          this.formulario.updateValueAndValidity();
-
-          this.getProdutosPorSubcategorias();
-        }
-      });
   }
 
   getProdutosPorSubcategorias() {
@@ -129,15 +110,25 @@ export class ProdutosMercadoFormComponent implements OnInit {
         .filter((prod: Produto) => prod.marca === this.formulario.get('marca').value)
         .map((produto) => produto.nome)
         .filter((nome, i, el) => i === el.indexOf(nome));
-    }, erro => console.error(erro)
-      , () => {
-        if (this.mercadoProduto.idMercadoProduto) {
-          this.formulario.get('produto').setValue(this.mercadoProduto.produto.nome);
-          this.formulario.updateValueAndValidity();
 
-          this.atualizaProdutoSelect(this.mercadoProduto.produto.nome);
-        }
-      });
+      //pegar as caracteristicas pelos produtos  
+      this.caracteristicas = data.json().filter((prod: Produto) => prod.marca == this.formulario.get('marca').value)
+        .map((produto: Produto) => produto.caracteristica)
+    }, erro => console.error(erro));
+
+  }
+
+  getMarcasPorSubcategoria(idSubcategoria) {
+    this.produtoService.getMarcasPorSubcategoria(idSubcategoria).subscribe(data => {
+      this.marcas = data.json().filter((nome, i, el) => i === el.indexOf(nome));
+    }, erro => console.error(erro))
+  }
+
+  getUnidadesDeMedidaPorSubCategoriaEMarca(idSubcategoria: number, marca: string) {
+    this.produtoService.getUnidadesMedidaPorSubcategoriaEMarca(idSubcategoria, marca).subscribe((resp) => {
+      console.log(resp.json())
+      this.unidadesMedida = resp.json();
+    })
   }
 
   atualizaProdutoSelect(produtoNome: string) {
@@ -146,33 +137,24 @@ export class ProdutosMercadoFormComponent implements OnInit {
       .map(produto => produto.caracteristica)
       .filter((nome, i, el) => i === el.indexOf(nome));
 
-    if (this.mercadoProduto.idMercadoProduto) {
-      this.formulario.get('caracteristica').setValue(this.mercadoProduto.produto.caracteristica);
-      this.formulario.updateValueAndValidity();
-
-      this.atualizaCaracteristicaSelect(this.mercadoProduto.produto.caracteristica);
-    }
   }
 
   atualizaCaracteristicaSelect(caracteristica: string) {
     this.unidadesMedida = this.produtos
       .filter((prod: Produto) => prod.caracteristica === caracteristica)
       .map((prod: Produto) => ({
-        unidade: prod.unidadeMedida.sigla,
-        valor: prod.quantidade
+        unidadeMedida: prod.unidadeMedida.sigla,
+        quantidade: prod.quantidade
       }))
       .filter((nome, i, el) => i === el.indexOf(nome));
-
-    if (this.mercadoProduto.idMercadoProduto) {
-      this.formulario.get('peso').setValue(this.mercadoProduto.produto.quantidade);
-      this.formulario.updateValueAndValidity();
-    }
   }
 
   atualizaPesoSelect(value: any) {
+
     this.produto = this.produtos
       .filter((prod: Produto) => prod.caracteristica === this.formulario.get('caracteristica').value)
-      .filter((prod: Produto) => prod.quantidade === value.valor && prod.unidadeMedida.sigla === value.unidade)[0];
+      .filter((prod: Produto) => prod.quantidade === value.quantidade && prod.unidadeMedida.sigla === value.unidadeMedida)[0];
+
     this.produtoImagem = this.produto.imagemUrl;
   }
 
@@ -192,14 +174,8 @@ export class ProdutosMercadoFormComponent implements OnInit {
     this.mercadoProduto.preco = this.formulario.get('preco').value;
     this.mercadoProduto.observacao = this.formulario.get('observacao').value;
     this.mercadoProduto.dtEntrada = this.dtEntrada;
+    this.mercadoProduto.fDestaque = true;
 
-
-    if (this.formulario.get('boost').value === 1) {
-      this.mercadoProduto.fDestaque = false;
-    } else if (this.formulario.get('boost').value === 2) {
-      this.mercadoProduto.fDestaque = true;
-    }
-    
     if (this.mercadoProduto.idMercadoProduto) {
       this.mercadoProdutoService.putProdutosMercado(this.mercadoProduto).subscribe(data => {
         this.atualizaMercadoProduto.emit(true);
@@ -210,6 +186,7 @@ export class ProdutosMercadoFormComponent implements OnInit {
         this.hasEdit = false;
         swal('Atualização', `O produto ${this.mercadoProduto.produto.marca} foi atualizado!`, 'success');
       });
+
     } else {
       this.mercadoProdutoService.salvarProdutosNoMercado(this.mercadoProduto)
         .subscribe(resp => {

@@ -51,12 +51,13 @@
     </mat-toolbar>
 </form>
 
-<mat-toolbar color="primary" style=" margin-top:10px" class="little" *ngIf="mercadoprodutos">
+<mat-toolbar color="primary" style=" margin-top:10px" class="little" *ngIf="idBairro && dtEntrada">
     <div fxFlex.gt-sm="100" fxFlex.gt-xs="100">
         <div fxLayout="row" fxLayoutWrap="wrap">
             <div fxFlex.gt-sm="30" fxFlex.gt-xs="30">
                 <mat-form-field class="m-r-0  m-t-10">
-                    <mat-select placeholder="Categoria">
+                    
+                    <mat-select placeholder="Categorias">
                         <mat-option *ngFor="let categoria of listaCategorias" [value]="categoria"
                             (click)="atualizaCategoriaSelect(categoria)">
                             {{categoria.nome}}
@@ -66,7 +67,7 @@
             </div>
             <div fxFlex.gt-sm="30" fxFlex.gt-xs="30" style="padding: 0px 20px">
                 <div style="margin-top: 22px;">
-                    Qd Produtos: {{mercadoprodutos.length}}
+                    Quantidade Produtos: {{mercadoprodutosTotal.length || 0}}
                 </div>
             </div>
         </div>
@@ -77,9 +78,9 @@
     </button>
 </mat-toolbar>
 
-<div fxLayout="row" fxLayoutWrap="wrap" *ngIf="temCategoria">
-    <div fxFlex.gt-sm="33.33%" fxFlex="100" *ngFor="let mercadoProduto of enviarProdutosCadastradosFiltrados()">
-        <app-produtos-mercado-form [mercadoProduto]="mercadoProduto" [localidadeAtual]="localidade"
+<div fxLayout="row" fxLayoutWrap="wrap" *ngIf="temProduto">
+    <div fxFlex.gt-sm="33.33%" fxFlex="100" *ngFor="let mercadoProduto of mercadoprodutos">
+        <app-produtos-mercado-form [mercadoProduto]="mercadoProduto" [localidadeAtual]="localidadeAtual"
             [dtEntrada]="dtEntrada" (salvarMercadoProduto)="atualizaMercadoProduto($event)"
             (removerMercadoProduto)="aoRemover($event)" [mercadoCategoria]="categoriaEscolhida">
         </app-produtos-mercado-form>

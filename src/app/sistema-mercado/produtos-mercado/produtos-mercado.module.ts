@@ -34,6 +34,7 @@ import { DateFormatPipe } from './dateFormat.pipe';
 import { EstadoService } from '../../services/estado.service';
 import { CidadeService } from '../../services/cidade.service';
 import { BairroService } from '../../services/bairro.service';
+import { TextMaskModule } from 'angular2-text-mask';
 
 @NgModule({
   imports: [
@@ -54,6 +55,7 @@ import { BairroService } from '../../services/bairro.service';
     HttpModule,
     ImageCropperModule,
     MatDatepickerModule,
+    TextMaskModule
   ],
   declarations: [ProdutosMercadoComponent, ProdutosMercadoFormComponent, DateFormatPipe],
   providers: [

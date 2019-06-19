@@ -15,6 +15,8 @@ import { MercadoLocalidadeService } from '../../services/mercado-localidade.serv
 import { UsuarioService } from '../../services/usuario.service';
 import { CategoriaService } from '../../services/categoria.service';
 import { Categoria } from '../../models/categoria';
+import { Subcategoria } from '../../models/subcategoria';
+import swal from 'sweetalert2';
 
 @Component({
   selector: 'app-produtos-mercado',
@@ -23,18 +25,26 @@ import { Categoria } from '../../models/categoria';
 })
 export class ProdutosMercadoComponent implements OnInit {
 
-  mercadoprodutos: MercadoProduto[];
-  localidade: MercadoLocalidade;
+
+  mercadoprodutos: MercadoProduto[] = [];
+  mercadoprodutosTotal: MercadoProduto[] = [];
+  localidadeAtual: MercadoLocalidade;
+
   dtEntrada: any;
   minDate = new Date();
+  //listas
   listaEstados: Estado[] = [];
   listaCidades: Cidade[] = [];
   listaBairros: Bairro[] = [];
   listaCategorias: Categoria[] = [];
+
+
   categoriaEscolhida: Categoria;
-  temProduto: boolean = true;
-  temCategoria: boolean = false;
-  
+  idBairro: number;
+  idMercado: number
+
+  //booleano
+  temProduto: boolean = false;
 
   formLocalidade: FormGroup;
 
@@ -58,12 +68,17 @@ export class ProdutosMercadoComponent implements OnInit {
     });
   }
 
-
   ngOnInit() {
+    //pegar id do mercado 
+    this.idMercado = this.usuarioService.getUsuarioLogged().mercado.idMercado
+
+    this.temProduto = false;
+
     this.getEstados();
+
   }
 
-  getEstados() {
+  private getEstados() {
     this.estadoService.getEstadosPorMercado().subscribe(data => {
       this.listaEstados = data.json();
     }, erro => {
@@ -76,7 +91,7 @@ export class ProdutosMercadoComponent implements OnInit {
   }
 
   getCidadesPorEstado(idEstado: number) {
-    this.cidadeService.getCidadePorEstadoMercado(idEstado).subscribe(data => {      
+    this.cidadeService.getCidadePorEstadoMercado(idEstado).subscribe(data => {
       this.listaCidades = data.json();
     }, erro => {
       console.error(erro.json());
@@ -85,6 +100,7 @@ export class ProdutosMercadoComponent implements OnInit {
 
   atualizaBairroSelect(cidade: Cidade) {
     this.getBairrosPorCidade(cidade.idCidade);
+
   }
 
   getBairrosPorCidade(idCidade: number) {
@@ -107,27 +123,25 @@ export class ProdutosMercadoComponent implements OnInit {
   }
 
   pesquisarMercadoProdutos() {
+    this.temProduto = false;
+    this.mercadoprodutos = [];
+    this.listaCategorias = [];
+
     this.dtEntrada = this.formLocalidade.get('dataEntrada').value.split('T')[0];
-    const splitData = this.formLocalidade.get('dataEntrada').value.split('T');
+    this.idBairro = this.formLocalidade.get('bairro').value.idBairro;
 
-    //serviço que filtra a dtEntrada para buscar os produtos do mercado produto 
-    this.mercadoProdutoService.getBuscarMercadoProdutosPorBairroEDtEntrada(this.formLocalidade.get('bairro').value.idBairro, splitData[0])
+    this.getCategorias();
+
+    this.mercadoProdutoService.getBuscarMercadoProdutosPorBairroEDtEntrada(this.idBairro, this.dtEntrada)
       .subscribe(resp => {
-        this.mercadoprodutos = resp.json();
-        console.log(resp.json())
-      }, erro => {
-        console.error(erro.json());
-      }, () => {
-        if (this.mercadoprodutos.length === 0) {
-          this.mercadoprodutos = [];
-          this.temProduto=false;
-        }
-        
-        this.getCategorias();
-      });
+        this.mercadoprodutosTotal = resp.json();
+      })
 
-    this.mercadoLocalidadeService.getMercadoLocalidadePorMercadoEBairro(this.usuarioService.getUsuarioLogged().mercado.idMercado, this.formLocalidade.get('bairro').value.idBairro)
-      .subscribe(data => this.localidade = data.json()[0], erro => console.error(erro.json()));
+    this.mercadoLocalidadeService.getMercadoLocalidadePorMercadoEBairro(this.idMercado, this.idBairro)
+      .subscribe(data => {
+        this.localidadeAtual = data.json()[0]
+      },
+        erro => console.error(erro.json()));
   }
 
   atualizaProduto(salvo) {
@@ -141,14 +155,16 @@ export class ProdutosMercadoComponent implements OnInit {
   }
 
   adicionarProdutoForm() {
-    if (this.categoriaEscolhida) {      
+    if (this.categoriaEscolhida)
       this.mercadoprodutos.unshift(new MercadoProduto());
-    }
+    else
+      swal('Categoria', `Selecione uma categoria!`, "warning")
+
   }
 
   atualizaCategoriaSelect(categoria) {
     this.categoriaEscolhida = categoria
-    this.temCategoria=true;
+    this.getMercadoProdutosPorBairroEDtEntrata()
   }
 
   getCategorias() {
@@ -158,27 +174,36 @@ export class ProdutosMercadoComponent implements OnInit {
       }, error => console.log(error));
   }
 
-  enviarProdutosCadastradosFiltrados() {
-    let filterProdutos: MercadoProduto[]= [];
-    if (this.categoriaEscolhida &&  this.temProduto) {
-      console.log(this.categoriaEscolhida)
-      this.categoriaEscolhida.subcategorias.map(subcategoria => {        
-       let filtro = this.mercadoprodutos.find((prod: MercadoProduto) => {
-        return prod.produto.subcategoria.idSubcategoria === subcategoria.idSubcategoria
-       }
-          
-        )
-        if(filtro){
-          filterProdutos.push(filtro);
-        }
-        
-      });
-      
-      return filterProdutos
-    }else{
 
+  getMercadoProdutosPorBairroEDtEntrata() {
 
-      return filterProdutos
-    }
+    //serviço que filtra a dtEntrada para buscar os produtos do mercado localidade 
+    this.mercadoProdutoService.getBuscarMercadoProdutosPorBairroEDtEntrada(this.idBairro, this.dtEntrada)
+      .subscribe(resp => {
+        this.mercadoprodutos = resp.json();
+        this.temProduto = true;
+
+      }, erro => { },
+        () => {
+          if (this.mercadoprodutos.length !== 0) { }
+          this.enviarProdutosCadastradosFiltrados(this.mercadoprodutos)
+        })
   }
+
+  private enviarProdutosCadastradosFiltrados(produtos: MercadoProduto[]) {
+    let filtroProdutos: MercadoProduto[] = [];
+    this.categoriaEscolhida.subcategorias.map((subcategoria: Subcategoria) => {
+      let idSubcategoria = subcategoria.idSubcategoria
+      let filtro = produtos.find((prod: MercadoProduto) => {
+        return prod.produto.subcategoria.idSubcategoria === idSubcategoria
+      })
+      if (filtro) {
+        filtroProdutos.push(filtro)
+      }
+    })
+    this.mercadoprodutos = filtroProdutos;
+    console.log(filtroProdutos)
+
+  }
+
 }

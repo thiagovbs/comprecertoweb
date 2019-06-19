@@ -60,9 +60,9 @@
         <div fxFlex.gt-sm="100" fxFlex.gt-xs="100">
           <mat-form-field class="example-full-width">
             <mat-select placeholder="Peso" formControlName="peso">
-              <mat-option *ngFor="let unidade of unidadesMedida" [value]="unidade.valor"
+              <mat-option *ngFor="let unidade of unidadesMedida" [value]="unidade.unidadeMedida"
                 (click)="atualizaPesoSelect(unidade)">
-                {{unidade.valor}} - {{unidade.unidade}}
+                {{unidade.quantidade}} - {{unidade.unidadeMedida}}
               </mat-option>
             </mat-select>
             <mat-hint class="text-danger font-14"
@@ -74,7 +74,10 @@
 
         <div fxFlex.gt-sm="80" fxFlex.gt-xs="80">
           <mat-form-field class="example-full-width">
-            <input matInput placeholder="Preço" type="text" formControlName="preco" [value]="mercadoProduto.preco ||''">
+            <input matInput placeholder="Preço" 
+            type="number" formControlName="preco" 
+            [value]="mercadoProduto.preco ||''" 
+            >
           </mat-form-field>
         </div>
         <div fxFlex.gt-sm="20" fxFlex.gt-xs="20">
