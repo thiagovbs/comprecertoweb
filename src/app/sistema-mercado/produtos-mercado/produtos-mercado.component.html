@@ -77,7 +77,7 @@
     </button>
 </mat-toolbar>
 
-<div fxLayout="row" fxLayoutWrap="wrap">
+<div fxLayout="row" fxLayoutWrap="wrap" *ngIf="temCategoria">
     <div fxFlex.gt-sm="33.33%" fxFlex="100" *ngFor="let mercadoProduto of enviarProdutosCadastradosFiltrados()">
         <app-produtos-mercado-form [mercadoProduto]="mercadoProduto" [localidadeAtual]="localidade"
             [dtEntrada]="dtEntrada" (salvarMercadoProduto)="atualizaMercadoProduto($event)"

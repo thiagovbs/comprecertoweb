@@ -98,6 +98,13 @@ export class ProdutosMercadoFormComponent implements OnInit {
       })
       
 
+    }else{
+      this.subcategoriaService.getSubcategoriasByCategoria(this.mercadoCategoria.idCategoria)
+      .subscribe((data) => {
+        this.subcategorias =data.json()
+        console.log(data.json())
+        //this.getMarcasPorSubcategoria(this.mercadoProduto.produto.subcategoria.idSubcategoria);
+      })
     }
   }
 

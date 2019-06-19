@@ -32,6 +32,8 @@ export class ProdutosMercadoComponent implements OnInit {
   listaBairros: Bairro[] = [];
   listaCategorias: Categoria[] = [];
   categoriaEscolhida: Categoria;
+  temProduto: boolean = true;
+  temCategoria: boolean = false;
   
 
   formLocalidade: FormGroup;
@@ -74,7 +76,7 @@ export class ProdutosMercadoComponent implements OnInit {
   }
 
   getCidadesPorEstado(idEstado: number) {
-    this.cidadeService.getCidadesPorEstado(idEstado).subscribe(data => {
+    this.cidadeService.getCidadePorEstadoMercado(idEstado).subscribe(data => {      
       this.listaCidades = data.json();
     }, erro => {
       console.error(erro.json());
@@ -112,12 +114,15 @@ export class ProdutosMercadoComponent implements OnInit {
     this.mercadoProdutoService.getBuscarMercadoProdutosPorBairroEDtEntrada(this.formLocalidade.get('bairro').value.idBairro, splitData[0])
       .subscribe(resp => {
         this.mercadoprodutos = resp.json();
+        console.log(resp.json())
       }, erro => {
         console.error(erro.json());
       }, () => {
         if (this.mercadoprodutos.length === 0) {
           this.mercadoprodutos = [];
+          this.temProduto=false;
         }
+        
         this.getCategorias();
       });
 
@@ -136,13 +141,14 @@ export class ProdutosMercadoComponent implements OnInit {
   }
 
   adicionarProdutoForm() {
-    if (this.categoriaEscolhida) {
+    if (this.categoriaEscolhida) {      
       this.mercadoprodutos.unshift(new MercadoProduto());
     }
   }
 
   atualizaCategoriaSelect(categoria) {
     this.categoriaEscolhida = categoria
+    this.temCategoria=true;
   }
 
   getCategorias() {
@@ -154,10 +160,13 @@ export class ProdutosMercadoComponent implements OnInit {
 
   enviarProdutosCadastradosFiltrados() {
     let filterProdutos: MercadoProduto[]= [];
-    if (this.categoriaEscolhida) {
-      this.categoriaEscolhida.subcategorias.map(subcategoria => {
-       let filtro = this.mercadoprodutos.find((prod: MercadoProduto) => 
-          prod.produto.subcategoria.idSubcategoria === subcategoria.idSubcategoria
+    if (this.categoriaEscolhida &&  this.temProduto) {
+      console.log(this.categoriaEscolhida)
+      this.categoriaEscolhida.subcategorias.map(subcategoria => {        
+       let filtro = this.mercadoprodutos.find((prod: MercadoProduto) => {
+        return prod.produto.subcategoria.idSubcategoria === subcategoria.idSubcategoria
+       }
+          
         )
         if(filtro){
           filterProdutos.push(filtro);
@@ -165,6 +174,10 @@ export class ProdutosMercadoComponent implements OnInit {
         
       });
       
+      return filterProdutos
+    }else{
+
+
       return filterProdutos
     }
   }
