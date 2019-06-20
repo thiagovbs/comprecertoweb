@@ -72,19 +72,18 @@
           </mat-form-field>
         </div>
 
-        <div fxFlex.gt-sm="80" fxFlex.gt-xs="80">
+        <div fxFlex.gt-sm="100" fxFlex.gt-xs="100">
           <mat-form-field class="example-full-width">
-            <input matInput placeholder="Preço" 
-            type="number" formControlName="preco" 
-            [value]="mercadoProduto.preco ||''" 
-            >
+           <!--  <input matInput placeholder="Preço" 
+            type="number" formControlName="preco"> -->
+            <input matInput 
+            currencyMask formControlName="preco" 
+            placeholder="preço"
+            [value]="mercadoProduto.preco || '' | moedaPadrao"
+            [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',', align:'left' }"/>
           </mat-form-field>
         </div>
-        <div fxFlex.gt-sm="20" fxFlex.gt-xs="20">
-          <mat-form-field class="example-full-width">
-            <input matInput disabled value="R$">
-          </mat-form-field>
-        </div>
+
         <div fxFlex.gt-sm="100" fxFlex.gt-xs="100">
           <mat-form-field class="example-full-width">
             <input type="text" matInput placeholder="Observação" formControlName="observacao"

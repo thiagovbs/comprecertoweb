@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-
+import { CommonModule, CurrencyPipe } from '@angular/common';
+import { LOCALE_ID } from '@angular/core';
 import {
   MatInputModule,
   MatFormFieldModule,
@@ -34,7 +34,11 @@ import { DateFormatPipe } from './dateFormat.pipe';
 import { EstadoService } from '../../services/estado.service';
 import { CidadeService } from '../../services/cidade.service';
 import { BairroService } from '../../services/bairro.service';
-import { TextMaskModule } from 'angular2-text-mask';
+import { MoedaPadraoPipe } from '../../util/moeda-padrao.pipe';
+import { NgxCurrencyModule } from "ngx-currency";
+import ptBr from '@angular/common/locales/pt';
+import { registerLocaleData } from '@angular/common';
+registerLocaleData(ptBr)
 
 @NgModule({
   imports: [
@@ -55,10 +59,11 @@ import { TextMaskModule } from 'angular2-text-mask';
     HttpModule,
     ImageCropperModule,
     MatDatepickerModule,
-    TextMaskModule
+    NgxCurrencyModule
   ],
-  declarations: [ProdutosMercadoComponent, ProdutosMercadoFormComponent, DateFormatPipe],
+  declarations: [ProdutosMercadoComponent, ProdutosMercadoFormComponent, DateFormatPipe, MoedaPadraoPipe],
   providers: [
+    { provide: LOCALE_ID, useValue: 'pt-PT' },
     MercadoService,
     ProdutoService,
     SubcategoriaService,
@@ -69,7 +74,8 @@ import { TextMaskModule } from 'angular2-text-mask';
     DateFormatPipe,
     EstadoService,
     CidadeService,
-    BairroService
+    BairroService,
+    CurrencyPipe
   ]
 })
 export class ProdutosMercadoModule { }
