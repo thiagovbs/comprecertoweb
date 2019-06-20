@@ -104,8 +104,9 @@ export class ProdutosMercadoComponent implements OnInit {
   }
 
   getBairrosPorCidade(idCidade: number) {
-    this.bairroService.getBairrosPorCidade(idCidade).subscribe(data => {
+    this.bairroService.getBairrosPorCidadeMercado(idCidade).subscribe(data => {
       this.listaBairros = data.json();
+      console.log(data.json())
     }, erro => {
       console.error(erro.json());
     });

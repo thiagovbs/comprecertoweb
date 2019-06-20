@@ -26,6 +26,6 @@ export class BairroService {
       'Authorization': `Bearer ${localStorage.getItem('token')}`
     });
     let idMercado = this.usuarioService.getUsuarioLogged().mercado.idMercado; 
-    return this.http.get(`${environment.urlSpring}/bairros/cidadeMercad/${idCidade}&${idMercado}`, { headers: hds, withCredentials: true });
+    return this.http.get(`${environment.urlSpring}/bairros/cidadeMercado/${idCidade}&${idMercado}`, { headers: hds, withCredentials: true });
   }
 }
