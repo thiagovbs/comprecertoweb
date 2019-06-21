@@ -18,6 +18,7 @@ import { Categoria } from '../../models/categoria';
 import { Subcategoria } from '../../models/subcategoria';
 import swal from 'sweetalert2';
 
+
 @Component({
   selector: 'app-produtos-mercado',
   templateUrl: './produtos-mercado.component.html',
@@ -29,7 +30,7 @@ export class ProdutosMercadoComponent implements OnInit {
   mercadoprodutos: MercadoProduto[] = [];
   mercadoprodutosTotal: MercadoProduto[] = [];
   localidadeAtual: MercadoLocalidade;
-
+  maxDate:any;
   dtEntrada: any;
   minDate = new Date();
   //listas
@@ -69,6 +70,13 @@ export class ProdutosMercadoComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.adapter.setLocale('Pt');
+    let dia = new Date().getDate() + 10;
+    let mes = new Date().getMonth() + 2
+    let ano = new Date().getFullYear();
+    console.log(ano)
+    this.maxDate  = new Date(`${mes}/10/${ano}`)
+
     //pegar id do mercado 
     this.idMercado = this.usuarioService.getUsuarioLogged().mercado.idMercado
 
@@ -113,14 +121,16 @@ export class ProdutosMercadoComponent implements OnInit {
   }
 
   getDataEntrada(event: MatDatepickerInputEvent<Date>) {
-    this.adapter.setLocale('Pt');
+    console.log(event)
+    
     this.formLocalidade.get('dataEntrada').setValue(new Date(event.value).toISOString());
   }
 
   myFilter = (d: Date): boolean => {
+    
     const day = d.getDay();
     // Só deixa selecionar terças e quintas
-    return day === 2 || day === 5;
+    return day === 1 || day === 4;
   }
 
   pesquisarMercadoProdutos() {
@@ -171,6 +181,7 @@ export class ProdutosMercadoComponent implements OnInit {
   getCategorias() {
     this.categoriaService.getCategorias()
       .subscribe(data => {
+        console.log(data.json())
         this.listaCategorias = data.json();
       }, error => console.log(error));
   }
