@@ -9,6 +9,7 @@ export class MercadoProduto {
     preco: number;
     observacao: string;
     dtEntrada: Date;
-    fDestaque: boolean;
-    fSuperDestaque: boolean;
+    ///////////////////
+    fdestaque: boolean;
+    fsuperdestaque: boolean;
 }
