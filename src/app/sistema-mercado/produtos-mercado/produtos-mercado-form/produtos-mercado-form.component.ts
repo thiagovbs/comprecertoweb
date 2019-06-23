@@ -175,6 +175,19 @@ export class ProdutosMercadoFormComponent implements OnInit {
     }
   }
 
+  excluir(){
+    
+    this.mercadoProdutoService.deleteMercadoProduto(this.mercadoProduto.idMercadoProduto).subscribe(data => {
+      this.removerMercadoProduto.emit(this.mercadoProduto);
+      swal('Exclusão', `O produto ${this.mercadoProduto.produto.marca} foi Excluído!`, 'success');
+      
+    }, error => {
+      console.error(error.json());
+      swal('Preencha os campos', `O produto não pode ser atualizado!`, 'warning');
+    });
+
+  }
+
   btnSalvar() {
 
     this.mercadoProduto.mercadoLocalidade = this.localidadeAtual;
@@ -183,7 +196,7 @@ export class ProdutosMercadoFormComponent implements OnInit {
 
       this.mercadoProduto.produto = this.produto;
     }
-    console.log(this.mercadoProduto.produto)
+    console.log(this.mercadoProduto)
     this.mercadoProduto.preco = this.formulario.get('preco').value;
     this.mercadoProduto.observacao = this.formulario.get('observacao').value;
     this.mercadoProduto.dtEntrada = this.dtEntrada;

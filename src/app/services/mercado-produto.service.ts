@@ -40,7 +40,11 @@ export class MercadoProdutoService {
     return this.http.get(`${environment.urlSpring}/mercado-produtos?idMercadoLocalidade=${idMercadoLocalidade}&dtEntrada=${dtEntrada}`, { headers: hds, withCredentials: true });
   }
 
-  deleteMercadoProduto() {
+  deleteMercadoProduto(id) {
+    const hds = new Headers({
+      'Authorization': `Bearer ${localStorage.getItem('token')}`
+    });
+    return this.http.delete(`${environment.urlSpring}/mercado-produtos/${id}`, { headers: hds, withCredentials: true });
 
   }
 
