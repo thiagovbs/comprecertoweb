@@ -21,8 +21,6 @@ import swal from 'sweetalert2';
 })
 export class ProdutosMercadoFormComponent implements OnInit {
 
-  maskMoney = ['(', /\d/, /\d/, ')', /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]
-
   @Input()
   mercadoProduto: MercadoProduto = new MercadoProduto();
   @Input()
@@ -69,7 +67,7 @@ export class ProdutosMercadoFormComponent implements OnInit {
       caracteristica: ['', [Validators.required]],
       produto: [{ value: '', disable: true }, [Validators.required]],
       peso: [{ value: '', disable: true }, [Validators.required]],
-      preco: [{ value: 0 }, [Validators.required]],
+      preco: [{ value: '' }, [Validators.required]],
       observacao: [{ value: '' }],
       boost: [{ value: '', disable: true }, [Validators.required]]
     });
@@ -181,6 +179,7 @@ export class ProdutosMercadoFormComponent implements OnInit {
     this.mercadoProduto.mercadoLocalidade = this.localidadeAtual;
     this.mercadoProduto.produto = this.produto;
     this.mercadoProduto.preco = this.formulario.get('preco').value;
+    console.log(this.mercadoProduto.preco)
     this.mercadoProduto.observacao = this.formulario.get('observacao').value;
     this.mercadoProduto.dtEntrada = this.dtEntrada;
     if(this.formulario.get('boost').value===2)

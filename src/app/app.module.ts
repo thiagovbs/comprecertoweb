@@ -18,6 +18,7 @@ import { AppGuard } from './app.guard';
 import { ImageUtilService } from './services/image-util.service';
 import { HttpModule } from '@angular/http';
 
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -25,6 +26,7 @@ import { HttpModule } from '@angular/http';
     AppHeaderComponent,
     SpinnerComponent,
     AppSidebarComponent,
+    
   ],
   imports: [
     BrowserModule,
