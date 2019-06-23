@@ -125,7 +125,7 @@ export class ProdutosMercadoComponent implements OnInit {
   }
 
   myFilter = (d: Date): boolean => {
-    
+    let dia = new Date().getDate() + 10;
     const day = d.getDay();
     // Só deixa selecionar terças e quintas
     return day === 2|| day === 5;
