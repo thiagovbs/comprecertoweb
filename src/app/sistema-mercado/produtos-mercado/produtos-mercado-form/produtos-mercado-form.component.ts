@@ -90,8 +90,10 @@ export class ProdutosMercadoFormComponent implements OnInit {
       this.formulario.get('marca').setValue(this.mercadoProduto.produto.marca);
       this.formulario.get('caracteristica').setValue(this.mercadoProduto.produto.caracteristica);
       this.formulario.get('peso').setValue(this.mercadoProduto.produto.unidadeMedida.sigla);
+      this.formulario.get('preco').setValue(this.mercadoProduto.preco);
+      this.formulario.get('observacao').setValue(this.mercadoProduto.observacao);
 
-      console.log(this.mercadoProduto.produto)
+      console.log(this.mercadoProduto)
       if (this.mercadoProduto.fdestaque) {
         this.boostOn = 2;
       } else {
@@ -110,7 +112,6 @@ export class ProdutosMercadoFormComponent implements OnInit {
   }
 
   getProdutosPorSubcategorias() {
-
     this.subcategoriaService.getProdutosPorCategorias(this.mercadoCategoria.idCategoria).subscribe(data => {
       this.produtos = data.json();
       this.produtosNome = data.json()
@@ -137,7 +138,14 @@ export class ProdutosMercadoFormComponent implements OnInit {
     })
   }
 
+  atualizaMarcasPorSubcategoria(subcategoriaId) {
+    this.produtoService.getMarcasPorSubcategoria(subcategoriaId).subscribe(data => {
+      this.marcas = data.json().filter((nome, i, el) => i === el.indexOf(nome));
+    }, erro => console.error(erro))
+  }
+
   atualizaProdutoSelect(produtoNome: string) {
+    console.log(produtoNome)
     this.caracteristicas = this.produtos
       .filter((prod: Produto) => prod.nome === produtoNome)
       .map(produto => produto.caracteristica)
@@ -146,7 +154,7 @@ export class ProdutosMercadoFormComponent implements OnInit {
   }
 
   atualizaCaracteristicaSelect(caracteristica: string) {
-    console.log(this.caracteristicas)
+    
     this.unidadesMedida = this.produtos
       .filter((prod: Produto) => prod.caracteristica === caracteristica)
       .map((prod: Produto) => ({
@@ -191,9 +199,7 @@ export class ProdutosMercadoFormComponent implements OnInit {
   btnSalvar() {
 
     this.mercadoProduto.mercadoLocalidade = this.localidadeAtual;
-
     if (this.produto.idProduto) {
-
       this.mercadoProduto.produto = this.produto;
     }
     console.log(this.mercadoProduto)

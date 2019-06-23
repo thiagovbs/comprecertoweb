@@ -14,7 +14,7 @@
           <mat-form-field>
             <mat-select placeholder="Subcategorias" formControlName="subcategoria">
               <mat-option *ngFor="let subcategoria of subcategorias"
-                (click)="getMarcasPorSubcategoria(subcategoria.idSubcategoria)" [value]="subcategoria.idSubcategoria">
+                (click)="atualizaMarcasPorSubcategoria(subcategoria.idSubcategoria)" [value]="subcategoria.idSubcategoria">
                 {{subcategoria.nome}}
               </mat-option>
             </mat-select>
@@ -79,7 +79,7 @@
             <input matInput 
             currencyMask formControlName="preco" 
             placeholder="preço"
-            [value]="mercadoProduto.preco || '' | moedaPadrao"
+            [value]="mercadoProduto.preco | moedaPadrao"
             [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',', align:'left' }"/>
           </mat-form-field>
         </div>
@@ -87,7 +87,7 @@
         <div fxFlex.gt-sm="100" fxFlex.gt-xs="100">
           <mat-form-field class="example-full-width">
             <input type="text" matInput placeholder="Observação" formControlName="observacao"
-              [value]="mercadoProduto.observacao ||'' ">
+              [value]="mercadoProduto.observacao ">
           </mat-form-field>
         </div>
         <div fxFlex.gt-sm="100" fxFlex.gt-xs="100">
