@@ -121,8 +121,6 @@ export class ProdutosMercadoComponent implements OnInit {
   }
 
   getDataEntrada(event: MatDatepickerInputEvent<Date>) {
-    console.log(event)
-    
     this.formLocalidade.get('dataEntrada').setValue(new Date(event.value).toISOString());
   }
 
@@ -130,7 +128,7 @@ export class ProdutosMercadoComponent implements OnInit {
     
     const day = d.getDay();
     // Só deixa selecionar terças e quintas
-    return day === 1 || day === 4;
+    return day === 2|| day === 5;
   }
 
   pesquisarMercadoProdutos() {
@@ -145,7 +143,6 @@ export class ProdutosMercadoComponent implements OnInit {
 
     this.mercadoProdutoService.getBuscarMercadoProdutosPorBairroEDtEntrada(this.idBairro, this.dtEntrada)
       .subscribe(resp => {
-        console.log(resp.json())
         this.mercadoprodutosTotal = resp.json();
       })
 
@@ -182,7 +179,6 @@ export class ProdutosMercadoComponent implements OnInit {
   getCategorias() {
     this.categoriaService.getCategorias()
       .subscribe(data => {
-        console.log(data.json())
         this.listaCategorias = data.json();
       }, error => console.log(error));
   }
@@ -215,8 +211,6 @@ export class ProdutosMercadoComponent implements OnInit {
       }
     })
     this.mercadoprodutos = filtroProdutos;
-    console.log(filtroProdutos)
-
   }
 
 }

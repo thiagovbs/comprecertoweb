@@ -24,7 +24,7 @@
           </mat-form-field>
 
           <mat-form-field>
-            <mat-select placeholder="Marcas" formControlName="marca" (selectionChange)="getProdutosPorSubcategorias()">
+            <mat-select placeholder="Marcas" formControlName="marca" (click)="getProdutosPorSubcategorias()">
               <mat-option *ngFor="let marca of marcas" [value]="marca">
                 {{marca}}
               </mat-option>
@@ -35,7 +35,7 @@
 
           <mat-form-field>
             <mat-select placeholder="Produtos" formControlName="produto"
-              (selectionChange)="atualizaProdutoSelect($event.value)">
+              (click)="atualizaProdutoSelect($event.value)">
               <mat-option *ngFor="let produto of produtosNome" [value]="produto">
                 {{produto}}
               </mat-option>
@@ -47,7 +47,7 @@
 
           <mat-form-field>
             <mat-select placeholder="Caracteristicas" formControlName="caracteristica"
-              (selectionChange)="atualizaCaracteristicaSelect($event.value)">
+              (click)="atualizaCaracteristicaSelect($event.value)">
               <mat-option *ngFor="let caract of caracteristicas" [value]="caract">
                 {{caract}}
               </mat-option>
@@ -109,7 +109,8 @@
       <button mat-button color="warn" *ngIf="hasEdit" (click)="cancelar()">CANCELAR</button>
       <button mat-button color="warn" *ngIf="hasEdit && mercadoProduto.idMercadoProduto"
         (click)="excluir()">EXCLUIR</button>
-      <button mat-button color="primary" [disabled]="formulario.invalid" *ngIf="hasEdit"
+      <button mat-button color="primary" 
+        [disabled]="formulario.invalid" *ngIf="hasEdit"
         (click)="btnSalvar()">SALVAR</button>
       <button mat-button color="primary" *ngIf="!hasEdit" (click)="formulario.enable(); hasEdit = true">Editar</button>
     </mat-card-actions>
