@@ -24,8 +24,8 @@
           </mat-form-field>
 
           <mat-form-field>
-            <mat-select placeholder="Marcas" formControlName="marca" (click)="getProdutosPorSubcategorias()">
-              <mat-option *ngFor="let marca of marcas" [value]="marca">
+            <mat-select placeholder="Marcas" formControlName="marca" >
+              <mat-option *ngFor="let marca of marcas" [value]="marca" (click)="atualizaMarcasPorSubcategorias(marca)">
                 {{marca}}
               </mat-option>
             </mat-select>
@@ -34,9 +34,8 @@
           </mat-form-field>
 
           <mat-form-field>
-            <mat-select placeholder="Produtos" formControlName="produto"
-              (click)="atualizaProdutoSelect($event.value)">
-              <mat-option *ngFor="let produto of produtosNome" [value]="produto">
+            <mat-select placeholder="Produtos" formControlName="produto">
+              <mat-option *ngFor="let produto of produtosNome" [value]="produto" (click)="atualizaProdutoPorMarca(produto)">
                 {{produto}}
               </mat-option>
             </mat-select>
@@ -46,9 +45,8 @@
           </mat-form-field>
 
           <mat-form-field>
-            <mat-select placeholder="Caracteristicas" formControlName="caracteristica"
-              (click)="atualizaCaracteristicaSelect($event.value)">
-              <mat-option *ngFor="let caract of caracteristicas" [value]="caract">
+            <mat-select placeholder="Caracteristicas" formControlName="caracteristica">
+              <mat-option *ngFor="let caract of caracteristicas" [value]="caract" (click)="atualizaCaracteristicaPorProduto(caract)">
                 {{caract}}
               </mat-option>
             </mat-select>
@@ -61,7 +59,7 @@
           <mat-form-field class="example-full-width">
             <mat-select placeholder="Peso" formControlName="peso">
               <mat-option *ngFor="let unidade of unidadesMedida" [value]="unidade.unidadeMedida"
-                (click)="atualizaPesoSelect(unidade)">
+                (click)="atualizaPesoCaracteristica(unidade)">
                 {{unidade.quantidade}} - {{unidade.unidadeMedida}}
               </mat-option>
             </mat-select>
@@ -80,14 +78,14 @@
             currencyMask formControlName="preco" 
             placeholder="preço"
             [value]="mercadoProduto.preco | moedaPadrao"
-            [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',', align:'left' }"/>
+            [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',', align:'left'}"/>
           </mat-form-field>
         </div>
 
         <div fxFlex.gt-sm="100" fxFlex.gt-xs="100">
           <mat-form-field class="example-full-width">
             <input type="text" matInput placeholder="Observação" formControlName="observacao"
-              [value]="mercadoProduto.observacao ">
+              [value]="mercadoProduto.observacao || ''">
           </mat-form-field>
         </div>
         <div fxFlex.gt-sm="100" fxFlex.gt-xs="100">

@@ -30,6 +30,7 @@ export class ProdutosMercadoFormComponent implements OnInit {
   @Input()
   dtEntrada: Date;
 
+
   @Output('atualizaMercadoProduto')
   atualizaMercadoProduto = new EventEmitter();
   @Output('removerMercadoProduto')
@@ -73,7 +74,6 @@ export class ProdutosMercadoFormComponent implements OnInit {
   }
 
   ngOnInit() {
-
     // pegando os produtos dos mercados listados
     if (this.mercadoProduto.idMercadoProduto) {
       this.produtoImagem = this.mercadoProduto.produto.imagemUrl
@@ -81,7 +81,7 @@ export class ProdutosMercadoFormComponent implements OnInit {
       this.hasEdit = false;
       this.subcategorias = this.mercadoCategoria.subcategorias
 
-      this.getProdutosPorSubcategorias();
+      this.getProdutosPorSubcategorias(this.mercadoCategoria.idCategoria);
       this.getMarcasPorSubcategoria(this.mercadoProduto.produto.subcategoria.idSubcategoria);
       this.getUnidadesDeMedidaPorSubCategoriaEMarca(this.mercadoProduto.produto.subcategoria.idSubcategoria, this.mercadoProduto.produto.marca)
 
@@ -90,20 +90,17 @@ export class ProdutosMercadoFormComponent implements OnInit {
       this.formulario.get('marca').setValue(this.mercadoProduto.produto.marca);
       this.formulario.get('caracteristica').setValue(this.mercadoProduto.produto.caracteristica);
       this.formulario.get('peso').setValue(this.mercadoProduto.produto.unidadeMedida.sigla);
-      this.formulario.get('preco').setValue(this.mercadoProduto.preco);
       this.formulario.get('observacao').setValue(this.mercadoProduto.observacao);
+      this.formulario.get('preco').setValue(this.mercadoProduto.preco);
 
-      console.log(this.mercadoProduto)
+
       if (this.mercadoProduto.fdestaque) {
         this.boostOn = 2;
       } else {
         this.boostOn = 1;
       }
-
       this.formulario.updateValueAndValidity();
-
     } else {
-
       this.subcategoriaService.getSubcategoriasByCategoria(this.mercadoCategoria.idCategoria)
         .subscribe((data) => {
           this.subcategorias = data.json()
@@ -111,14 +108,14 @@ export class ProdutosMercadoFormComponent implements OnInit {
     }
   }
 
-  getProdutosPorSubcategorias() {
-    this.subcategoriaService.getProdutosPorCategorias(this.mercadoCategoria.idCategoria).subscribe(data => {
+  getProdutosPorSubcategorias(idCategoria) {
+
+    this.subcategoriaService.getProdutosPorCategorias(idCategoria).subscribe(data => {
       this.produtos = data.json();
       this.produtosNome = data.json()
         .filter((prod: Produto) => prod.marca === this.formulario.get('marca').value)
         .map((produto) => produto.nome)
         .filter((nome, i, el) => i === el.indexOf(nome));
-
       //pegar as caracteristicas pelos produtos  
       this.caracteristicas = data.json().filter((prod: Produto) => prod.marca == this.formulario.get('marca').value)
         .map((produto: Produto) => produto.caracteristica)
@@ -138,14 +135,40 @@ export class ProdutosMercadoFormComponent implements OnInit {
     })
   }
 
-  atualizaMarcasPorSubcategoria(subcategoriaId) {
-    this.produtoService.getMarcasPorSubcategoria(subcategoriaId).subscribe(data => {
+
+
+  atualizaMarcasPorSubcategoria(idSubcategoria) {
+    this.produto = new Produto();
+    this.produtoImagem =undefined;
+    this.caracteristicas = []
+    this.unidadesMedida = []
+    this.produtosNome =[]
+    this.produtoService.getMarcasPorSubcategoria(idSubcategoria).subscribe(data => {
       this.marcas = data.json().filter((nome, i, el) => i === el.indexOf(nome));
     }, erro => console.error(erro))
   }
 
-  atualizaProdutoSelect(produtoNome: string) {
-    console.log(produtoNome)
+  atualizaMarcasPorSubcategorias(marca: string) {
+    this.produto = new Produto();
+    this.produtoImagem =undefined;
+    this.caracteristicas = []
+    this.unidadesMedida = []
+    this.produtosNome =[]
+
+    this.subcategoriaService.getProdutosPorCategorias(this.mercadoCategoria.idCategoria).subscribe(data => {
+      this.produtos = data.json();
+      this.produtosNome = data.json()
+        .filter((prod: Produto) => prod.marca === marca)
+        .map((produto) => produto.nome)
+        .filter((nome, i, el) => i === el.indexOf(nome));
+    });
+  }
+
+  atualizaProdutoPorMarca(produtoNome: string) {
+    this.produto = new Produto();
+    this.unidadesMedida = []
+    this.produtoImagem =undefined;
+
     this.caracteristicas = this.produtos
       .filter((prod: Produto) => prod.nome === produtoNome)
       .map(produto => produto.caracteristica)
@@ -153,8 +176,10 @@ export class ProdutosMercadoFormComponent implements OnInit {
 
   }
 
-  atualizaCaracteristicaSelect(caracteristica: string) {
-    
+  atualizaCaracteristicaPorProduto(caracteristica: string) {
+    this.produto = new Produto();
+    this.produtoImagem =undefined;
+
     this.unidadesMedida = this.produtos
       .filter((prod: Produto) => prod.caracteristica === caracteristica)
       .map((prod: Produto) => ({
@@ -164,8 +189,7 @@ export class ProdutosMercadoFormComponent implements OnInit {
       .filter((nome, i, el) => i === el.indexOf(nome));
   }
 
-  atualizaPesoSelect(value: any) {
-
+  atualizaPesoCaracteristica(value: any) {
     this.produto = this.produtos
       .filter((prod: Produto) => prod.caracteristica === this.formulario.get('caracteristica').value)
       .filter((prod: Produto) => prod.quantidade === value.quantidade && prod.unidadeMedida.sigla === value.unidadeMedida)[0];
@@ -183,26 +207,13 @@ export class ProdutosMercadoFormComponent implements OnInit {
     }
   }
 
-  excluir(){
-    
-    this.mercadoProdutoService.deleteMercadoProduto(this.mercadoProduto.idMercadoProduto).subscribe(data => {
-      this.removerMercadoProduto.emit(this.mercadoProduto);
-      swal('Exclusão', `O produto ${this.mercadoProduto.produto.marca} foi Excluído!`, 'success');
-      
-    }, error => {
-      console.error(error.json());
-      swal('Preencha os campos', `O produto não pode ser atualizado!`, 'warning');
-    });
-
-  }
-
   btnSalvar() {
 
     this.mercadoProduto.mercadoLocalidade = this.localidadeAtual;
-    if (this.produto.idProduto) {
-      this.mercadoProduto.produto = this.produto;
-    }
-    console.log(this.mercadoProduto)
+    console.log(this.produto.idProduto)
+    if (this.produto.idProduto) { }
+    this.mercadoProduto.produto = this.produto;
+
     this.mercadoProduto.preco = this.formulario.get('preco').value;
     this.mercadoProduto.observacao = this.formulario.get('observacao').value;
     this.mercadoProduto.dtEntrada = this.dtEntrada;

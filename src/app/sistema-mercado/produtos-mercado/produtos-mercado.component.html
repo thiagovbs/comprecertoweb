@@ -83,9 +83,13 @@
 
 <div fxLayout="row" fxLayoutWrap="wrap" *ngIf="temProduto">
     <div fxFlex.gt-sm="33.33%" fxFlex="100" *ngFor="let mercadoProduto of mercadoprodutos">
-        <app-produtos-mercado-form [mercadoProduto]="mercadoProduto" [localidadeAtual]="localidadeAtual"
-            [dtEntrada]="dtEntrada" (salvarMercadoProduto)="atualizaMercadoProduto($event)"
-            (removerMercadoProduto)="aoRemover($event)" [mercadoCategoria]="categoriaEscolhida">
+        <app-produtos-mercado-form 
+            [mercadoProduto]="mercadoProduto" 
+            [localidadeAtual]="localidadeAtual"
+            [dtEntrada]="dtEntrada" 
+            (salvarMercadoProduto)="atualizaMercadoProduto($event)"
+            (removerMercadoProduto)="aoRemover($event)" 
+            [mercadoCategoria]="categoriaEscolhida">
         </app-produtos-mercado-form>
     </div>
 </div>
