@@ -30,7 +30,7 @@ export class ProdutosMercadoComponent implements OnInit {
   mercadoprodutos: MercadoProduto[] = [];
   mercadoprodutosTotal: MercadoProduto[] = [];
   localidadeAtual: MercadoLocalidade;
-  maxDate:any;
+  maxDate: any;
   dtEntrada: any;
   minDate = new Date();
   //listas
@@ -75,7 +75,7 @@ export class ProdutosMercadoComponent implements OnInit {
     let mes = new Date().getMonth() + 2
     let ano = new Date().getFullYear();
     console.log(ano)
-    this.maxDate  = new Date(`${mes}/10/${ano}`)
+    this.maxDate = new Date(`${mes}/10/${ano}`)
 
     //pegar id do mercado 
     this.idMercado = this.usuarioService.getUsuarioLogged().mercado.idMercado
@@ -201,15 +201,16 @@ export class ProdutosMercadoComponent implements OnInit {
 
   private enviarProdutosCadastradosFiltrados(produtos: MercadoProduto[]) {
     let filtroProdutos: MercadoProduto[] = [];
+
     this.categoriaEscolhida.subcategorias.map((subcategoria: Subcategoria) => {
       let idSubcategoria = subcategoria.idSubcategoria
-      let filtro = produtos.find((prod: MercadoProduto) => {
-        return prod.produto.subcategoria.idSubcategoria === idSubcategoria
+      produtos.map((prod: MercadoProduto) => {
+        if (prod.produto.subcategoria.idSubcategoria === idSubcategoria) {
+          filtroProdutos.push(prod)
+        }
       })
-      if (filtro) {
-        filtroProdutos.push(filtro)
-      }
     })
+    
     this.mercadoprodutos = filtroProdutos;
   }
 
