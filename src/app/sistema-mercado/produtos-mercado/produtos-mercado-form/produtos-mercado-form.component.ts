@@ -139,10 +139,10 @@ export class ProdutosMercadoFormComponent implements OnInit {
 
   atualizaMarcasPorSubcategoria(idSubcategoria) {
     this.produto = new Produto();
-    this.produtoImagem =undefined;
+    this.produtoImagem = undefined;
     this.caracteristicas = []
     this.unidadesMedida = []
-    this.produtosNome =[]
+    this.produtosNome = []
     this.produtoService.getMarcasPorSubcategoria(idSubcategoria).subscribe(data => {
       this.marcas = data.json().filter((nome, i, el) => i === el.indexOf(nome));
     }, erro => console.error(erro))
@@ -150,10 +150,10 @@ export class ProdutosMercadoFormComponent implements OnInit {
 
   atualizaMarcasPorSubcategorias(marca: string) {
     this.produto = new Produto();
-    this.produtoImagem =undefined;
+    this.produtoImagem = undefined;
     this.caracteristicas = []
     this.unidadesMedida = []
-    this.produtosNome =[]
+    this.produtosNome = []
 
     this.subcategoriaService.getProdutosPorCategorias(this.mercadoCategoria.idCategoria).subscribe(data => {
       this.produtos = data.json();
@@ -167,7 +167,7 @@ export class ProdutosMercadoFormComponent implements OnInit {
   atualizaProdutoPorMarca(produtoNome: string) {
     this.produto = new Produto();
     this.unidadesMedida = []
-    this.produtoImagem =undefined;
+    this.produtoImagem = undefined;
 
     this.caracteristicas = this.produtos
       .filter((prod: Produto) => prod.nome === produtoNome)
@@ -178,7 +178,7 @@ export class ProdutosMercadoFormComponent implements OnInit {
 
   atualizaCaracteristicaPorProduto(caracteristica: string) {
     this.produto = new Produto();
-    this.produtoImagem =undefined;
+    this.produtoImagem = undefined;
 
     this.unidadesMedida = this.produtos
       .filter((prod: Produto) => prod.caracteristica === caracteristica)
@@ -248,5 +248,17 @@ export class ProdutosMercadoFormComponent implements OnInit {
           swal('Inclusão', `O produto ${this.mercadoProduto.produto.marca} foi salvo!`, 'success');
         });
     }
+  }
+
+  excluir() {
+
+    this.mercadoProdutoService.deleteMercadoProduto(this.mercadoProduto.idMercadoProduto).subscribe(data => {
+      this.removerMercadoProduto.emit(this.mercadoProduto);
+      swal('Exclusão', `O produto ${this.mercadoProduto.produto.marca} foi Excluído!`, 'success');
+
+    }, error => {
+      console.error(error.json());
+      swal('Preencha os campos', `O produto não pode ser atualizado!`, 'warning');
+    });
   }
 }
