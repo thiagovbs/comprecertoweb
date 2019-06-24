@@ -210,10 +210,9 @@ export class ProdutosMercadoFormComponent implements OnInit {
   btnSalvar() {
 
     this.mercadoProduto.mercadoLocalidade = this.localidadeAtual;
-    console.log(this.produto.idProduto)
-    if (this.produto.idProduto) { }
-    this.mercadoProduto.produto = this.produto;
-
+    if (this.produto.idProduto) {
+      this.mercadoProduto.produto = this.produto;
+    }
     this.mercadoProduto.preco = this.formulario.get('preco').value;
     this.mercadoProduto.observacao = this.formulario.get('observacao').value;
     this.mercadoProduto.dtEntrada = this.dtEntrada;

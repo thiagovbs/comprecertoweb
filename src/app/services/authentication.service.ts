@@ -2,11 +2,11 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { UsuarioService } from './usuario.service';
 import { JwtHelper } from 'angular2-jwt';
 
 import Swal from 'sweetalert2';
 import { Observable } from 'rxjs';
+import { MercadoLocalidadeService } from './mercado-localidade.service';
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +19,9 @@ export class AuthenticationService {
 
   jwtHelper: JwtHelper = new JwtHelper();
 
-  constructor(private http: HttpClient, private router: Router, private usuarioService: UsuarioService) { }
+  constructor(private http: HttpClient, 
+              private router: Router, 
+              private mercadoLocalidadeService: MercadoLocalidadeService) { }
 
   login(usuario: String, senha: String) {
     const hds = new HttpHeaders({
@@ -36,13 +38,14 @@ export class AuthenticationService {
     localStorage.setItem('token', token);
   }
 
-
   logout() {
+
     this.limparAccessToken();
     this.router.navigate(['/auth/login']);
   }
 
   limparAccessToken() {
+    this.mercadoLocalidadeService.setLocalAlcance(null)
     localStorage.removeItem('token');
     this.jwtPayload = null;
   }

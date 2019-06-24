@@ -19,7 +19,7 @@ export class MercadoLocalidadeService {
     return this.http.get(`${environment.urlSpring}/mercado-localidades?idMercado=${idMercado}&idBairro=${idBairro}`, { headers: hds, withCredentials: true });
   }
 
-  getCidadePorMercadoLocalidade(idMercado,idEstado:number) {
+  getCidadePorMercadoLocalidade(idMercado, idEstado: number) {
     const hds = new Headers({
       'Authorization': `Bearer ${localStorage.getItem('token')}`
     });
@@ -27,11 +27,32 @@ export class MercadoLocalidadeService {
     return this.http.get(`${environment.urlSpring}/mercado-localidades?idMercado=${idMercado}&${idEstado}`, { headers: hds, withCredentials: true });
   }
 
-  getBairroPorMercadoLocalidade(idMercado,idCidade:number) {
+  getBairroPorMercadoLocalidade(idMercado, idCidade: number) {
     const hds = new Headers({
       'Authorization': `Bearer ${localStorage.getItem('token')}`
     });
     // tslint:disable-next-line: max-line-length
     return this.http.get(`${environment.urlSpring}/mercado-localidades?idMercado=${idMercado}&${idCidade}`, { headers: hds, withCredentials: true });
+  }
+
+  //Settar o usuário no localStorage
+  setLocalAlcance(obj: any) {
+    if (obj === null) {
+      localStorage.removeItem('ALCANCE')
+    } else {
+      console.log(obj)
+      localStorage.setItem('ALCANCE', JSON.stringify(obj))
+    }
+  }
+
+  //Pegar o usuário ativo no localstorage
+  getLocaAlcance() {
+    let alcance = localStorage.getItem('ALCANCE');
+
+    if (alcance === null) {
+      return null
+    } else {
+      return JSON.parse(alcance);
+    }
   }
 }

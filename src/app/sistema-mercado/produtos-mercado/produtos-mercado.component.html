@@ -5,7 +5,7 @@
                 <div fxFlex.gt-sm="20" fxFlex.gt-xs="20">
                     <mat-form-field class="m-r-0  m-t-10">
                         <mat-select placeholder="Estado" formControlName="estado">
-                            <mat-option *ngFor="let estado of listaEstados" [value]="estado"
+                            <mat-option *ngFor="let estado of listaEstados" [value]="estado.idEstado"
                                 (click)="atualizaCidadeSelect(estado)">
                                 {{estado.nome}}
                             </mat-option>
@@ -15,7 +15,7 @@
                 <div fxFlex.gt-sm="20" fxFlex.gt-xs="20">
                     <mat-form-field class="m-r-0  m-t-10">
                         <mat-select placeholder="Cidade" formControlName="cidade">
-                            <mat-option *ngFor="let cidade of listaCidades" [value]="cidade"
+                            <mat-option *ngFor="let cidade of listaCidades" [value]="cidade.idCidade"
                                 (click)="atualizaBairroSelect(cidade)">
                                 {{cidade.nome}}
                             </mat-option>
@@ -25,7 +25,7 @@
                 <div fxFlex.gt-sm="20" fxFlex.gt-xs="20">
                     <mat-form-field class="m-r-0  m-t-10">
                         <mat-select placeholder="Bairro" formControlName="bairro">
-                            <mat-option *ngFor="let bairro of listaBairros" [value]="bairro">
+                            <mat-option *ngFor="let bairro of listaBairros" [value]="bairro.idBairro">
                                 {{bairro.nome}}
                             </mat-option>
                         </mat-select>
@@ -60,9 +60,9 @@
                 <mat-form-field class="m-r-0  m-t-10">
 
                     <mat-select placeholder="Categorias">
-                        <mat-option *ngFor="let categoria of listaCategorias" [value]="categoria"
+                        <mat-option *ngFor="let categoria of getKeys(totalPorCategoriasMap)" [value]="categoria"
                             (click)="atualizaCategoriaSelect(categoria)">
-                            {{categoria.nome}}
+                            {{categoria.nome}} -{{categoria.value}}
                             <span matPrefix  class="label label-red position nullable">10</span>
                         </mat-option>
                     </mat-select>
@@ -70,7 +70,7 @@
             </div>
             <div fxFlex.gt-sm="30" fxFlex.gt-xs="30" style="padding: 0px 20px">
                 <div style="margin-top: 22px;">
-                    Quantidade Produtos: {{mercadoprodutosTotal.length || 0}}
+                    Quantidade Produtos: {{produtosTotal || 0}}
                 </div>
             </div>
         </div>

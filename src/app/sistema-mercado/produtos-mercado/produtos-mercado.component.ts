@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MercadoProduto } from '../../models/mercado-produto';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { MercadoLocalidade } from '../../models/mercado-localidade';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { DateAdapter } from '@angular/material';
@@ -26,13 +26,13 @@ import swal from 'sweetalert2';
 })
 export class ProdutosMercadoComponent implements OnInit {
 
-
+  produtosTotal:number 
   mercadoprodutos: MercadoProduto[] = [];
-  mercadoprodutosTotal: MercadoProduto[] = [];
   localidadeAtual: MercadoLocalidade;
-  maxDate:Date = new Date();
+  localStorageAlcanceEDataEntrada: { bairro: Bairro, dataEntrada }
+  maxDate: Date = new Date();
   dtEntrada: any;
-  minDate:Date = new Date();
+  minDate: Date = new Date();
   //listas
   listaEstados: Estado[] = [];
   listaCidades: Cidade[] = [];
@@ -44,13 +44,15 @@ export class ProdutosMercadoComponent implements OnInit {
   idBairro: number;
   idMercado: number
 
+  public totalPorCategoriasMap: Map<Categoria, number> = new Map<Categoria, number>();
+
   //booleano
   temProduto: boolean = false;
 
   formLocalidade: FormGroup;
+  alcance: any
 
   constructor(
-    private formBuilder: FormBuilder,
     private adapter: DateAdapter<any>,
     private mercadoProdutoService: MercadoProdutoService,
     private estadoService: EstadoService,
@@ -61,41 +63,68 @@ export class ProdutosMercadoComponent implements OnInit {
     private categoriaService: CategoriaService
   ) {
 
-    this.formLocalidade = this.formBuilder.group({
-      estado: [{ value: '' }, [Validators.required]],
-      cidade: [{ value: '' }, [Validators.required]],
-      bairro: [{ value: '' }, [Validators.required]],
-      dataEntrada: [{ value: '' }, [Validators.required]]
+
+    this.formLocalidade = new FormGroup({
+      estado: new FormControl({ value: '' }, [Validators.required]),
+      cidade: new FormControl({ value: '' }, [Validators.required]),
+      bairro: new FormControl({ value: '' }, [Validators.required]),
+      dataEntrada: new FormControl({ value: '' }, [Validators.required])
     });
   }
 
+
+  getKeys(map) {
+    console.log(map)
+    return Array.from(map.keys());
+  }
   ngOnInit() {
+
+    //this.getCategorias();
+    this.categoriaService.getCategorias()
+      .subscribe((data: any) => {
+        this.listaCategorias = data.json()
+         data.json().map(categoria => {
+          this.totalPorCategoriasMap.set(categoria, 0)
+        }); 
+      }, error => console.log(error));
+
+     
+    //Data
     this.adapter.setLocale('Pt');
-  
-    if(this.minDate.getDay() === 2 ||this.minDate.getDay() === 5 ){
-      this.minDate.setDate(this.minDate.getDate()+1)
+    if (this.minDate.getDay() === 2 || this.minDate.getDay() === 5) {
+      this.minDate.setDate(this.minDate.getDate() + 1)
     }
-    
-    this.maxDate.setDate(this.maxDate.getDate()+10);
-    
+    this.maxDate.setDate(this.maxDate.getDate() + 10);
+
     //pegar id do mercado 
     this.idMercado = this.usuarioService.getUsuarioLogged().mercado.idMercado
     this.temProduto = false;
 
     this.getEstados();
 
+    //localStorage Alcance
+    if (this.mercadoLocalidadeService.getLocaAlcance()) {
+      this.alcance = this.mercadoLocalidadeService.getLocaAlcance();
+
+      this.getCidadesPorEstado(this.alcance.bairro.cidade.estado.idEstado)
+      this.getBairrosPorCidade(this.alcance.bairro.cidade.idCidade)
+
+      this.formLocalidade.get('estado').setValue(this.alcance.bairro.cidade.estado.idEstado);
+      this.formLocalidade.get('cidade').setValue(this.alcance.bairro.cidade.idCidade);
+      this.formLocalidade.get('bairro').setValue(this.alcance.bairro.idBairro);
+      this.formLocalidade.get('dataEntrada').setValue(new Date(this.alcance.dataEntrada).toISOString());
+
+      console.log(this.alcance.dataEntrada)
+    }
   }
 
-  private getEstados() {
+  /////////////////////////barra de data superior///////////////////
+  getEstados() {
     this.estadoService.getEstadosPorMercado().subscribe(data => {
       this.listaEstados = data.json();
     }, erro => {
       console.error(erro.json());
-    });
-  }
-
-  atualizaCidadeSelect(estado: Estado) {
-    this.getCidadesPorEstado(estado.idEstado);
+    })
   }
 
   getCidadesPorEstado(idEstado: number) {
@@ -106,18 +135,20 @@ export class ProdutosMercadoComponent implements OnInit {
     });
   }
 
-  atualizaBairroSelect(cidade: Cidade) {
-    this.getBairrosPorCidade(cidade.idCidade);
-
-  }
-
   getBairrosPorCidade(idCidade: number) {
     this.bairroService.getBairrosPorCidadeMercado(idCidade).subscribe(data => {
       this.listaBairros = data.json();
-      //console.log(data.json())
     }, erro => {
       console.error(erro.json());
     });
+  }
+
+  atualizaCidadeSelect(estado: Estado) {
+    this.getCidadesPorEstado(estado.idEstado);
+  }
+
+  atualizaBairroSelect(cidade: Cidade) {
+    this.getBairrosPorCidade(cidade.idCidade);
   }
 
   getDataEntrada(event: MatDatepickerInputEvent<Date>) {
@@ -130,6 +161,9 @@ export class ProdutosMercadoComponent implements OnInit {
     // Só deixa selecionar terças e quintas
     return day === 2 || day === 5;
   }
+  ///////////////////////// Fim barra de data superior///////////////////
+
+
 
   pesquisarMercadoProdutos() {
     this.temProduto = false;
@@ -137,30 +171,32 @@ export class ProdutosMercadoComponent implements OnInit {
     this.listaCategorias = [];
 
     this.dtEntrada = this.formLocalidade.get('dataEntrada').value.split('T')[0];
-    this.idBairro = this.formLocalidade.get('bairro').value.idBairro;
+    this.idBairro = this.formLocalidade.get('bairro').value;
+
+    this.localStorageAlcanceEDataEntrada = { bairro: this.listaBairros[0], dataEntrada: this.formLocalidade.get('dataEntrada').value }
+    this.mercadoLocalidadeService.setLocalAlcance(this.localStorageAlcanceEDataEntrada);
 
     this.getCategorias();
-
-    this.mercadoProdutoService.getBuscarMercadoProdutosPorBairroEDtEntrada(this.idBairro, this.dtEntrada)
-      .subscribe(resp => {
-        this.mercadoprodutosTotal = resp.json();
-      })
 
     this.mercadoLocalidadeService.getMercadoLocalidadePorMercadoEBairro(this.idMercado, this.idBairro)
       .subscribe(data => {
         this.localidadeAtual = data.json()[0]
       },
         erro => console.error(erro.json()));
+
+    this.getMercadoProdutosPorBairroEDtEntrata()
   }
 
   atualizaProduto(salvo) {
     if (salvo) {
+      this.produtosTotal = this.mercadoprodutos.length;
       this.pesquisarMercadoProdutos();
     }
   }
 
   aoRemover(produtoRemovida) {
     this.mercadoprodutos = this.mercadoprodutos.filter(produto => produto !== produtoRemovida);
+    this.produtosTotal = this.produtosTotal - 1;
   }
 
   adicionarProdutoForm() {
@@ -168,10 +204,10 @@ export class ProdutosMercadoComponent implements OnInit {
       this.mercadoprodutos.unshift(new MercadoProduto());
     else
       swal('Categoria', `Selecione uma categoria!`, "warning")
-
   }
 
   atualizaCategoriaSelect(categoria) {
+    this.temProduto = true;
     this.categoriaEscolhida = categoria
     this.getMercadoProdutosPorBairroEDtEntrata()
   }
@@ -185,17 +221,18 @@ export class ProdutosMercadoComponent implements OnInit {
 
 
   getMercadoProdutosPorBairroEDtEntrata() {
-
+    
     //serviço que filtra a dtEntrada para buscar os produtos do mercado localidade 
     this.mercadoProdutoService.getBuscarMercadoProdutosPorBairroEDtEntrada(this.idBairro, this.dtEntrada)
       .subscribe(resp => {
         this.mercadoprodutos = resp.json();
-        this.temProduto = true;
-
+        this.produtosTotal = this.mercadoprodutos.length
       }, erro => { },
         () => {
-          if (this.mercadoprodutos.length !== 0) { }
-          this.enviarProdutosCadastradosFiltrados(this.mercadoprodutos)
+          if (this.mercadoprodutos.length !== 0 && this.categoriaEscolhida){
+            console.log("okk")
+            this.enviarProdutosCadastradosFiltrados(this.mercadoprodutos)
+          }   
         })
   }
 
@@ -210,8 +247,27 @@ export class ProdutosMercadoComponent implements OnInit {
         }
       })
     })
-    
+
     this.mercadoprodutos = filtroProdutos;
   }
+
+
+  /*   teste(){
+  
+      let total: number;
+        this.listaCategorias.map((categoria: Categoria) => {
+          total=0;
+          categoria.subcategorias.map((subcategoria: Subcategoria) => {          
+            this.mercadoprodutosTotal.forEach(mercadoProduto => {
+              if (mercadoProduto.produto.subcategoria.idSubcategoria === subcategoria.idSubcategoria) {
+                total=total++;
+              }
+            });
+          });
+         
+         console.log(categoria.nome)
+         console.log(total)
+        })
+    } */
 
 }
