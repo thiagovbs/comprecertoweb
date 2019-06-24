@@ -30,9 +30,9 @@ export class ProdutosMercadoComponent implements OnInit {
   mercadoprodutos: MercadoProduto[] = [];
   mercadoprodutosTotal: MercadoProduto[] = [];
   localidadeAtual: MercadoLocalidade;
-  maxDate: any;
+  maxDate:Date = new Date();
   dtEntrada: any;
-  minDate = new Date();
+  minDate:Date = new Date();
   //listas
   listaEstados: Estado[] = [];
   listaCidades: Cidade[] = [];
@@ -71,15 +71,15 @@ export class ProdutosMercadoComponent implements OnInit {
 
   ngOnInit() {
     this.adapter.setLocale('Pt');
-    let dia = new Date().getDate() + 10;
-    let mes = new Date().getMonth() + 2
-    let ano = new Date().getFullYear();
-    console.log(ano)
-    this.maxDate = new Date(`${mes}/10/${ano}`)
-
+  
+    if(this.minDate.getDay() === 2 ||this.minDate.getDay() === 5 ){
+      this.minDate.setDate(this.minDate.getDate()+1)
+    }
+    
+    this.maxDate.setDate(this.maxDate.getDate()+10);
+    
     //pegar id do mercado 
     this.idMercado = this.usuarioService.getUsuarioLogged().mercado.idMercado
-
     this.temProduto = false;
 
     this.getEstados();
