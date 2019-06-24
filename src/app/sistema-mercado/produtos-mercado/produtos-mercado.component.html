@@ -62,21 +62,21 @@
                     <mat-select placeholder="Categorias">
                         <mat-option *ngFor="let categoria of getKeys(totalPorCategoriasMap)" [value]="categoria"
                             (click)="atualizaCategoriaSelect(categoria)">
-                            {{categoria.nome}} -{{categoria.value}}
-                            <span matPrefix  class="label label-red position nullable">10</span>
+                            {{categoria.nome}}
+                            <span matPrefix  class="label label-red position nullable">{{totalPorCategoriasMap.get(categoria)}}</span>
                         </mat-option>
                     </mat-select>
                 </mat-form-field>
             </div>
             <div fxFlex.gt-sm="30" fxFlex.gt-xs="30" style="padding: 0px 20px">
                 <div style="margin-top: 22px;">
-                    Quantidade Produtos: {{produtosTotal || 0}}
+                    Quantidade Produtos: {{produtosTotal || 0}}  Quantidade Produtos Restante: {{qntProdutosRestante()}}
                 </div>
             </div>
         </div>
     </div>
     <span fxFlex></span>
-    <button mat-button href="#" mat-icon-button (click)="adicionarProdutoForm()">
+    <button mat-button href="#" mat-icon-button (click)="adicionarProdutoForm()"  *ngIf="qntProdutosRestante() != 0">
         <mat-icon>add</mat-icon>
     </button>
 </mat-toolbar>

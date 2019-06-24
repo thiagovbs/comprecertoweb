@@ -42,7 +42,8 @@ export class ProdutosMercadoComponent implements OnInit {
 
   categoriaEscolhida: Categoria;
   idBairro: number;
-  idMercado: number
+  idMercado: number;
+  qtdProdutosPacote: number;
 
   public totalPorCategoriasMap: Map<Categoria, number> = new Map<Categoria, number>();
 
@@ -180,7 +181,13 @@ export class ProdutosMercadoComponent implements OnInit {
 
     this.mercadoLocalidadeService.getMercadoLocalidadePorMercadoEBairro(this.idMercado, this.idBairro)
       .subscribe(data => {
+        console.log(data.json())
         this.localidadeAtual = data.json()[0]
+        this.localidadeAtual.mercadoServicos.forEach(ms=>{
+          if(ms.pacoteServico.idPacoteServico===7 || ms.pacoteServico.idPacoteServico===8 || ms.pacoteServico.idPacoteServico===9){
+            this.qtdProdutosPacote=Number(ms.pacoteServico.descricao)
+          }
+        });
       },
         erro => console.error(erro.json()));
 
@@ -227,11 +234,14 @@ export class ProdutosMercadoComponent implements OnInit {
       .subscribe(resp => {
         this.mercadoprodutos = resp.json();
         this.produtosTotal = this.mercadoprodutos.length
+        
       }, erro => { },
         () => {
           if (this.mercadoprodutos.length !== 0 && this.categoriaEscolhida){
             console.log("okk")
             this.enviarProdutosCadastradosFiltrados(this.mercadoprodutos)
+          }else{
+            this.totalPorCategoria()
           }   
         })
   }
@@ -252,22 +262,23 @@ export class ProdutosMercadoComponent implements OnInit {
   }
 
 
-  /*   teste(){
-  
-      let total: number;
-        this.listaCategorias.map((categoria: Categoria) => {
-          total=0;
+     totalPorCategoria(){
+    let chaves = this.getKeys(this.totalPorCategoriasMap)      
+      chaves.forEach((categoria: Categoria) => {          
           categoria.subcategorias.map((subcategoria: Subcategoria) => {          
-            this.mercadoprodutosTotal.forEach(mercadoProduto => {
+            this.mercadoprodutos.forEach(mercadoProduto => {
               if (mercadoProduto.produto.subcategoria.idSubcategoria === subcategoria.idSubcategoria) {
-                total=total++;
+                let tmp=this.totalPorCategoriasMap.get(categoria)+1;
+                this.totalPorCategoriasMap.set(categoria,tmp)
               }
             });
           });
          
-         console.log(categoria.nome)
-         console.log(total)
         })
-    } */
+    }
+    
+    qntProdutosRestante(){      
+      return this.qtdProdutosPacote - this.produtosTotal;
+    }
 
 }
