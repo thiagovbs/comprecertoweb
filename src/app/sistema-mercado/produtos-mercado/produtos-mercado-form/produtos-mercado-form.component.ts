@@ -30,6 +30,10 @@ export class ProdutosMercadoFormComponent implements OnInit {
   @Input()
   dtEntrada: Date;
 
+  @Input()
+  qntBoostRestante: number;
+
+
 
   @Output('salvarMercadoProduto')
   atualizaMercadoProduto = new EventEmitter();
@@ -75,6 +79,7 @@ export class ProdutosMercadoFormComponent implements OnInit {
   }
 
   ngOnInit() {
+    console.log(this.qntBoostRestante)
     // pegando os produtos dos mercados listados
     if (this.mercadoProduto.idMercadoProduto) {
       this.produtoImagem = this.mercadoProduto.produto.imagemUrl

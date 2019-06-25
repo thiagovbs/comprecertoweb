@@ -86,7 +86,8 @@
         <app-produtos-mercado-form 
             [mercadoProduto]="mercadoProduto" 
             [localidadeAtual]="localidadeAtual"
-            [dtEntrada]="dtEntrada" 
+            [dtEntrada]="dtEntrada"
+            [qntBoostRestante]="qntBoostRestante" 
             (salvarMercadoProduto)="atualizaProduto($event)"
             (removerMercadoProduto)="aoRemover($event)" 
             [mercadoCategoria]="categoriaEscolhida">

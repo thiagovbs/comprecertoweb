@@ -27,6 +27,8 @@ import swal from 'sweetalert2';
 export class ProdutosMercadoComponent implements OnInit {
 
   produtosTotal: number
+  boostTotal: number =0;
+  qntBoostRestante: number =0;
   mercadoprodutos: MercadoProduto[] = [];
   localidadeAtual: MercadoLocalidade;
   localStorageAlcanceEDataEntrada: { bairro: Bairro, dataEntrada }
@@ -43,7 +45,8 @@ export class ProdutosMercadoComponent implements OnInit {
   categoriaEscolhida: Categoria;
   idBairro: number;
   idMercado: number;
-  qtdProdutosPacote: number;
+  qtdProdutosPacote: number=0;
+  qtdBoostPacote: number=0;
 
   public totalPorCategoriasMap: Map<Categoria, number> = new Map<Categoria, number>();
 
@@ -173,9 +176,15 @@ export class ProdutosMercadoComponent implements OnInit {
     this.mercadoLocalidadeService.getMercadoLocalidadePorMercadoEBairro(this.idMercado, this.idBairro)
       .subscribe(data => {
         this.localidadeAtual = data.json()[0]
+        console.log(data.json())
         this.localidadeAtual.mercadoServicos.forEach(ms => {
-          if (ms.pacoteServico.idPacoteServico === 7 || ms.pacoteServico.idPacoteServico === 8 || ms.pacoteServico.idPacoteServico === 9) {
+          if (ms.pacoteServico.idPacoteServico === 7 || ms.pacoteServico.idPacoteServico === 8 
+            || ms.pacoteServico.idPacoteServico === 9) {
             this.qtdProdutosPacote = Number(ms.pacoteServico.descricao)
+          }
+          if (ms.pacoteServico.idPacoteServico === 10 || ms.pacoteServico.idPacoteServico === 11 || 
+            ms.pacoteServico.idPacoteServico === 12 || ms.pacoteServico.idPacoteServico === 13) {
+            this.qtdBoostPacote = Number(ms.pacoteServico.descricao)
           }
         });
       },
@@ -278,14 +287,29 @@ export class ProdutosMercadoComponent implements OnInit {
             let tmp = this.totalPorCategoriasMap.get(categoria) + 1;
             this.totalPorCategoriasMap.set(categoria, tmp)
           }
+         
         });
       });
 
     })
+    this.boostTotal=0;
+    this.mercadoprodutos.forEach(mercadoProduto => {
+      if(mercadoProduto.fdestaque)
+      this.boostTotal=this.boostTotal+1;
+    });
+
+    console.log(this.boostTotal)
+    console.log(this.qtdBoostPacote)
+    this.qntBoostRestante = this.qtdBoostPacote - this.boostTotal;
+    console.log(this.qntBoostRestante)
   }
 
   qntProdutosRestante() {
     return this.qtdProdutosPacote - this.produtosTotal;
+  }
+
+  getqntBoostRestante() {
+    return this.qtdBoostPacote - this.boostTotal;
   }
 
 }
