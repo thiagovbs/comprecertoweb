@@ -204,11 +204,11 @@ export class ProdutosMercadoComponent implements OnInit {
   adicionarProdutoForm() {
     if (this.categoriaEscolhida) {
       this.mercadoprodutos.unshift(new MercadoProduto());
-      
-      if(this.mercadoprodutos){
+      console.log(this.produtosTotal)
+      if(this.produtosTotal === 0){
         this.produtosTotal = this.mercadoprodutos.length
       }else{
-        this.produtosTotal = this.mercadoprodutos.length + 1
+        this.produtosTotal = this.produtosTotal + 1
       }
       
     } else {
