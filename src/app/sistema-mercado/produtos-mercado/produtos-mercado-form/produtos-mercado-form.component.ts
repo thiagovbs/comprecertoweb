@@ -246,6 +246,7 @@ export class ProdutosMercadoFormComponent implements OnInit {
         .subscribe(resp => {
           this.atualizaMercadoProduto.emit(true);
         }, erro => {
+          swal('Preencha os campos', `O produto não pode ser atualizado!`, 'warning');
           console.error(erro.json());
         }, () => {
           this.formulario.disable();

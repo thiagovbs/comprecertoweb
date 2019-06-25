@@ -191,7 +191,6 @@ export class ProdutosMercadoComponent implements OnInit {
         erro => console.error(erro.json()));
 
     this.getMercadoProdutosPorBairroEDtEntrata();
-    this.getCategorias();
 
   }
 
