@@ -26,7 +26,7 @@ import swal from 'sweetalert2';
 })
 export class ProdutosMercadoComponent implements OnInit {
 
-  produtosTotal:number 
+  produtosTotal: number
   mercadoprodutos: MercadoProduto[] = [];
   localidadeAtual: MercadoLocalidade;
   localStorageAlcanceEDataEntrada: { bairro: Bairro, dataEntrada }
@@ -75,21 +75,12 @@ export class ProdutosMercadoComponent implements OnInit {
 
 
   getKeys(map) {
-    console.log(map)
     return Array.from(map.keys());
   }
   ngOnInit() {
 
-    //this.getCategorias();
-    this.categoriaService.getCategorias()
-      .subscribe((data: any) => {
-        this.listaCategorias = data.json()
-         data.json().map(categoria => {
-          this.totalPorCategoriasMap.set(categoria, 0)
-        }); 
-      }, error => console.log(error));
+    this.getCategorias();
 
-     
     //Data
     this.adapter.setLocale('Pt');
     if (this.minDate.getDay() === 2 || this.minDate.getDay() === 5) {
@@ -177,40 +168,53 @@ export class ProdutosMercadoComponent implements OnInit {
     this.localStorageAlcanceEDataEntrada = { bairro: this.listaBairros[0], dataEntrada: this.formLocalidade.get('dataEntrada').value }
     this.mercadoLocalidadeService.setLocalAlcance(this.localStorageAlcanceEDataEntrada);
 
-    this.getCategorias();
+
 
     this.mercadoLocalidadeService.getMercadoLocalidadePorMercadoEBairro(this.idMercado, this.idBairro)
       .subscribe(data => {
-        console.log(data.json())
         this.localidadeAtual = data.json()[0]
-        this.localidadeAtual.mercadoServicos.forEach(ms=>{
-          if(ms.pacoteServico.idPacoteServico===7 || ms.pacoteServico.idPacoteServico===8 || ms.pacoteServico.idPacoteServico===9){
-            this.qtdProdutosPacote=Number(ms.pacoteServico.descricao)
+        this.localidadeAtual.mercadoServicos.forEach(ms => {
+          if (ms.pacoteServico.idPacoteServico === 7 || ms.pacoteServico.idPacoteServico === 8 || ms.pacoteServico.idPacoteServico === 9) {
+            this.qtdProdutosPacote = Number(ms.pacoteServico.descricao)
           }
         });
       },
         erro => console.error(erro.json()));
 
-    this.getMercadoProdutosPorBairroEDtEntrata()
+    this.getMercadoProdutosPorBairroEDtEntrata();
+    this.getCategorias();
+
   }
 
   atualizaProduto(salvo) {
     if (salvo) {
-      this.produtosTotal = this.mercadoprodutos.length;
       this.pesquisarMercadoProdutos();
+      this.getCategorias()
+      this.temProduto = true;
     }
   }
 
   aoRemover(produtoRemovida) {
-    this.mercadoprodutos = this.mercadoprodutos.filter(produto => produto !== produtoRemovida);
-    this.produtosTotal = this.produtosTotal - 1;
+    this.pesquisarMercadoProdutos();
+    this.temProduto = true;
+    /* this.mercadoprodutos = this.mercadoprodutos.filter(produto => produto !== produtoRemovida);
+    this.produtosTotal = this.mercadoprodutos.length; */
   }
 
   adicionarProdutoForm() {
-    if (this.categoriaEscolhida)
+    if (this.categoriaEscolhida) {
       this.mercadoprodutos.unshift(new MercadoProduto());
-    else
+      
+      if(this.mercadoprodutos){
+        this.produtosTotal = this.mercadoprodutos.length
+      }else{
+        this.produtosTotal = this.mercadoprodutos.length + 1
+      }
+      
+    } else {
       swal('Categoria', `Selecione uma categoria!`, "warning")
+    }
+
   }
 
   atualizaCategoriaSelect(categoria) {
@@ -221,29 +225,30 @@ export class ProdutosMercadoComponent implements OnInit {
 
   getCategorias() {
     this.categoriaService.getCategorias()
-      .subscribe(data => {
-        this.listaCategorias = data.json();
+      .subscribe((data: any) => {
+        data.json().map(categoria => {
+          this.totalPorCategoriasMap.set(categoria, 0)
+        });
       }, error => console.log(error));
   }
 
 
   getMercadoProdutosPorBairroEDtEntrata() {
-    
+
     //serviço que filtra a dtEntrada para buscar os produtos do mercado localidade 
     this.mercadoProdutoService.getBuscarMercadoProdutosPorBairroEDtEntrada(this.idBairro, this.dtEntrada)
       .subscribe(resp => {
         this.mercadoprodutos = resp.json();
         this.produtosTotal = this.mercadoprodutos.length
-        
+        this.totalPorCategoria()
       }, erro => { },
         () => {
-          if (this.mercadoprodutos.length !== 0 && this.categoriaEscolhida){
-            console.log("okk")
+          if (this.mercadoprodutos.length !== 0 && this.categoriaEscolhida) {
             this.enviarProdutosCadastradosFiltrados(this.mercadoprodutos)
-          }else{
-            this.totalPorCategoria()
-          }   
+          }
         })
+    
+
   }
 
   private enviarProdutosCadastradosFiltrados(produtos: MercadoProduto[]) {
@@ -257,28 +262,30 @@ export class ProdutosMercadoComponent implements OnInit {
         }
       })
     })
-
     this.mercadoprodutos = filtroProdutos;
   }
 
 
-     totalPorCategoria(){
-    let chaves = this.getKeys(this.totalPorCategoriasMap)      
-      chaves.forEach((categoria: Categoria) => {          
-          categoria.subcategorias.map((subcategoria: Subcategoria) => {          
-            this.mercadoprodutos.forEach(mercadoProduto => {
-              if (mercadoProduto.produto.subcategoria.idSubcategoria === subcategoria.idSubcategoria) {
-                let tmp=this.totalPorCategoriasMap.get(categoria)+1;
-                this.totalPorCategoriasMap.set(categoria,tmp)
-              }
-            });
-          });
-         
-        })
-    }
-    
-    qntProdutosRestante(){      
-      return this.qtdProdutosPacote - this.produtosTotal;
-    }
+  totalPorCategoria() {
+    let chaves = this.getKeys(this.totalPorCategoriasMap)
+    chaves.forEach((categoria: Categoria) => {
+      this.totalPorCategoriasMap.set(categoria, 0)
+    });
+    chaves.forEach((categoria: Categoria) => {
+      categoria.subcategorias.map((subcategoria: Subcategoria) => {
+        this.mercadoprodutos.forEach(mercadoProduto => {
+          if (mercadoProduto.produto.subcategoria.idSubcategoria === subcategoria.idSubcategoria) {
+            let tmp = this.totalPorCategoriasMap.get(categoria) + 1;
+            this.totalPorCategoriasMap.set(categoria, tmp)
+          }
+        });
+      });
+
+    })
+  }
+
+  qntProdutosRestante() {
+    return this.qtdProdutosPacote - this.produtosTotal;
+  }
 
 }

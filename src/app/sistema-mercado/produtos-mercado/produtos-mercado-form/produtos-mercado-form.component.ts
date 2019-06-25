@@ -31,8 +31,9 @@ export class ProdutosMercadoFormComponent implements OnInit {
   dtEntrada: Date;
 
 
-  @Output('atualizaMercadoProduto')
+  @Output('salvarMercadoProduto')
   atualizaMercadoProduto = new EventEmitter();
+  
   @Output('removerMercadoProduto')
   removerMercadoProduto = new EventEmitter();
 
