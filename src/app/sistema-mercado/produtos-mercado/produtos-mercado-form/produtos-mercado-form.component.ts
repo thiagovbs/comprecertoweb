@@ -216,6 +216,7 @@ export class ProdutosMercadoFormComponent implements OnInit {
   btnSalvar() {
 
     this.mercadoProduto.mercadoLocalidade = this.localidadeAtual;
+    
     if (this.produto.idProduto) {
       this.mercadoProduto.produto = this.produto;
     }
@@ -228,6 +229,7 @@ export class ProdutosMercadoFormComponent implements OnInit {
     else
       this.mercadoProduto.fdestaque = false;
 
+    console.log(this.mercadoProduto.idMercadoProduto)
     if (this.mercadoProduto.idMercadoProduto) {
 
       this.mercadoProdutoService.putProdutosMercado(this.mercadoProduto).subscribe(data => {
@@ -244,7 +246,7 @@ export class ProdutosMercadoFormComponent implements OnInit {
     } else {
       this.mercadoProdutoService.salvarProdutosNoMercado(this.mercadoProduto)
         .subscribe(resp => {
-          this.atualizaMercadoProduto.emit(true);
+          this.atualizaMercadoProduto.emit(this.mercadoProduto);
         }, erro => {
           swal('Preencha os campos', `O produto não pode ser atualizado!`, 'warning');
           console.error(erro.json());

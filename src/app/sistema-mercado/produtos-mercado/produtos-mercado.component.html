@@ -33,10 +33,8 @@
                 </div>
                 <div fxFlex.gt-sm="20" fxFlex.gt-xs="20">
                     <mat-form-field class="m-l-10 m-t-10">
-                        <input matInput formControlName="dataEntrada" [matDatepickerFilter]="myFilter" 
-                            [min]="minDate"
-                            [max]="maxDate"
-                            [matDatepicker]="picker" placeholder="Data de Entrada" readonly
+                        <input matInput formControlName="dataEntrada" [matDatepickerFilter]="myFilter" [min]="minDate"
+                            [max]="maxDate" [matDatepicker]="picker" placeholder="Data de Entrada" readonly
                             (dateChange)="getDataEntrada($event)">
                         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                         <mat-datepicker #picker></mat-datepicker>
@@ -63,33 +61,35 @@
                         <mat-option *ngFor="let categoria of getKeys(totalPorCategoriasMap)" [value]="categoria"
                             (click)="atualizaCategoriaSelect(categoria)">
                             {{categoria.nome}}
-                            <span matPrefix  class="label label-red position nullable">{{totalPorCategoriasMap.get(categoria)}}</span>
+                            <span matPrefix
+                                class="label label-red position nullable">{{totalPorCategoriasMap.get(categoria)}}</span>
                         </mat-option>
                     </mat-select>
                 </mat-form-field>
             </div>
-            <div fxFlex.gt-sm="30" fxFlex.gt-xs="30" style="padding: 0px 20px">
-                <div style="margin-top: 22px;">
-                    Quantidade Produtos: {{produtosTotal || 0}}  Quantidade Produtos Restante: {{qntProdutosRestante()}}
+            <div fxFlex.gt-sm="40" fxFlex.gt-xs="40">
+                <div style="margin-top: 12px;">
+                    <div fxFlex.gt-sm="50" fxFlex.gt-xs="50">
+                        <p>Quantidade Produtos: {{produtosTotal || 0}}</p>
+                    </div>
+                    <div fxFlex.gt-sm="50" fxFlex.gt-xs="50">
+                        <p>Quantidade Produtos Restante: {{qntProdutosRestante()}}</p>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
     <span fxFlex></span>
-    <button mat-button href="#" mat-icon-button (click)="adicionarProdutoForm()"  *ngIf="qntProdutosRestante() != 0">
+    <button mat-button href="#" mat-icon-button (click)="adicionarProdutoForm()" *ngIf="qntProdutosRestante() != 0">
         <mat-icon>add</mat-icon>
     </button>
 </mat-toolbar>
 
 <div fxLayout="row" fxLayoutWrap="wrap" *ngIf="temProduto">
     <div fxFlex.gt-sm="33.33%" fxFlex="100" *ngFor="let mercadoProduto of mercadoprodutos">
-        <app-produtos-mercado-form 
-            [mercadoProduto]="mercadoProduto" 
-            [localidadeAtual]="localidadeAtual"
-            [dtEntrada]="dtEntrada"
-            [qntBoostRestante]="qntBoostRestante" 
-            (salvarMercadoProduto)="atualizaProduto($event)"
-            (removerMercadoProduto)="aoRemover($event)" 
+        <app-produtos-mercado-form [mercadoProduto]="mercadoProduto" [localidadeAtual]="localidadeAtual"
+            [dtEntrada]="dtEntrada" [qntBoostRestante]="qntBoostRestante"
+            (salvarMercadoProduto)="atualizaProduto($event)" (removerMercadoProduto)="aoRemover($event)"
             [mercadoCategoria]="categoriaEscolhida">
         </app-produtos-mercado-form>
     </div>

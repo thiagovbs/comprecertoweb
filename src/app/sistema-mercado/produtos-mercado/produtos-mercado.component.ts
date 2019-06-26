@@ -40,6 +40,7 @@ export class ProdutosMercadoComponent implements OnInit {
   listaCidades: Cidade[] = [];
   listaBairros: Bairro[] = [];
   listaCategorias: Categoria[] = [];
+  mercadoprodutosTemp:MercadoProduto[]=[]
 
 
   categoriaEscolhida: Categoria;
@@ -176,7 +177,6 @@ export class ProdutosMercadoComponent implements OnInit {
     this.mercadoLocalidadeService.getMercadoLocalidadePorMercadoEBairro(this.idMercado, this.idBairro)
       .subscribe(data => {
         this.localidadeAtual = data.json()[0]
-        console.log(data.json())
         this.localidadeAtual.mercadoServicos.forEach(ms => {
           if (ms.pacoteServico.idPacoteServico === 7 || ms.pacoteServico.idPacoteServico === 8 
             || ms.pacoteServico.idPacoteServico === 9) {
@@ -195,24 +195,27 @@ export class ProdutosMercadoComponent implements OnInit {
   }
 
   atualizaProduto(salvo) {
-    if (salvo) {
-      this.pesquisarMercadoProdutos();
-      this.getCategorias()
-      this.temProduto = true;
+    //se o tipo for boolean, é edição de produto se não é salvar
+    console.log(typeof(salvo))
+    if (typeof(salvo) != "boolean") {
+      console.log("ddd")
+      this.mercadoprodutosTemp.push(salvo)
+      this.totalPorCategoria();
     }
+    this.temProduto = true;
   }
 
   aoRemover(produtoRemovida) {
-    this.pesquisarMercadoProdutos();
+    this.mercadoprodutos = this.mercadoprodutos.filter(produto => produto !== produtoRemovida);
+    this.mercadoprodutosTemp.splice(this.mercadoprodutosTemp.indexOf(produtoRemovida), 1);
+    this.totalPorCategoria() 
+    this.produtosTotal = this.produtosTotal - 1
     this.temProduto = true;
-    /* this.mercadoprodutos = this.mercadoprodutos.filter(produto => produto !== produtoRemovida);
-    this.produtosTotal = this.mercadoprodutos.length; */
   }
 
   adicionarProdutoForm() {
     if (this.categoriaEscolhida) {
       this.mercadoprodutos.unshift(new MercadoProduto());
-      console.log(this.produtosTotal)
       if(this.produtosTotal === 0){
         this.produtosTotal = this.mercadoprodutos.length
       }else{
@@ -247,6 +250,7 @@ export class ProdutosMercadoComponent implements OnInit {
     this.mercadoProdutoService.getBuscarMercadoProdutosPorBairroEDtEntrada(this.idBairro, this.dtEntrada)
       .subscribe(resp => {
         this.mercadoprodutos = resp.json();
+        this.mercadoprodutosTemp = resp.json();
         this.produtosTotal = this.mercadoprodutos.length
         this.totalPorCategoria()
       }, erro => { },
@@ -281,12 +285,11 @@ export class ProdutosMercadoComponent implements OnInit {
     });
     chaves.forEach((categoria: Categoria) => {
       categoria.subcategorias.map((subcategoria: Subcategoria) => {
-        this.mercadoprodutos.forEach(mercadoProduto => {
+        this.mercadoprodutosTemp.forEach(mercadoProduto => {
           if (mercadoProduto.produto.subcategoria.idSubcategoria === subcategoria.idSubcategoria) {
             let tmp = this.totalPorCategoriasMap.get(categoria) + 1;
             this.totalPorCategoriasMap.set(categoria, tmp)
-          }
-         
+          }  
         });
       });
 
@@ -296,11 +299,7 @@ export class ProdutosMercadoComponent implements OnInit {
       if(mercadoProduto.fdestaque)
       this.boostTotal=this.boostTotal+1;
     });
-
-    console.log(this.boostTotal)
-    console.log(this.qtdBoostPacote)
     this.qntBoostRestante = this.qtdBoostPacote - this.boostTotal;
-    console.log(this.qntBoostRestante)
   }
 
   qntProdutosRestante() {
