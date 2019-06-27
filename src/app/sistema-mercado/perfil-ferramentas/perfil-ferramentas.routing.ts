@@ -1,9 +1,16 @@
 import { Routes } from '@angular/router';
-import { PerfilFerramentasComponent } from './perfil-ferramentas.component';
+import { CadastroEasyBuyComponent } from './cadastro-easy-buy/cadastro-easy-buy.component';
+
 
 export const PerfilFerramentasRoutes: Routes = [
   {
     path: '',
-    component: PerfilFerramentasComponent
+    children: [
+      {
+        path: 'cadastro-easy-buy',
+        component: CadastroEasyBuyComponent
+      }
+    ]
+    
   }
 ];

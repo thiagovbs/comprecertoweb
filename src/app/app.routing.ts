@@ -58,7 +58,7 @@ export const AppRoutes: Routes = [
       {
         path: 'perfil-ferramentas',
         loadChildren:
-          './sistema-mercado/perfil-ferramentas/perfil-ferramentas.module#PerfilFerramentasModule'
+          './sistema-mercado/perfil-ferramentas/perfil-ferramentas.module#PerfilFerramentaModule'
       },
       {
         path: 'faqs',
@@ -80,5 +80,9 @@ export const AppRoutes: Routes = [
   {
     path: 'auth',
     loadChildren: './authentication/authentication.module#AuthenticationModule'
+  },
+  {
+    path: '**',
+    redirectTo:'auth/404'
   }
 ];

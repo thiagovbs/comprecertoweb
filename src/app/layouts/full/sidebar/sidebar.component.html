@@ -30,33 +30,28 @@
     </mat-menu>
 </div>
 <mat-nav-list appAccordion>
-    <mat-list-item appAccordionLink routerLinkActive="selected">
-        <img src="assets/images/Logo Sheap Branca-03.svg" height="60" alt="homepage" class="light-logo">
-    </mat-list-item>
-    <hr style="background: white; margin: 0px 15px 20px 15px;">
-    <mat-list-item appAccordionLink *ngFor="let menuitem of menuItems.getMenuitem()" routerLinkActive="selected"
-        group="{{menuitem.state}}">
+    <mat-list-item appAccordionLink *ngFor="let menuitem of menuItems.getMenuitem()" routerLinkActive="selected" group="{{menuitem.state}}">
         <a class="" appAccordionToggle [routerLink]="['/secure/', menuitem.state]" *ngIf="menuitem.type === 'link'">
-            <!-- <mat-icon>{{ menuitem.icon }}</mat-icon> -->
+            <mat-icon>{{ menuitem.icon }}</mat-icon>
             <span>{{ menuitem.name }}</span>
             <span fxFlex></span>
-            <span class="label label-{{ badge.type }}" *ngFor="let badge of menuitem.badge">{{ badge.value }}</span>
+            <span class="label label-red" *ngFor="let badge of menuitem.badge">{{ badge.value }}</span>
         </a>
 
         <a class="" appAccordionToggle href="{{menuitem.state}}" *ngIf="menuitem.type === 'extLink'">
-            <!-- <mat-icon>{{ menuitem.icon }}</mat-icon> -->
+            <mat-icon>{{ menuitem.icon }}</mat-icon>
             <span>{{ menuitem.name }}</span>
             <span fxFlex></span>
             <span class="label label-{{ badge.type }}" *ngFor="let badge of menuitem.badge">{{ badge.value }}</span>
         </a>
         <a class="" appAccordionToggle href="{{menuitem.state}}" target="_blank" *ngIf="menuitem.type === 'extTabLink'">
-            <!-- <mat-icon>{{ menuitem.icon }}</mat-icon> -->
+            <mat-icon>{{ menuitem.icon }}</mat-icon>
             <span>{{ menuitem.name}}</span>
             <span fxFlex></span>
             <span class="label label-{{ badge.type }}" *ngFor="let badge of menuitem.badge">{{ badge.value }}</span>
         </a>
         <a class="" appAccordionToggle href="javascript:;" *ngIf="menuitem.type === 'sub'">
-            <!-- <mat-icon>{{ menuitem.icon }}</mat-icon> -->
+            <mat-icon>{{ menuitem.icon }}</mat-icon>
             <span>{{ menuitem.name }}</span>
             <span fxFlex></span>
             <span class="label label-{{ badge.type }}" *ngFor="let badge of menuitem.badge">{{ badge.value }}</span>
@@ -64,13 +59,11 @@
         </a>
         <mat-nav-list class="sub-item" *ngIf="menuitem.type === 'sub'">
             <mat-list-item *ngFor="let childitem of menuitem.children" routerLinkActive="selected">
-                <a [routerLink]="['/', menuitem.state, childitem.state ]" class="relative"
-                    routerLinkActive="selected">{{ childitem.name}}</a>
+                <a [routerLink]="['/secure/', menuitem.state, childitem.state ]" class="relative" routerLinkActive="selected">{{ childitem.name}}</a>
             </mat-list-item>
         </mat-nav-list>
         <div class="saperator text-muted" *ngIf="menuitem.type === 'saperator'">
             <span>{{ menuitem.name }}</span>
         </div>
     </mat-list-item>
-    <hr style="background: white; margin: 0px 15px 20px 15px;">
 </mat-nav-list>

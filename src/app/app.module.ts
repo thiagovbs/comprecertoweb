@@ -25,7 +25,7 @@ import { HttpModule } from '@angular/http';
     FullComponent,
     AppHeaderComponent,
     SpinnerComponent,
-    AppSidebarComponent,
+    AppSidebarComponent
     
   ],
   imports: [

@@ -128,8 +128,15 @@ const MERCADO_MENU_ITEMS = [
   {
     state: 'perfil-ferramentas',
     name: 'Perfil e Ferramentas',
-    type: 'link',
-    icon: 'add'
+    type: 'sub',
+    icon: 'apps',
+
+    children: [
+      {
+        state: 'cadastro-easy-buy',
+        name: 'cadastro easy buy'
+      }
+    ]
   },
   {
     state: 'faqs',
