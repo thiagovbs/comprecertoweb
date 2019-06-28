@@ -4,8 +4,73 @@
 
 <mat-card>
   <mat-card-content>
+
+    <h4>Filiais</h4>
+    <hr>
     <div fxLayout="row" fxLayoutWrap="wrap">
-      
+      <div fxFlex.gt-sm="100" fxFlex.gt-xs="100">
+
+        <mat-tab-group class="demo-tab-group">
+          <mat-tab>
+            <ng-template mat-tab-label>
+              Tijuca -RJ - Rio de Janeiro
+            </ng-template>
+            <div class="demo-tab-content">
+              <div fxLayout="row" fxLayoutWrap="wrap">
+
+              </div>
+            </div>
+          </mat-tab>
+          <mat-tab>
+            <ng-template mat-tab-label>
+              niteroi
+            </ng-template>
+            <div class="demo-tab-content">
+              <div fxLayout="row" fxLayoutWrap="wrap">
+                <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" style="margin-top:30px;">
+                  <mat-form-field>
+                    <mat-select placeholder="Frete">
+                      <mat-option value="sim">
+                        Sim
+                      </mat-option>
+                      <mat-option value="nao">
+                        Não
+                      </mat-option>
+                    </mat-select>
+                    <mat-hint></mat-hint>
+                  </mat-form-field>
+                </div>
+                <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" style="margin-top:30px;">
+                  <mat-form-field>
+                    <mat-select placeholder="Entrega ou Retirada">
+                      <mat-option value="entrega">
+                        Entrega
+                      </mat-option>
+                      <mat-option value="retirada">
+                        Retirada
+                      </mat-option>
+                    </mat-select>
+                    <mat-hint></mat-hint>
+                  </mat-form-field>
+                </div>
+                <div fxFlex.gt-sm="100" fxFlex.gt-xs="100">
+                  <mat-form-field class="example-full-width">
+                    <input matInput currencyMask placeholder="frete"
+                      [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',', align:'left'}" />
+                  </mat-form-field>
+                </div>
+                <div fxFlex.gt-sm="100" fxFlex.gt-xs="100">
+                  <mat-form-field class="example-full-width">
+                    <input matInput currencyMask placeholder="taxa frete"
+                      [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',', align:'left'}" />
+                  </mat-form-field>
+                </div>
+              </div>
+            </div>
+          </mat-tab>
+        </mat-tab-group>
+      </div>
     </div>
+
   </mat-card-content>
 </mat-card>

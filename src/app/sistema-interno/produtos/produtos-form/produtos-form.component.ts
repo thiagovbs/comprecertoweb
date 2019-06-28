@@ -11,7 +11,6 @@ import { UnidadeMedida } from '../../../models/unidade-medida';
 import Swal from 'sweetalert2';
 import * as Lodash from 'lodash';
 import { ImageCroppedEvent } from 'ngx-image-cropper';
-import { environment } from '../../../../environments/environment';
 
 
 @Component({
