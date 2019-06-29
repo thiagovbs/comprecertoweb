@@ -1,4 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { MercadoService } from '../../../services/mercado.service';
+import { MatTabChangeEvent } from '@angular/material';
+import { Mercado } from '../../../models/mercado';
+
+
 
 @Component({
   selector: 'app-cadastro-easy-buy',
@@ -7,9 +12,60 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CadastroEasyBuyComponent implements OnInit {
 
-  constructor() { }
+  atual: number;
+  frete: string;
+  entrega: string;
+  mercadoAtual: Mercado =new Mercado();;
+ 
 
-  ngOnInit() {
+ 
+
+
+  constructor(private mercadoService: MercadoService) {    
+    
+    
   }
 
-}
+
+  ngOnInit() {
+    
+     this.mercadoService.getMercadoPorId(6).subscribe(data => {
+      this.mercadoAtual = data.json();
+      console.log(this.mercadoAtual)
+         
+        })      
+    , error => console.log(error);
+    
+  }
+
+  btnSalvar(){
+    console.log(this.atual)
+    if(this.frete ==="sim"){
+        this.mercadoAtual.mercadoLocalidades[this.atual].frete=true;
+      }else{
+        this.mercadoAtual.mercadoLocalidades[this.atual].frete=false;
+      }
+
+
+
+  this.mercadoService.putMercado(this.mercadoAtual).subscribe(data => {
+    console.log(data.json());
+  }, error => {
+    console.error(error.json());
+    
+  });
+ 
+  } 
+
+  tabChanged = (tabChangeEvent: MatTabChangeEvent): void => {
+    this.atual =tabChangeEvent.index;
+    console.log(this.atual)
+  }
+
+  
+  }
+
+
+  
+
+

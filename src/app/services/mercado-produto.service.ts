@@ -10,9 +10,7 @@ export class MercadoProdutoService {
 
   constructor(private http: Http) { }
 
-  salvarProdutosNoMercado(mercadoProduto: MercadoProduto) {
-    console.log("salvar2")
-    console.log(mercadoProduto)
+  salvarProdutosNoMercado(mercadoProduto: MercadoProduto) {    
     const hds = new Headers({
       'Authorization': `Bearer ${localStorage.getItem('token')}`
     });

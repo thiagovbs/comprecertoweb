@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http, Headers } from '@angular/http';
 import { environment } from '../../environments/environment';
+import { MercadoLocalidade } from '../models/mercado-localidade';
 
 @Injectable({
   providedIn: 'root'
@@ -10,6 +11,14 @@ export class MercadoLocalidadeService {
   constructor(
     private http: Http
   ) { }
+
+  postMercadoLocalidade(mercadoLocalidade: MercadoLocalidade) {
+    const hds = new Headers({
+      'Authorization': `Bearer ${localStorage.getItem('token')}`
+    });
+
+    return this.http.post(`${environment.urlSpring}/mercado-localidades`, mercadoLocalidade, { headers: hds, withCredentials: true });
+  }
 
   getMercadoLocalidadePorMercadoEBairro(idMercado, idBairro) {
     const hds = new Headers({

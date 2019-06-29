@@ -21,7 +21,7 @@ import { MercadoService } from '../../services/mercado.service';
 import { HttpModule } from '@angular/http';
 import { CadastroEasyBuyComponent } from './cadastro-easy-buy/cadastro-easy-buy.component';
 import { NgxCurrencyModule } from "ngx-currency";
-import { MoedaPadraoPipe } from '../../util/moeda-padrao.pipe';
+
 
 @NgModule({
   imports: [
@@ -43,7 +43,7 @@ import { MoedaPadraoPipe } from '../../util/moeda-padrao.pipe';
     HttpModule,
     NgxCurrencyModule
   ],
-  declarations: [CadastroEasyBuyComponent, MoedaPadraoPipe],
+  declarations: [CadastroEasyBuyComponent],
   providers: [
     MercadoService
   ]

@@ -10,26 +10,18 @@
     <div fxLayout="row" fxLayoutWrap="wrap">
       <div fxFlex.gt-sm="100" fxFlex.gt-xs="100">
 
-        <mat-tab-group class="demo-tab-group">
-          <mat-tab>
+        <mat-tab-group class="demo-tab-group" (selectedTabChange)="tabChanged($event)">
+          <mat-tab *ngFor="let localidade of mercadoAtual.mercadoLocalidades; let l = index">
             <ng-template mat-tab-label>
-              Tijuca -RJ - Rio de Janeiro
+              {{ localidade.bairro.cidade.nome }} - {{ localidade.bairro.nome }}
             </ng-template>
+           
             <div class="demo-tab-content">
-              <div fxLayout="row" fxLayoutWrap="wrap">
-
-              </div>
-            </div>
-          </mat-tab>
-          <mat-tab>
-            <ng-template mat-tab-label>
-              niteroi
-            </ng-template>
-            <div class="demo-tab-content">
+               
               <div fxLayout="row" fxLayoutWrap="wrap">
                 <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" style="margin-top:30px;">
                   <mat-form-field>
-                    <mat-select placeholder="Frete">
+                    <mat-select placeholder="Frete"  [(ngModel)]="frete">
                       <mat-option value="sim">
                         Sim
                       </mat-option>
@@ -42,7 +34,7 @@
                 </div>
                 <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" style="margin-top:30px;">
                   <mat-form-field>
-                    <mat-select placeholder="Entrega ou Retirada">
+                    <mat-select placeholder="Entrega ou Retirada"  [(ngModel)]="entrega">
                       <mat-option value="entrega">
                         Entrega
                       </mat-option>
@@ -53,7 +45,7 @@
                     <mat-hint></mat-hint>
                   </mat-form-field>
                 </div>
-                <div fxFlex.gt-sm="100" fxFlex.gt-xs="100">
+            <!--     <div fxFlex.gt-sm="100" fxFlex.gt-xs="100">
                   <mat-form-field class="example-full-width">
                     <input matInput currencyMask placeholder="frete"
                       [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',', align:'left'}" />
@@ -64,10 +56,15 @@
                     <input matInput currencyMask placeholder="taxa frete"
                       [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',', align:'left'}" />
                   </mat-form-field>
-                </div>
+                </div> -->
               </div>
+            
             </div>
-          </mat-tab>
+          
+            <button mat-button color="primary" 
+        
+        (click)="btnSalvar()">SALVAR</button>
+          </mat-tab>          
         </mat-tab-group>
       </div>
     </div>
