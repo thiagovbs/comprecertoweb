@@ -4,19 +4,15 @@ import { PacoteServico } from './pacote-servico';
 import { Entrega } from './entrega';
 
 export class MercadoLocalidade {
-    idMercado: number;
-
+    idMercado?: number;
     idMercadoLocalidade: number;
     googlemapsLinks: string;
-
     mercadoServicos: MercadoServico[] = [];
     bairro: Bairro = new Bairro();
-
     servicosTemp?: any[] = [];
     googlemapsLinksTemp?: any[] = [];
-
-    entrega: Entrega;
-    frete: boolean;
+    entrega?: Entrega;
+    frete?: boolean;
     
     //pacoteServicos?:any = []
 }

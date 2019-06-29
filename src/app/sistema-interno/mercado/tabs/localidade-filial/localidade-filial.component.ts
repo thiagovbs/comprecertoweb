@@ -139,6 +139,7 @@ export class LocalidadeFilialComponent implements OnInit {
 
   addEndereco() {
     this.mercadoComponent.mercado.mercadoLocalidades.push({
+      idMercado: undefined,
       idMercadoLocalidade: undefined,
       googlemapsLinks: '',
       googlemapsLinksTemp: [{ id: 0, value: '' }, { id: 1, value: '' }],

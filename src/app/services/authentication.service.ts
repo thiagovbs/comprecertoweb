@@ -16,8 +16,9 @@ export class AuthenticationService {
   oauthTokenUrl = `${environment.urlAuth}/oauth/token`;
   jwtPayload: any;
   tokensRenokeUrl = `${environment.urlAuth}/tokens/revoke`;
-
   jwtHelper: JwtHelper = new JwtHelper();
+  idLoggedIn:any
+
 
   constructor(private http: HttpClient, 
               private router: Router, 
@@ -28,10 +29,13 @@ export class AuthenticationService {
       'Content-Type': 'application/x-www-form-urlencoded',
       'Authorization': 'Basic YW5ndWxhcjpAbmd1bEByMA=='
     });
-
     const body = `username=${usuario}&password=${senha}&grant_type=password`;
-
     return this.http.post(this.oauthTokenUrl, body, { headers: hds, withCredentials: true });
+  }
+
+  getUsuarioLoggedToken(){
+    const token = localStorage.getItem('token');
+    return this.jwtHelper.decodeToken(token)
   }
 
   armazenarToken(token: string) {
@@ -39,7 +43,6 @@ export class AuthenticationService {
   }
 
   logout() {
-
     this.limparAccessToken();
     this.router.navigate(['/auth/login']);
   }

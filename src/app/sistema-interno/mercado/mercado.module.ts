@@ -18,6 +18,7 @@ import { ServicoService } from '../../services/servico.service';
 import { PreVisualizacaoComponent } from './tabs/pre-visualizacao/pre-visualizacao.component';
 import { ImageCropperModule } from 'ngx-image-cropper';
 import { ImageUtilService } from '../../services/image-util.service';
+import { AuthenticationService } from '../../services/authentication.service';
 //import { NgxLoadingModule } from 'ngx-loading';
 
 @NgModule({
@@ -48,11 +49,17 @@ import { ImageUtilService } from '../../services/image-util.service';
     //NgxLoadingModule.forRoot({})
     
   ],
-  declarations: [MercadoComponent, CadastroMercadoComponent, LocalidadeFilialComponent, PacoteServicosComponent, PreVisualizacaoComponent]
+  declarations: [
+    MercadoComponent, 
+    CadastroMercadoComponent, 
+    LocalidadeFilialComponent, 
+    PacoteServicosComponent, 
+    PreVisualizacaoComponent]
   , providers: [
     MercadoService,
     ServicoService,
-    ImageUtilService
+    ImageUtilService,
+    AuthenticationService
   ]
 })
 export class MercadoModule { }

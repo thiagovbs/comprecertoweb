@@ -39,6 +39,7 @@ export class LoginComponent implements OnInit {
       data => {
         console.log(data)
         this.authenticationService.armazenarToken(data['access_token']);
+        
 
         if (!this.usuarioService.hasPermissoes()) {
           console.log('O usuário não possui nenhum permissão');

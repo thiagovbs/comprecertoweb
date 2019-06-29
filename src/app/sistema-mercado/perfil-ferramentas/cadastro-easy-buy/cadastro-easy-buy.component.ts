@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MercadoService } from '../../../services/mercado.service';
 import { MatTabChangeEvent } from '@angular/material';
 import { Mercado } from '../../../models/mercado';
+import { AuthenticationService } from '../../../services/authentication.service';
 
 
 
@@ -21,15 +22,17 @@ export class CadastroEasyBuyComponent implements OnInit {
  
 
 
-  constructor(private mercadoService: MercadoService) {    
+  constructor(private mercadoService: MercadoService,
+              private authService: AuthenticationService) {    
     
     
   }
 
 
   ngOnInit() {
-    
-     this.mercadoService.getMercadoPorId(6).subscribe(data => {
+    const idMercado = this.authService.getUsuarioLoggedToken().user.mercado.idMercado
+
+     this.mercadoService.getMercadoPorId(idMercado).subscribe(data => {
       this.mercadoAtual = data.json();
       console.log(this.mercadoAtual)
          

@@ -3,6 +3,7 @@ import { Http, Headers } from '@angular/http';
 import { environment } from '../../environments/environment';
 import { Mercado } from '../models/mercado';
 import { ImageUtilService } from './image-util.service';
+import { AuthenticationService } from './authentication.service';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,8 @@ export class MercadoService {
 
   constructor(
     private http: Http,
-    public imageUtilService: ImageUtilService
+    public imageUtilService: ImageUtilService,
+    
   ) { }
 
   croppedFile: File = null;
