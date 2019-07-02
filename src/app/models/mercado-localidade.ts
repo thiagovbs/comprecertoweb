@@ -1,7 +1,6 @@
 import { Bairro } from './bairro';
 import { MercadoServico } from "./mercado-servico";
-import { PacoteServico } from './pacote-servico';
-import { Entrega } from './entrega';
+import { Time } from '@angular/common';
 
 export class MercadoLocalidade {
     idMercado?: number;
@@ -11,8 +10,12 @@ export class MercadoLocalidade {
     bairro: Bairro = new Bairro();
     servicosTemp?: any[] = [];
     googlemapsLinksTemp?: any[] = [];
-    entrega?: Entrega;
+    entrega?: string;
     frete?: boolean;
+    valorMinimo?:number;
+    valorFrete?:number;
+    horarioMaximo?:Time;
+    telefone?:string
     
     //pacoteServicos?:any = []
 }

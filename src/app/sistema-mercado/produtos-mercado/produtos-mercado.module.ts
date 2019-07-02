@@ -34,10 +34,11 @@ import { DateFormatPipe } from './dateFormat.pipe';
 import { EstadoService } from '../../services/estado.service';
 import { CidadeService } from '../../services/cidade.service';
 import { BairroService } from '../../services/bairro.service';
-import { MoedaPadraoPipe } from '../../util/moeda-padrao.pipe';
+
 import { NgxCurrencyModule } from "ngx-currency";
 import ptBr from '@angular/common/locales/pt';
 import { registerLocaleData } from '@angular/common';
+import { SharedPipeModule } from '../../util/shared.pipe.module';
 registerLocaleData(ptBr)
 
 @NgModule({
@@ -59,9 +60,10 @@ registerLocaleData(ptBr)
     HttpModule,
     ImageCropperModule,
     MatDatepickerModule,
-    NgxCurrencyModule
+    NgxCurrencyModule,
+    SharedPipeModule
   ],
-  declarations: [ProdutosMercadoComponent, ProdutosMercadoFormComponent, DateFormatPipe, MoedaPadraoPipe],
+  declarations: [ProdutosMercadoComponent, ProdutosMercadoFormComponent, DateFormatPipe],
   providers: [
     { provide: LOCALE_ID, useValue: 'pt-PT' },
     MercadoService,

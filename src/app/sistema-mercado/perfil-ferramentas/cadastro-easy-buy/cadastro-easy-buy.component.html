@@ -4,70 +4,81 @@
 
 <mat-card>
   <mat-card-content>
+    <form novalidate [formGroup]="cadastroEasyBuyForm">
+      <div fxLayout="row" fxLayoutWrap="wrap">
+        <div fxFlex.gt-sm="100" fxFlex.gt-xs="100">
+          <hr style="background:#009b89">
+          <mat-tab-group class="demo-tab-group" (selectedTabChange)="tabChanged($event)">
+            <mat-tab *ngFor="let localidade of mercadoAtual.mercadoLocalidades; let l = index">
+              <ng-template mat-tab-label>
+                {{ localidade.bairro.cidade.nome }} - {{ localidade.bairro.nome }}
+              </ng-template>
+              <hr style="background:#009b89; margin-top:0.0009em;">
+              <div class="demo-tab-content" class="card-tab">
 
-    <h4>Filiais</h4>
-    <hr>
-    <div fxLayout="row" fxLayoutWrap="wrap">
-      <div fxFlex.gt-sm="100" fxFlex.gt-xs="100">
+                <div fxLayout="row" fxLayoutWrap="wrap">
+                  <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" style="text-align: end">
+                    <mat-slide-toggle (change)="EnviarForm($event.checked)"></mat-slide-toggle>
+                  </div>
+                  <div fxFlex.gt-sm="100" fxFlex.gt-xs="100">
+                    <mat-form-field class="example-full-width">
+                      <input matInput type="text" placeholder="Telefone" formControlName="tel" 
+                      [textMask]="{mask: maskTelefone}"/>
+                    </mat-form-field>
+                  </div>
+                  <div fxFlex.gt-sm="100" fxFlex.gt-xs="100">
 
-        <mat-tab-group class="demo-tab-group" (selectedTabChange)="tabChanged($event)">
-          <mat-tab *ngFor="let localidade of mercadoAtual.mercadoLocalidades; let l = index">
-            <ng-template mat-tab-label>
-              {{ localidade.bairro.cidade.nome }} - {{ localidade.bairro.nome }}
-            </ng-template>
-           
-            <div class="demo-tab-content">
-               
-              <div fxLayout="row" fxLayoutWrap="wrap">
-                <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" style="margin-top:30px;">
-                  <mat-form-field>
-                    <mat-select placeholder="Frete"  [(ngModel)]="frete">
-                      <mat-option value="sim">
-                        Sim
-                      </mat-option>
-                      <mat-option value="nao">
-                        Não
-                      </mat-option>
-                    </mat-select>
-                    <mat-hint></mat-hint>
-                  </mat-form-field>
-                </div>
-                <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" style="margin-top:30px;">
-                  <mat-form-field>
-                    <mat-select placeholder="Entrega ou Retirada"  [(ngModel)]="entrega">
-                      <mat-option value="entrega">
-                        Entrega
-                      </mat-option>
-                      <mat-option value="retirada">
-                        Retirada
-                      </mat-option>
-                    </mat-select>
-                    <mat-hint></mat-hint>
-                  </mat-form-field>
-                </div>
-            <!--     <div fxFlex.gt-sm="100" fxFlex.gt-xs="100">
-                  <mat-form-field class="example-full-width">
-                    <input matInput currencyMask placeholder="frete"
+                    <mat-chip-list>
+                      <mat-chip selected="{{isEntrega}}" (click)="btnEntregaRetirada('E')">
+                        Entrega</mat-chip>
+                      <mat-chip selected="{{!isEntrega}}" (click)="btnEntregaRetirada('R')">
+                        Retirada</mat-chip>
+                    </mat-chip-list>
+
+                  </div>
+                  <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" class="m-t-20">
+                    <label for="frete">Frete</label>
+                    <mat-chip-list>
+                      <mat-chip selected="{{isFrete}}" (click)="btnFrete($event)">Sim</mat-chip>
+                      <mat-chip selected="{{!isFrete}}" (click)="btnFrete($event)">Não
+                      </mat-chip>
+                    </mat-chip-list>
+
+                  </div>
+                  <div fxFlex.gt-sm="90" fxFlex.gt-xs="90" class="m-t-20">
+                    <mat-form-field class="example-full-width">
+                      <input matInput currencyMask placeholder="Valor Mínimo" formControlName="vl_minimo" value=""
+                      [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',', align:'left'}"/>
+                    </mat-form-field>
+                  </div>
+                  <div fxFlex.gt-sm="10" fxFlex.gt-xs="10" style="text-align: end" class="m-t-20">
+                    <mat-icon color="primary">info</mat-icon>
+                  </div>
+                  <div fxFlex.gt-sm="90" fxFlex.gt-xs="90">
+                    <mat-form-field class="example-full-width">
+                      <input matInput currencyMask placeholder="Taxa do Frete" formControlName="tx_frete" value=""
                       [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',', align:'left'}" />
-                  </mat-form-field>
+                    </mat-form-field>
+                  </div>
+                  <div fxFlex.gt-sm="10" fxFlex.gt-xs="10" style="text-align: end" class="m-t-20" >
+                    <mat-icon color="primary">info</mat-icon>
+                  </div>
+                  <div fxFlex.gt-sm="90" fxFlex.gt-xs="90">
+                    <mat-form-field class="example-full-width">
+                      <input matInput placeholder="horário máximo" formControlName="hr_maximo" value=""/>
+                    </mat-form-field>
+                  </div>
+                  <div fxFlex.gt-sm="10" fxFlex.gt-xs="10" style="text-align: end" class="m-t-20">
+                    <mat-icon color="primary">info</mat-icon>
+                  </div>
                 </div>
-                <div fxFlex.gt-sm="100" fxFlex.gt-xs="100">
-                  <mat-form-field class="example-full-width">
-                    <input matInput currencyMask placeholder="taxa frete"
-                      [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',', align:'left'}" />
-                  </mat-form-field>
-                </div> -->
+
               </div>
-            
-            </div>
-          
-            <button mat-button color="primary" 
-        
-        (click)="btnSalvar()">SALVAR</button>
-          </mat-tab>          
-        </mat-tab-group>
+              <!--  <button mat-button color="primary" (click)="btnSalvar()">SALVAR</button> -->
+            </mat-tab>
+          </mat-tab-group>
+        </div>
       </div>
-    </div>
-
+    </form>
   </mat-card-content>
 </mat-card>

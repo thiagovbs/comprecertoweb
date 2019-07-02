@@ -134,7 +134,7 @@ const MERCADO_MENU_ITEMS = [
     children: [
       {
         state: 'cadastro-easy-buy',
-        name: 'cadastro easy buy'
+        name: 'Cadastro easy buy'
       }
     ]
   },
