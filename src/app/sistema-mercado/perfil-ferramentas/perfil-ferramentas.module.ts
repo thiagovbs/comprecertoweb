@@ -1,5 +1,5 @@
 import { NgModule, LOCALE_ID } from '@angular/core';
-import { CommonModule, registerLocaleData } from '@angular/common';
+import { CommonModule, registerLocaleData, CurrencyPipe } from '@angular/common';
 import {
   MatInputModule,
   MatFormFieldModule,
@@ -55,6 +55,7 @@ registerLocaleData(ptBr)
   ],
   declarations: [CadastroEasyBuyComponent],
   providers: [
+    CurrencyPipe,
     { provide: LOCALE_ID, useValue: 'pt-PT' },
     MercadoService
   ]
