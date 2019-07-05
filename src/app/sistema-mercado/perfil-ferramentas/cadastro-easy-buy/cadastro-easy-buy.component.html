@@ -23,7 +23,7 @@
                   <div fxFlex.gt-sm="80" fxFlex.gt-xs="80">
                     <mat-form-field style="margin-top: -20px; ">
                       <input matInput type="text" formControlName="tel" [textMask]="{mask: maskTelefone}"
-                        [value]="localidade.telefone" />
+                        [value]="localidade.telefone || ''" />
                     </mat-form-field>
                   </div>
                   <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" class="m-t-20">
