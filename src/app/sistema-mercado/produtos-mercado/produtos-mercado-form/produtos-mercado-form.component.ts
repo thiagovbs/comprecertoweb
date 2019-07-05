@@ -5,10 +5,8 @@ import { Subcategoria } from '../../../models/subcategoria';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ProdutoService } from '../../../services/produto.service';
 import { SubcategoriaService } from '../../../services/subcategoria.service';
-
-
 import { Categoria } from '../../../models/categoria';
-import { CategoriaService } from '../../../services/categoria.service';
+
 import { MercadoProduto } from '../../../models/mercado-produto';
 import { MercadoLocalidade } from '../../../models/mercado-localidade';
 import { MercadoProdutoService } from '../../../services/mercado-produto.service';
