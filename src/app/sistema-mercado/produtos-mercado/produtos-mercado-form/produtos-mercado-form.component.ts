@@ -31,8 +31,6 @@ export class ProdutosMercadoFormComponent implements OnInit {
   @Input()
   qntBoostRestante: number;
 
-
-
   @Output('salvarMercadoProduto')
   atualizaMercadoProduto = new EventEmitter();
   
@@ -71,7 +69,7 @@ export class ProdutosMercadoFormComponent implements OnInit {
       produto: [{ value: '', disable: true }, [Validators.required]],
       peso: [{ value: '', disable: true }, [Validators.required]],
       preco: [{ value: '' }, [Validators.required]],
-      observacao: [{ value: '' }],
+      observacao: [{ value: ''}],
       boost: [{ value: '', disable: true }, [Validators.required]]
     });
   }
@@ -214,7 +212,7 @@ export class ProdutosMercadoFormComponent implements OnInit {
   btnSalvar() {
 
     this.mercadoProduto.mercadoLocalidade = this.localidadeAtual;
-    
+    console.log(this.localidadeAtual)
     if (this.produto.idProduto) {
       this.mercadoProduto.produto = this.produto;
     }

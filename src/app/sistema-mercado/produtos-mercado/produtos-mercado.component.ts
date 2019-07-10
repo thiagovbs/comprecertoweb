@@ -27,8 +27,8 @@ import swal from 'sweetalert2';
 export class ProdutosMercadoComponent implements OnInit {
 
   produtosTotal: number
-  boostTotal: number =0;
-  qntBoostRestante: number =0;
+  boostTotal: number = 0;
+  qntBoostRestante: number = 0;
   mercadoprodutos: MercadoProduto[] = [];
   localidadeAtual: MercadoLocalidade;
   localStorageAlcanceEDataEntrada: { bairro: Bairro, dataEntrada }
@@ -40,14 +40,14 @@ export class ProdutosMercadoComponent implements OnInit {
   listaCidades: Cidade[] = [];
   listaBairros: Bairro[] = [];
   listaCategorias: Categoria[] = [];
-  mercadoprodutosTemp:MercadoProduto[]=[]
+  mercadoprodutosTemp: MercadoProduto[] = []
 
 
   categoriaEscolhida: Categoria;
   idBairro: number;
   idMercado: number;
-  qtdProdutosPacote: number=0;
-  qtdBoostPacote: number=0;
+  qtdProdutosPacote: number = 0;
+  qtdBoostPacote: number = 0;
 
   public totalPorCategoriasMap: Map<Categoria, number> = new Map<Categoria, number>();
 
@@ -159,8 +159,6 @@ export class ProdutosMercadoComponent implements OnInit {
   }
   ///////////////////////// Fim barra de data superior///////////////////
 
-
-
   pesquisarMercadoProdutos() {
     this.temProduto = false;
     this.mercadoprodutos = [];
@@ -170,19 +168,21 @@ export class ProdutosMercadoComponent implements OnInit {
     this.idBairro = this.formLocalidade.get('bairro').value;
 
     this.localStorageAlcanceEDataEntrada = { bairro: this.listaBairros[0], dataEntrada: this.formLocalidade.get('dataEntrada').value }
-    this.mercadoLocalidadeService.setLocalAlcance(this.localStorageAlcanceEDataEntrada);
-
 
 
     this.mercadoLocalidadeService.getMercadoLocalidadePorMercadoEBairro(this.idMercado, this.idBairro)
       .subscribe(data => {
-        this.localidadeAtual = data.json()[0]
+        let localidadesMercado: MercadoLocalidade[] = data.json()
+        if (data.json()) {
+          this.localidadeAtual = localidadesMercado.find(local => local.bairro.idBairro === this.idBairro);
+        }
+
         this.localidadeAtual.mercadoServicos.forEach(ms => {
-          if (ms.pacoteServico.idPacoteServico === 7 || ms.pacoteServico.idPacoteServico === 8 
+          if (ms.pacoteServico.idPacoteServico === 7 || ms.pacoteServico.idPacoteServico === 8
             || ms.pacoteServico.idPacoteServico === 9) {
             this.qtdProdutosPacote = Number(ms.pacoteServico.descricao)
           }
-          if (ms.pacoteServico.idPacoteServico === 10 || ms.pacoteServico.idPacoteServico === 11 || 
+          if (ms.pacoteServico.idPacoteServico === 10 || ms.pacoteServico.idPacoteServico === 11 ||
             ms.pacoteServico.idPacoteServico === 12 || ms.pacoteServico.idPacoteServico === 13) {
             this.qtdBoostPacote = Number(ms.pacoteServico.descricao)
           }
@@ -196,8 +196,8 @@ export class ProdutosMercadoComponent implements OnInit {
 
   atualizaProduto(salvo) {
     //se o tipo for boolean, é edição de produto se não é salvar
-    console.log(typeof(salvo))
-    if (typeof(salvo) != "boolean") {
+
+    if (typeof (salvo) != "boolean") {
       console.log("ddd")
       this.mercadoprodutosTemp.push(salvo)
       this.totalPorCategoria();
@@ -208,7 +208,7 @@ export class ProdutosMercadoComponent implements OnInit {
   aoRemover(produtoRemovida) {
     this.mercadoprodutos = this.mercadoprodutos.filter(produto => produto !== produtoRemovida);
     this.mercadoprodutosTemp.splice(this.mercadoprodutosTemp.indexOf(produtoRemovida), 1);
-    this.totalPorCategoria() 
+    this.totalPorCategoria()
     this.produtosTotal = this.produtosTotal - 1
     this.temProduto = true;
   }
@@ -216,12 +216,12 @@ export class ProdutosMercadoComponent implements OnInit {
   adicionarProdutoForm() {
     if (this.categoriaEscolhida) {
       this.mercadoprodutos.unshift(new MercadoProduto());
-      if(this.produtosTotal === 0){
+      if (this.produtosTotal === 0) {
         this.produtosTotal = this.mercadoprodutos.length
-      }else{
+      } else {
         this.produtosTotal = this.produtosTotal + 1
       }
-      
+
     } else {
       swal('Categoria', `Selecione uma categoria!`, "warning")
     }
@@ -250,6 +250,7 @@ export class ProdutosMercadoComponent implements OnInit {
     this.mercadoProdutoService.getBuscarMercadoProdutosPorBairroEDtEntrada(this.idBairro, this.dtEntrada)
       .subscribe(resp => {
         this.mercadoprodutos = resp.json();
+        console.log(this.mercadoprodutos)
         this.mercadoprodutosTemp = resp.json();
         this.produtosTotal = this.mercadoprodutos.length
         this.totalPorCategoria()
@@ -259,7 +260,7 @@ export class ProdutosMercadoComponent implements OnInit {
             this.enviarProdutosCadastradosFiltrados(this.mercadoprodutos)
           }
         })
-    
+
 
   }
 
@@ -289,15 +290,15 @@ export class ProdutosMercadoComponent implements OnInit {
           if (mercadoProduto.produto.subcategoria.idSubcategoria === subcategoria.idSubcategoria) {
             let tmp = this.totalPorCategoriasMap.get(categoria) + 1;
             this.totalPorCategoriasMap.set(categoria, tmp)
-          }  
+          }
         });
       });
 
     })
-    this.boostTotal=0;
+    this.boostTotal = 0;
     this.mercadoprodutos.forEach(mercadoProduto => {
-      if(mercadoProduto.fdestaque)
-      this.boostTotal=this.boostTotal+1;
+      if (mercadoProduto.fdestaque)
+        this.boostTotal = this.boostTotal + 1;
     });
     this.qntBoostRestante = this.qtdBoostPacote - this.boostTotal;
   }
