@@ -56,15 +56,16 @@
         <div fxLayout="row" fxLayoutWrap="wrap">
             <div fxFlex.gt-sm="30" fxFlex.gt-xs="30">
                 <mat-form-field class="m-r-0  m-t-10">
-
-                    <mat-select placeholder="Categorias">
-                        <mat-option *ngFor="let categoria of getKeys(totalPorCategoriasMap)" [value]="categoria"
-                            (click)="atualizaCategoriaSelect(categoria)">
-                            {{categoria.nome}}
-                            <span matPrefix
-                                class="label label-red position nullable">{{totalPorCategoriasMap.get(categoria)}}</span>
-                        </mat-option>
-                    </mat-select>
+                    <form [formGroup]="formCategoria" autocomplete="off">
+                        <mat-select placeholder="Categorias" formControlName="categoria">
+                            <mat-option *ngFor="let categoria of getKeys(totalPorCategoriasMap)" [value]="categoria"
+                                (click)="atualizaCategoriaSelect(categoria)">
+                                {{categoria.nome}}
+                                <span matPrefix
+                                    class="label label-red position nullable">{{totalPorCategoriasMap.get(categoria)}}</span>
+                            </mat-option>
+                        </mat-select>
+                    </form>
                 </mat-form-field>
             </div>
             <div fxFlex.gt-sm="40" fxFlex.gt-xs="40">

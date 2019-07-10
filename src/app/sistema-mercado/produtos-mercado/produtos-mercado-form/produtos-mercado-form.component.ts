@@ -75,7 +75,7 @@ export class ProdutosMercadoFormComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log(this.qntBoostRestante)
+    
     // pegando os produtos dos mercados listados
     if (this.mercadoProduto.idMercadoProduto) {
       this.produtoImagem = this.mercadoProduto.produto.imagemUrl
@@ -212,12 +212,17 @@ export class ProdutosMercadoFormComponent implements OnInit {
   btnSalvar() {
 
     this.mercadoProduto.mercadoLocalidade = this.localidadeAtual;
-    console.log(this.localidadeAtual)
+    
     if (this.produto.idProduto) {
       this.mercadoProduto.produto = this.produto;
     }
     this.mercadoProduto.preco = this.formulario.get('preco').value;
     this.mercadoProduto.observacao = this.formulario.get('observacao').value;
+
+    if(!this.formulario.get('observacao').touched){
+      this.mercadoProduto.observacao = "";
+    }
+
     this.mercadoProduto.dtEntrada = this.dtEntrada;
 
     if (this.formulario.get('boost').value === 2)
@@ -225,7 +230,7 @@ export class ProdutosMercadoFormComponent implements OnInit {
     else
       this.mercadoProduto.fdestaque = false;
 
-    console.log(this.mercadoProduto.idMercadoProduto)
+    
     if (this.mercadoProduto.idMercadoProduto) {
 
       this.mercadoProdutoService.putProdutosMercado(this.mercadoProduto).subscribe(data => {

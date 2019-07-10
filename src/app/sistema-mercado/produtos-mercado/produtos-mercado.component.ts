@@ -31,7 +31,7 @@ export class ProdutosMercadoComponent implements OnInit {
   qntBoostRestante: number = 0;
   mercadoprodutos: MercadoProduto[] = [];
   localidadeAtual: MercadoLocalidade;
-  localStorageAlcanceEDataEntrada: { bairro: Bairro, dataEntrada }
+  localStorageAlcanceEDataEntrada: { bairro: Bairro, dataEntrada:any }
   maxDate: Date = new Date();
   dtEntrada: any;
   minDate: Date = new Date();
@@ -55,6 +55,7 @@ export class ProdutosMercadoComponent implements OnInit {
   temProduto: boolean = false;
 
   formLocalidade: FormGroup;
+  formCategoria: FormGroup;
   alcance: any
 
   constructor(
@@ -72,9 +73,13 @@ export class ProdutosMercadoComponent implements OnInit {
     this.formLocalidade = new FormGroup({
       estado: new FormControl({ value: '' }, [Validators.required]),
       cidade: new FormControl({ value: '' }, [Validators.required]),
-      bairro: new FormControl({ value: '' }, [Validators.required]),
+      bairro: new FormControl({ value: 0 }, [Validators.required, Validators.min(1)]),
       dataEntrada: new FormControl({ value: '' }, [Validators.required])
     });
+
+    this.formCategoria = new FormGroup({
+      categoria: new FormControl({value: 0})
+    })
   }
 
 
@@ -109,8 +114,6 @@ export class ProdutosMercadoComponent implements OnInit {
       this.formLocalidade.get('cidade').setValue(this.alcance.bairro.cidade.idCidade);
       this.formLocalidade.get('bairro').setValue(this.alcance.bairro.idBairro);
       this.formLocalidade.get('dataEntrada').setValue(new Date(this.alcance.dataEntrada).toISOString());
-
-      console.log(this.alcance.dataEntrada)
     }
   }
 
@@ -124,6 +127,7 @@ export class ProdutosMercadoComponent implements OnInit {
   }
 
   getCidadesPorEstado(idEstado: number) {
+
     this.cidadeService.getCidadePorEstadoMercado(idEstado).subscribe(data => {
       this.listaCidades = data.json();
     }, erro => {
@@ -140,10 +144,12 @@ export class ProdutosMercadoComponent implements OnInit {
   }
 
   atualizaCidadeSelect(estado: Estado) {
+    this.formLocalidade.get('bairro').setValue(0);
     this.getCidadesPorEstado(estado.idEstado);
   }
 
   atualizaBairroSelect(cidade: Cidade) {
+    this.formLocalidade.get('bairro').setValue(0);
     this.getBairrosPorCidade(cidade.idCidade);
   }
 
@@ -163,13 +169,15 @@ export class ProdutosMercadoComponent implements OnInit {
     this.temProduto = false;
     this.mercadoprodutos = [];
     this.listaCategorias = [];
+    this.categoriaEscolhida = undefined
 
     this.dtEntrada = this.formLocalidade.get('dataEntrada').value.split('T')[0];
     this.idBairro = this.formLocalidade.get('bairro').value;
+    this.formCategoria.get('categoria').setValue(0);
 
     this.localStorageAlcanceEDataEntrada = { bairro: this.listaBairros[0], dataEntrada: this.formLocalidade.get('dataEntrada').value }
-
-
+    this.mercadoLocalidadeService.setLocalAlcance(this.localStorageAlcanceEDataEntrada);
+    
     this.mercadoLocalidadeService.getMercadoLocalidadePorMercadoEBairro(this.idMercado, this.idBairro)
       .subscribe(data => {
         let localidadesMercado: MercadoLocalidade[] = data.json()
@@ -231,6 +239,7 @@ export class ProdutosMercadoComponent implements OnInit {
   atualizaCategoriaSelect(categoria) {
     this.temProduto = true;
     this.categoriaEscolhida = categoria
+  
     this.getMercadoProdutosPorBairroEDtEntrata()
   }
 
@@ -260,8 +269,6 @@ export class ProdutosMercadoComponent implements OnInit {
             this.enviarProdutosCadastradosFiltrados(this.mercadoprodutos)
           }
         })
-
-
   }
 
   private enviarProdutosCadastradosFiltrados(produtos: MercadoProduto[]) {
