@@ -69,7 +69,7 @@
                 </div>
                 <div fxFlex.gt-sm="80" fxFlex.gt-xs="80">
                     <mat-form-field class="example-full-width">
-                        <input matInput type="number" placeholder="Quantidade" formControlName="quantidade"
+                        <input matInput type="number" min="0" placeholder="Quantidade" formControlName="quantidade"
                             [(ngModel)]="produto.quantidade">
                         <mat-hint
                             *ngIf="formulario.controls['quantidade'].hasError('required') && formulario.controls['quantidade'].touched"
@@ -84,6 +84,24 @@
                             <mat-option *ngFor="let unidadeMedida of unidadesMedida" [value]="unidadeMedida.idUnidade">
                                 {{unidadeMedida.sigla}}</mat-option>
                         </mat-select>
+                    </mat-form-field>
+                </div>
+                <div fxFlex.gt-sm="100" fxFlex.gt-xs="100">  
+                    <mat-checkbox class="example-margin" formControlName="vendaPorPeso" [(ngModel)]="vendaPorPesoCheckbox" (click)="onClick($event)" >Venda Por Peso</mat-checkbox>
+                </div>
+                
+                <div fxFlex.gt-sm="100" fxFlex.gt-xs="100">
+                    <mat-form-field class="example-full-width">
+                        <input matInput type="number" min="0"   placeholder="Peso Minimo" formControlName="pesoMinimo"
+                            [(ngModel)]="produto.pesoMinimo">
+                            <span matSuffix>g</span>                        
+                    </mat-form-field>
+                </div>
+                <div fxFlex.gt-sm="100" fxFlex.gt-xs="100">
+                    <mat-form-field class="example-full-width">
+                        <input matInput type="number" min="0"  placeholder="Peso Maximo" formControlName="pesoMaximo"
+                            [(ngModel)]="produto.pesoMaximo">
+                            <span matSuffix>g</span>                          
                     </mat-form-field>
                 </div>
                 <!-- <mat-checkbox class="example-margin" formControlName="fativo" [(ngModel)]="produto.fativo">Ativo</mat-checkbox> -->

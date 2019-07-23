@@ -66,6 +66,11 @@ export const AppRoutes: Routes = [
           './sistema-mercado/faq/faq.module#FaqModule'
       },
       {
+        path: 'easy-buy',
+        loadChildren:
+          './sistema-mercado/easy-buy/easy-buy.module#EasyBuyModule'
+      },
+      {
         path: 'produtos-mercado',
         loadChildren:
           './sistema-mercado/produtos-mercado/produtos-mercado.module#ProdutosMercadoModule'

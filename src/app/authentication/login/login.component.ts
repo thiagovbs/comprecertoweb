@@ -37,7 +37,7 @@ export class LoginComponent implements OnInit {
   onSubmit() {
     this.authenticationService.login(this.form.get('username').value, this.form.get('password').value).subscribe(
       data => {
-        console.log(data)
+        //console.log(data)
         this.authenticationService.armazenarToken(data['access_token']);
         
 

@@ -15,4 +15,5 @@ export class Usuario {
     permissoes: Permissao[] = [];
     sexo: Sexo;
     mercado: Mercado = new Mercado();
+    senha?: string;
 }

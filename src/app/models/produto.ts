@@ -14,4 +14,7 @@ export class Produto {
     subcategoria: Subcategoria = new Subcategoria();
     unidadeMedida: UnidadeMedida = new UnidadeMedida();
     categoria: Categoria = new Categoria();
+    vendaPorPeso?: boolean;
+    pesoMinimo?: number;
+    pesoMaximo?: number;
 }

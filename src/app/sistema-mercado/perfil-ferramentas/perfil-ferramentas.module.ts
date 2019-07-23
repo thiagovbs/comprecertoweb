@@ -12,7 +12,9 @@ import {
   MatChipsModule,
   MatSidenavModule,
   MatTabsModule,
-  MatSlideToggleModule
+  MatSlideToggleModule,
+  MatListModule,
+  MatDialogModule
 } from '@angular/material';
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { PerfilFerramentasRoutes } from './perfil-ferramentas.routing';
@@ -26,6 +28,9 @@ import { NgxCurrencyModule } from "ngx-currency";
 import { SharedPipeModule } from '../../util/shared.pipe.module';
 import ptBr from '@angular/common/locales/pt';
 import { TextMaskModule } from 'angular2-text-mask';
+import { InformacoesDePacoteComponent } from './informacoes-de-pacote/informacoes-de-pacote.component';
+import { ImageCropperModule } from 'ngx-image-cropper';
+import { MudarSenhaDialog } from './informacoes-de-pacote/modal/mudar-senha-dialog';
 registerLocaleData(ptBr)
 
 @NgModule({
@@ -42,10 +47,13 @@ registerLocaleData(ptBr)
     MatFormFieldModule,
     MatCheckboxModule,
     FormsModule,
+    MatDialogModule,
     MatIconModule,
     MatInputModule,
     MatTabsModule,
+    MatListModule,
     HttpModule,
+    ImageCropperModule,
     MatSlideToggleModule,
     NgxCurrencyModule,
     MatChipsModule,
@@ -53,11 +61,14 @@ registerLocaleData(ptBr)
     SharedPipeModule,
     TextMaskModule
   ],
-  declarations: [CadastroEasyBuyComponent],
+  declarations: [CadastroEasyBuyComponent, InformacoesDePacoteComponent,MudarSenhaDialog],
   providers: [
     CurrencyPipe,
     { provide: LOCALE_ID, useValue: 'pt-PT' },
     MercadoService
-  ]
+  ],
+  entryComponents: [
+    MudarSenhaDialog
+  ] 
 })
 export class PerfilFerramentaModule {}

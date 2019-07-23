@@ -45,18 +45,24 @@ export class CategoriasFormComponent implements OnInit {
   constructor(
     private categoriaService: CategoriaService,
     private unidadeMedidaService: UnidadeMedidaService) {
-
-    this.formulario = new FormGroup({
-      fativo: new FormControl(''),
-      nome:  new FormControl ('', [Validators.required]),
-      imagem:  new FormControl('', [Validators.required])
-    });
+    
   }
 
   ngOnInit() {
     if (this.categoria.idCategoria) {
+      this.formulario = new FormGroup({
+        fativo: new FormControl(''),
+        nome:  new FormControl ('', [Validators.required]),
+        imagem:  new FormControl('')
+      });
       this.formulario.disable();
       this.hasEdit = false;
+    }else{
+      this.formulario = new FormGroup({
+        fativo: new FormControl(''),
+        nome:  new FormControl ('', [Validators.required]),
+        imagem:  new FormControl('', [Validators.required])
+      });
     }
     this.getUnidadesMedida();
 
@@ -134,11 +140,16 @@ export class CategoriasFormComponent implements OnInit {
   salvar() {
     if (this.formulario.valid) {
       if (this.listsValid()) {
-        this.categoria.imagemUrl = this.formulario.value.imagem;
+        console.log(this.categoria.imagemUrl)
+        if(this.formulario.value.imagem != ""){
+          this.categoria.imagemUrl = this.formulario.value.imagem;
+          this.sendImage()
+        }
+        
         if (this.categoria.idCategoria) {
           this.categoriaService.putCategoria(this.categoria).subscribe(data => {
 
-            this.sendImage()
+            
             this.atualizaCategoria.emit(true);
 
           }, error => {

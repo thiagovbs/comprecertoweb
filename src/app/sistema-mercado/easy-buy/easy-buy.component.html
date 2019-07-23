@@ -1,0 +1,88 @@
+<form [formGroup]="formLocalidade" autocomplete="off">
+    <mat-toolbar class="box-superior">
+        <div fxFlex.gt-sm="100" fxFlex.gt-xs="100">
+            <div fxLayout="row" fxLayoutWrap="wrap">
+                <div fxFlex.gt-sm="40" fxFlex.gt-xs="40">
+                    <mat-form-field class="m-r-0  m-t-10">
+                        <mat-select placeholder="Filial" formControlName="filial">
+                            <mat-option *ngFor="let mercadoLocalidade of listaMercadoLocalidade" [value]="mercadoLocalidade.idMercadoLocalidade">
+                                {{mercadoLocalidade.bairro.nome}} - {{mercadoLocalidade.bairro.cidade.estado.sigla}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div fxFlex.gt-sm="30" fxFlex.gt-xs="30" class="m-t-20 ">
+                        
+                    </div>
+               
+                <div fxFlex.gt-sm="30" fxFlex.gt-xs="30" class="m-t-20 ">
+                    <button mat-raised-button style="background-color:transparent; color:#fff; float: right; margin-right: 15%;"
+                        [disabled]="formLocalidade.invalid" (click)="pesquisarPedidosML()">PESQUISAR
+                    </button>
+                </div>
+            </div>
+        </div>
+    </mat-toolbar>
+</form>
+<p></p>
+
+<!-- <mat-form-field>
+    <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+</mat-form-field> -->
+
+<table mat-table [dataSource]="dataSource" matSort matSortActive="idPedido" matSortDirection="desc" multiTemplateDataRows class="mat-elevation-z8">
+    <ng-container matColumnDef="idPedido">
+        <th mat-header-cell *matHeaderCellDef ><b>ID</b>
+                <mat-form-field class="filter" floatLabel="never">
+                        <mat-label>Buscar</mat-label>
+                        <input matInput [formControl]="idPedidoFilter">
+                      </mat-form-field>
+        </th>
+        <td mat-cell *matCellDef="let element"> {{element.idPedido}} </td>
+    </ng-container>
+    <ng-container matColumnDef="usuario.nome">
+        <th mat-header-cell *matHeaderCellDef><b>Cliente</b>
+                <mat-form-field class="filter" floatLabel="never">
+                        <mat-label>Buscar</mat-label>
+                        <input matInput [formControl]="clienteFilter">
+                      </mat-form-field>
+        </th>
+        <td mat-cell *matCellDef="let element"> {{element.usuario.nome}} </td>
+    </ng-container>
+    <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef><b>Status</b>
+                <mat-form-field class="filter" floatLabel="never">
+                        <mat-label>Buscar</mat-label>
+                        <input matInput [formControl]="statusFilter">
+                      </mat-form-field>
+        </th>
+        <td mat-cell *matCellDef="let element"> {{statusEnum[element.status]}} </td>
+    </ng-container>
+    <ng-container matColumnDef="entrega">
+        <th mat-header-cell *matHeaderCellDef ><b>Entrega</b>
+                <mat-form-field class="filter" floatLabel="never">
+                        <mat-label>Buscar</mat-label>
+                        <input matInput [formControl]="entregaFilter">
+                      </mat-form-field>
+        </th>
+        <td mat-cell *matCellDef="let element"> {{entregaEnum[element.entrega]}} </td>
+    </ng-container>
+    <ng-container matColumnDef="dtCriacao">
+        <th mat-header-cell *matHeaderCellDef ><b>Data criação</b>
+                <mat-form-field class="filter" floatLabel="never">
+                        <mat-label>Buscar</mat-label>
+                        <input matInput [formControl]="dtCriacaoFilter">
+                      </mat-form-field>
+        </th>
+        <td mat-cell *matCellDef="let element"> {{element.dtCriacao| date:'shortDate'}} </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="columnsToDisplay; sticky: true"></tr>
+    <tr mat-row *matRowDef="let element; columns: columnsToDisplay;"
+      class="example-element-row"
+      
+      (click)="openDialog(element)">
+  </tr>
+    
+</table>
+<mat-paginator [pageSizeOptions]="[10, 20]" showFirstLastButtons ></mat-paginator>

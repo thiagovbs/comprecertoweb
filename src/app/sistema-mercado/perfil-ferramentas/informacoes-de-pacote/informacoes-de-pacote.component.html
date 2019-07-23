@@ -1,0 +1,47 @@
+<mat-toolbar color="primary" class="little">
+  <span>Informações de Pacote</span>
+</mat-toolbar>
+
+
+
+<mat-card>
+  <mat-card-content>
+    <div class="info-mercado">
+      <div fxLayout="row">
+        <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" style=" text-align: center !important">
+          <img height="75" [src]="myImage" style=" text-align: center !important">
+          <h3 style=" text-align: center !important">{{mercadoAtual.nomeFantasia}}</h3>
+          <button mat-button class="btn_limpar" (click)="openDialog()">Alterar senha</button>
+        </div>
+      </div>
+
+    </div>
+
+    <div fxLayout="row" fxLayoutWrap="wrap">
+      <div fxFlex.gt-sm="100" fxFlex.gt-xs="100">
+        <hr style="background:#009b89">
+        <mat-tab-group class="demo-tab-group" (selectedTabChange)="tabChanged($event)">
+          <mat-tab *ngFor="let localidade of mercadoAtual.mercadoLocalidades; let l = index" [label]="localidade">
+            <ng-template mat-tab-label>
+              {{ localidade.bairro.cidade.nome }} - {{ localidade.bairro.nome }}
+            </ng-template>
+            <hr style="background:#009b89; margin-top:0.0009em;">
+            <div class="demo-tab-content" class="card-tab">
+              <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" class="m-t-20">
+                <label for="Tipo">SERVIÇOS:</label>
+                <mat-list>
+                  <mat-list-item *ngFor="let mercadoServicos of localidade.mercadoServicos; let i = index">
+                    {{i+1}} - {{mercadoServicos.pacoteServico.nome}} {{mercadoServicos.pacoteServico.descricao}} 
+                  </mat-list-item>
+
+                </mat-list>
+              </div>
+
+            </div>
+          </mat-tab>
+        </mat-tab-group>
+      </div>
+    </div>
+
+  </mat-card-content>
+</mat-card>

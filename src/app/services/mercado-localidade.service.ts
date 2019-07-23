@@ -11,7 +11,7 @@ export class MercadoLocalidadeService {
 
   constructor(
     private http: Http,
-    
+
   ) { }
 
   postMercadoLocalidade(mercadoLocalidade: MercadoLocalidade) {
@@ -59,18 +59,21 @@ export class MercadoLocalidadeService {
   //Pegar o usuário ativo no localstorage
   getLocaAlcance() {
     let alcance = localStorage.getItem('ALCANCE');
-    let dataLocalStorage:any =JSON.parse(alcance).dataEntrada;
-    dataLocalStorage =dataLocalStorage.split('T')[0]
+    if (!alcance) {
+      return null
+    }
+    let dataLocalStorage: any = JSON.parse(alcance).dataEntrada;
+    dataLocalStorage = dataLocalStorage.split('T')[0]
 
     let anoStorage = dataLocalStorage.split('-')[0]
     let mesStorage = dataLocalStorage.split('-')[1]
     let diaStorage = dataLocalStorage.split('-')[2]
 
-    let dataLocalStorageFormat = new Date(+mesStorage +"/"+diaStorage + "/"+ anoStorage).getTime()
-    let dataAtual:any = new Date().getTime()
-    if(dataAtual >= dataLocalStorageFormat && alcance === null){
+    let dataLocalStorageFormat = new Date(+mesStorage + "/" + diaStorage + "/" + anoStorage).getTime()
+    let dataAtual: any = new Date().getTime()
+    if (dataAtual >= dataLocalStorageFormat && alcance === null) {
       return null
-    }else{
+    } else {
       return JSON.parse(alcance);
     }
 

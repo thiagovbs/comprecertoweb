@@ -17,10 +17,9 @@ import { ServicoService } from '../../../../services/servico.service';
 export class PreVisualizacaoComponent implements OnInit {
 
   formulario: FormGroup;
- 
   // upload file
-  imageChangedEvent: File = null;
-  croppedImage: any = '';
+    imageChangedEvent: File = null;
+    croppedImage: any = '';
   mercado: Mercado;
   change = true;
   myImage: string;
@@ -57,8 +56,6 @@ export class PreVisualizacaoComponent implements OnInit {
     return localidade.mercadoServicos.map(servico => (servico.pacoteServico.valor - servico.pacoteServico.acrescimo) - servico.pacoteServico.desconto).reduce((total, valor) => total += valor);
   }
 
- 
-
   fileChangeEvent(event: any): void {
     this.imageChangedEvent = event;
     this.change = false;
@@ -81,5 +78,5 @@ export class PreVisualizacaoComponent implements OnInit {
     console.log(this.servicoService.localidadesEnvio)
     console.log(this.mercadoComponent.mercado.mercadoLocalidades)
     
-  }
+  } 
 }

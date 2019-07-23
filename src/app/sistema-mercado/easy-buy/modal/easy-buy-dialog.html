@@ -1,0 +1,90 @@
+<mat-dialog-content class="mat-typography">
+    <mat-card-content>
+        <div fxFlex="50">
+            <div class="mat-h2">
+                {{pedido.usuario.nome}}
+            </div>
+            <p>
+                <b>Contato: </b>{{pedido.celular}}
+            </p>
+            <p> <b>Frete:</b>
+                <span *ngIf="pedido.entrega ==='E'">
+                    Sim
+                </span>
+                <span *ngIf="pedido.entrega !='E'">
+                    Não
+                </span>
+            </p>
+            <p>
+                <span *ngIf="pedido.entrega ==='E'">
+                    <b>Endereço: </b>{{pedido.endereco}}
+                </span>
+                <span *ngIf="pedido.entrega !='E'">
+                    <b>Data Hora Retirada: </b>{{pedido.dataHorarioRetirada}}
+                </span>
+
+            </p>
+            <p>
+                <b>Total de produtos: </b>{{pedido.pedidoProdutos.length}}
+            </p>
+            <p>
+                <b>Valor total do Pedido: </b>{{valorTotalPedido(pedido.pedidoProdutos) | currency:'BRL':true}}
+            </p>
+            <p>
+                <b>Valor total: </b>{{valorTotal(pedido)| currency:'BRL':true}}
+            </p>
+            <p>
+                <b>Forma de Pagamento: </b>{{pagamentoEnum[pedido.pagamento]}}
+            </p>
+            <p>
+                <b>Troco:</b>
+                <span *ngIf="pedido.troco ===0">
+                    Não
+                </span>
+                <span *ngIf="pedido.troco !=0">
+                    {{pedido.troco | currency:'BRL':true}}
+                </span>
+            </p>
+            <p>
+                <b>Produto zerado no estoque: </b>{{substituicaoEnum[pedido.substituicao]}}
+            </p>
+            <h3><b>Status</b></h3>
+           
+            <div *ngIf="pedido.status==='L'" align="center">
+
+                <button mat-button color="warn" (click)="pedido.status='N'" >Recusar</button>
+                <button mat-button color="primary" (click)="pedido.status='A'">Aceitar</button>
+
+            </div>
+            <mat-form-field appearance="outline" style="padding-right :24px;" *ngIf="pedido.status!='L'">
+                <mat-select placeholder="Status" [(ngModel)]="pedido.status">
+                    <mat-option *ngFor="let s of getStatusEnum()" [value]="s" [disabled]="pedido.status!='N' && s=='N'"
+                        style="color: #004D40;">
+                        {{statusEnum[s]}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <mat-divider [vertical]="true"></mat-divider>
+        <div fxFlex="50">
+            <div class="mat-h2">
+                <span style="padding-left: 24px;">
+                    LISTA COM OS PEDIDOS
+                </span>
+                <span style="text-align: right; padding-top: 5px; float:right ">
+                    #{{pedido.idPedido}}
+                </span>
+            </div>
+
+            <div fxLayout="row wrap" style="padding-left: 24px;">
+                <span *ngFor="let produtoPedido of listaProdutosPedido(pedido.pedidoProdutos); let i = index">
+                    <b>{{i+1}} - </b>{{produtoPedido}}
+                </span>
+            </div>
+        </div>
+    </mat-card-content>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close color="warn">Cancelar</button>
+    <button mat-button color="primary" (click)="salvarStatusPedido(pedido)">Salvar</button>
+</mat-dialog-actions>

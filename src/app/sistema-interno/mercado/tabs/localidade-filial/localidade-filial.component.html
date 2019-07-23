@@ -48,16 +48,8 @@
                   <mat-form-field class="example-full-width">
                     <input matInput type="text" name="link" [(ngModel)]="link.value" [placeholder]="'Link Google Maps ' + (linkIndex + 1)">
                   </mat-form-field>
-                </div>
-                <div fxFlex.gt-sm="10" fxFlex.gt-xs="10">
-                  <mat-icon class="icon-add-align-center pointer" (click)="removeGoogleMapsLink(localidade, link)">remove</mat-icon>
-                </div>
-              </div>
-              <div fxLayout="row" fxLayoutWrap="wrap">
-                <div fxFlex.gt-sm="100" fxFlex.gt-xs="100">
-                  <mat-icon class="pointer" (click)="addGoogleMapsLink(localidade)">add</mat-icon>
-                </div>
-              </div>
+                </div>                
+              </div>              
             </div>
           </mat-tab>
         </mat-tab-group>

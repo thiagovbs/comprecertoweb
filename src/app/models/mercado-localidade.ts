@@ -15,6 +15,7 @@ export class MercadoLocalidade {
     valorMinimo?:number;
     valorFrete?:number;
     horarioMaximo?:Time;
+    horarioMaximoEntrega?:Time;
     telefone?:string
     
     //pacoteServicos?:any = []

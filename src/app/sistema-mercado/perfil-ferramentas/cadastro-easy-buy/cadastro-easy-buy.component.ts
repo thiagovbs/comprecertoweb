@@ -19,7 +19,7 @@ export class CadastroEasyBuyComponent implements OnInit {
   frete: string;
   entrega: string = "";
   mercadoAtual: Mercado = new Mercado();
-  maskTelefone = ['(', /\d/, /\d/, ')', /\d/, /\d/, /\d/, /\d/,'-', /\d/, /\d/, /\d/, /\d/]
+  maskTelefone = ['(', /\d/, /\d/, ')', /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]
 
   isEntrega: boolean = false;
   isFrete: boolean = false;
@@ -44,6 +44,7 @@ export class CadastroEasyBuyComponent implements OnInit {
           vl_minimo: new FormControl({ value: 0, disabled: true }),
           tx_frete: new FormControl({ value: 0, disabled: true }),
           hr_maximo: new FormControl('', [Validators.required]),
+          hr_maximo_entrega: new FormControl('', [Validators.required]),
 
         })
       }
@@ -62,12 +63,16 @@ export class CadastroEasyBuyComponent implements OnInit {
 
       this.cadastroEasyBuyForm[this.atual].controls['tx_frete'].disable({ onlySelf: true })
       this.cadastroEasyBuyForm[this.atual].controls['vl_minimo'].disable({ onlySelf: true })
+      this.cadastroEasyBuyForm[this.atual].controls['hr_maximo_entrega'].disable({ onlySelf: true })
       this.cadastroEasyBuyForm[this.atual].get('vl_minimo').setValue(0);
       this.cadastroEasyBuyForm[this.atual].get('tx_frete').setValue(0);
+      this.cadastroEasyBuyForm[this.atual].get('hr_maximo_entrega').setValue(undefined);
+      
 
     } else if (evento === "E") {
       this.entrega = "E"
       this.isEntrega = true
+      this.cadastroEasyBuyForm[this.atual].controls['hr_maximo_entrega'].enable({ onlySelf: true })
     } else {
       this.entrega = null
       this.isEntrega = false
@@ -81,34 +86,48 @@ export class CadastroEasyBuyComponent implements OnInit {
       this.isFrete = true
       this.cadastroEasyBuyForm[this.atual].controls['tx_frete'].enable({ onlySelf: true })
       this.cadastroEasyBuyForm[this.atual].controls['vl_minimo'].enable({ onlySelf: true });
+      this.cadastroEasyBuyForm[this.atual].controls['hr_maximo_entrega'].enable({ onlySelf: true })
 
     } else {
       this.isFrete = false
       this.cadastroEasyBuyForm[this.atual].controls['tx_frete'].disable({ onlySelf: true })
       this.cadastroEasyBuyForm[this.atual].controls['vl_minimo'].disable({ onlySelf: true })
+      this.cadastroEasyBuyForm[this.atual].controls['hr_maximo_entrega'].disable({ onlySelf: true })
       this.cadastroEasyBuyForm[this.atual].get('vl_minimo').setValue(0);
       this.cadastroEasyBuyForm[this.atual].get('tx_frete').setValue(0);
+      this.cadastroEasyBuyForm[this.atual].get('hr_maximo_entrega').setValue(0);
     }
   }
 
+  
 
-  tabChanged(tabChangeEvent: any) {
-
+  tabChanged(tabChangeEvent: any) {    
     this.atual = tabChangeEvent.index;
     this.cadastroEasyBuyForm[this.atual].get('tel').setValue(this.mercadoAtual.mercadoLocalidades[this.atual].telefone);
     this.cadastroEasyBuyForm[this.atual].get('hr_maximo').setValue(this.mercadoAtual.mercadoLocalidades[this.atual].horarioMaximo);
+    this.cadastroEasyBuyForm[this.atual].get('hr_maximo_entrega').setValue(this.mercadoAtual.mercadoLocalidades[this.atual].horarioMaximoEntrega);
     if (this.mercadoAtual.mercadoLocalidades[this.atual].entrega === "R") {
       this.entrega = "R"
       this.isEntrega = false
       this.verificarIsEntregaIsNull = false
+      this.cadastroEasyBuyForm[this.atual].controls['tx_frete'].disable({ onlySelf: true })
+      this.cadastroEasyBuyForm[this.atual].controls['vl_minimo'].disable({ onlySelf: true })
+      this.cadastroEasyBuyForm[this.atual].controls['hr_maximo_entrega'].disable({ onlySelf: true })
     } else if (this.mercadoAtual.mercadoLocalidades[this.atual].entrega === "E") {
       this.entrega = "E"
       this.isEntrega = true
+      if(this.mercadoAtual.mercadoLocalidades[this.atual].frete){
+        this.isFrete=true;
+        this.cadastroEasyBuyForm[this.atual].controls['tx_frete'].enable({ onlySelf: true })
+      this.cadastroEasyBuyForm[this.atual].controls['vl_minimo'].enable({ onlySelf: true })
+      this.cadastroEasyBuyForm[this.atual].controls['hr_maximo_entrega'].enable({ onlySelf: true })
+      }     
       this.verificarIsEntregaIsNull = false
     } else {
       this.verificarIsEntregaIsNull = true
       this.entrega = null
       this.isEntrega = false
+      this.cadastroEasyBuyForm[this.atual].controls['hr_maximo_entrega'].disable({ onlySelf: true })
     }
   }
 
@@ -117,11 +136,13 @@ export class CadastroEasyBuyComponent implements OnInit {
   }
 
   EnviarForm() {
+    console.log(this.isFrete)
 
     let vlMinimo = this.cadastroEasyBuyForm[this.atual].controls['vl_minimo'].value
     let vlFrete = this.cadastroEasyBuyForm[this.atual].controls['tx_frete'].value
     let telefone = this.cadastroEasyBuyForm[this.atual].controls['tel'].value
     let hr_maximo = this.cadastroEasyBuyForm[this.atual].controls['hr_maximo'].value
+    let hr_maximo_entrega = this.cadastroEasyBuyForm[this.atual].controls['hr_maximo_entrega'].value
 
     this.mercadoAtual.mercadoLocalidades[this.atual].valorMinimo = vlMinimo
     this.mercadoAtual.mercadoLocalidades[this.atual].telefone = telefone
@@ -129,10 +150,11 @@ export class CadastroEasyBuyComponent implements OnInit {
     this.mercadoAtual.mercadoLocalidades[this.atual].valorFrete = vlFrete
     this.mercadoAtual.mercadoLocalidades[this.atual].entrega = this.entrega
     this.mercadoAtual.mercadoLocalidades[this.atual].horarioMaximo = hr_maximo
-
+    this.mercadoAtual.mercadoLocalidades[this.atual].horarioMaximoEntrega= hr_maximo_entrega;
+    
     if (!this.isFrete) {
       this.mercadoAtual.mercadoLocalidades[this.atual].valorMinimo = null
-      this.mercadoAtual.mercadoLocalidades[this.atual].valorFrete = null
+      this.mercadoAtual.mercadoLocalidades[this.atual].valorFrete = null     
     }
     console.log(this.mercadoAtual.mercadoLocalidades[this.atual])
     if (telefone === "") {
@@ -141,9 +163,9 @@ export class CadastroEasyBuyComponent implements OnInit {
       swal('Opa', `Campo de horário máximo em branco!`, 'warning');
     } else if (this.verificarIsEntregaIsNull) {
       swal('Opa', `Mostre qual o seu tipo de entrega!`, 'warning');
-    }else if(!this.cadastroEasyBuyForm[this.atual].valid){
+    } else if (!this.cadastroEasyBuyForm[this.atual].valid) {
       swal('Opa', `Tem alguma coisa errada!`, 'warning');
-    }else {
+    } else {
       this.mercadoService.putMercado(this.mercadoAtual).subscribe(data => {
         swal('Inclusão', `Parabéns ${this.mercadoAtual.nomeFantasia}, esta localidade agora possui
          serviço de Easy Buy!`, 'success');
@@ -161,6 +183,7 @@ export class CadastroEasyBuyComponent implements OnInit {
     this.cadastroEasyBuyForm[this.atual].get('vl_minimo').setValue(undefined);
     this.cadastroEasyBuyForm[this.atual].get('tx_frete').setValue(undefined);
     this.cadastroEasyBuyForm[this.atual].get('hr_maximo').setValue(undefined);
+    this.cadastroEasyBuyForm[this.atual].get('hr_maximo_entrega').setValue(undefined);
 
     this.mercadoAtual.mercadoLocalidades[this.atual].telefone = undefined;
     this.mercadoAtual.mercadoLocalidades[this.atual].valorFrete = undefined;
@@ -168,10 +191,11 @@ export class CadastroEasyBuyComponent implements OnInit {
     this.mercadoAtual.mercadoLocalidades[this.atual].entrega = undefined;
     this.mercadoAtual.mercadoLocalidades[this.atual].frete = undefined;
     this.mercadoAtual.mercadoLocalidades[this.atual].horarioMaximo = undefined;
+    this.mercadoAtual.mercadoLocalidades[this.atual].horarioMaximoEntrega = undefined;
 
     console.log(this.mercadoAtual)
     this.mercadoService.putMercado(this.mercadoAtual).subscribe(data => {
-      
+
       swal('Exclusão', `Você excluiu o serviço easy buy desta localidade!`, 'success');
 
     }, error => {

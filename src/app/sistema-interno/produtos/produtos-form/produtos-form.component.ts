@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Produto } from '../../../models/produto';
-import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, FormControl, NgControl } from '@angular/forms';
 import { ProdutoService } from '../../../services/produto.service';
 
 import { Subcategoria } from '../../../models/subcategoria';
@@ -35,6 +35,7 @@ export class ProdutosFormComponent implements OnInit {
 
   formulario: FormGroup;
   hasEdit: boolean = true;
+  vendaPorPesoCheckbox: boolean = false;
 
   //upload file
   imageChangedEvent: File = null;
@@ -46,17 +47,10 @@ export class ProdutosFormComponent implements OnInit {
   constructor(private formBuilder: FormBuilder,
     private produtoService: ProdutoService,
     private subcategoriaService: SubcategoriaService,
-    private unidadeMedidaService: UnidadeMedidaService) {
+    private unidadeMedidaService: UnidadeMedidaService
+     ) {
 
-    this.formulario = new FormGroup({
-      caracteristica: new FormControl ('', [Validators.required]),
-      marca: new FormControl ('', [Validators.required]),
-      nome: new FormControl ('', [Validators.required]),
-      quantidade: new FormControl ('', [Validators.required, Validators.min(0.1)]),
-      subcategoria: new FormControl ('', [Validators.required]),
-      unidadeMedida: new FormControl ({ value: '', disable: true }, [Validators.required]),
-      imagem: new FormControl ('', [Validators.required])
-    });
+    
   }
 
   ngOnInit() {
@@ -64,11 +58,8 @@ export class ProdutosFormComponent implements OnInit {
     this.getSubcategorias();
 
     if (this.produto.idProduto) {
-
-      this.getUnidadesMedidaPorSubcategoria(this.produto.subcategoria)
-      this.formulario.disable();
-      this.hasEdit = false;
-      
+      this.myImage = this.produto.imagemUrl;
+      if(this.myImage){
       this.formulario = new FormGroup({
         caracteristica: new FormControl ('', [Validators.required]),
         marca: new FormControl ('', [Validators.required]),
@@ -76,12 +67,50 @@ export class ProdutosFormComponent implements OnInit {
         quantidade: new FormControl ('', [Validators.required, Validators.min(0.1)]),
         subcategoria: new FormControl ('', [Validators.required]),
         unidadeMedida: new FormControl ({ value: '', disable: true }, [Validators.required]),
-        imagem: new FormControl ('')
+        imagem: new FormControl (''),
+        vendaPorPeso: new FormControl (''),
+        pesoMinimo: new FormControl (''),
+        pesoMaximo: new FormControl ('')
       });
-      
+    }else{
+      this.formulario = new FormGroup({
+        caracteristica: new FormControl ('', [Validators.required]),
+        marca: new FormControl ('', [Validators.required]),
+        nome: new FormControl ('', [Validators.required]),
+        quantidade: new FormControl ('', [Validators.required, Validators.min(0.1)]),
+        subcategoria: new FormControl ('', [Validators.required]),
+        unidadeMedida: new FormControl ({ value: '', disable: true }, [Validators.required]),
+        imagem: new FormControl ('',[Validators.required]),
+        vendaPorPeso: new FormControl (''),
+        pesoMinimo: new FormControl (''),
+        pesoMaximo: new FormControl ('')
+    });
+  }
+      this.vendaPorPesoCheckbox=this.produto.vendaPorPeso;
+      this.getUnidadesMedidaPorSubcategoria(this.produto.subcategoria)
+      this.formulario.disable();
+      this.hasEdit = false;
+     
+    }else{
+      this.formulario = new FormGroup({
+        caracteristica: new FormControl ('', [Validators.required]),
+        marca: new FormControl ('', [Validators.required]),
+        nome: new FormControl ('', [Validators.required]),
+        quantidade: new FormControl ('', [Validators.required, Validators.min(0.1)]),
+        subcategoria: new FormControl ('', [Validators.required]),
+        unidadeMedida: new FormControl ({ value: '', disable: true }, [Validators.required]),
+        imagem: new FormControl ('',[Validators.required]),
+        vendaPorPeso: new FormControl (''),
+        pesoMinimo: new FormControl (''),
+        pesoMaximo: new FormControl ('')
+      });
     }
 
-    this.myImage = this.produto.imagemUrl;
+    if(!this.produto.vendaPorPeso){
+      this.formulario.controls['pesoMinimo'].disable({ onlySelf: true })
+      this.formulario.controls['pesoMaximo'].disable({ onlySelf: true })
+    }  
+    
 
   }
 
@@ -101,7 +130,6 @@ export class ProdutosFormComponent implements OnInit {
   salvar() {
     this.loading = true;
     this.produto.imageBase64 = this.produtoService.croppedFile
-
     if (this.formulario.valid) {
       if (this.produto.idProduto) {
         this.produtoService.putProduto(this.produto).subscribe(data => {
@@ -167,6 +195,7 @@ export class ProdutosFormComponent implements OnInit {
     }, error => console.log(error))
   }
 
+
   atualizaSubcategoriaSelect(value) {
     this.produto.subcategoria = this.subcategorias.filter(subcategoria => subcategoria.idSubcategoria = value)[0];
 
@@ -199,4 +228,22 @@ export class ProdutosFormComponent implements OnInit {
   loadImageFailed() {
 
   }
+
+  onClick(event) {
+    
+    //console.log(this.vendaPorPesoCheckbox)
+    this.produto.vendaPorPeso=!this.vendaPorPesoCheckbox
+    console.log(this.produto.vendaPorPeso)
+    if(this.produto.vendaPorPeso){
+      this.formulario.controls['pesoMinimo'].enable({ onlySelf: true })
+      this.formulario.controls['pesoMaximo'].enable({ onlySelf: true })
+    }else{
+      this.formulario.controls['pesoMinimo'].disable({ onlySelf: true })
+      this.formulario.controls['pesoMaximo'].disable({ onlySelf: true })
+      this.formulario.controls['pesoMaximo'].setValue(undefined);
+      this.formulario.controls['pesoMinimo'].setValue(undefined);
+    }   
+    
+    
+}
 }

@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, LOCALE_ID } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
@@ -17,7 +17,11 @@ import { AppRoutes } from './app.routing';
 import { AppGuard } from './app.guard';
 import { ImageUtilService } from './services/image-util.service';
 import { HttpModule } from '@angular/http';
-
+import { registerLocaleData } from '@angular/common';
+import localePt from '@angular/common/locales/pt';
+import { MatPaginatorIntl } from '@angular/material';
+registerLocaleData(localePt, 'pt-BR');
+import { getPtBrPaginatorIntl } from './ptbr-paginator-intl';
 
 @NgModule({
   declarations: [
@@ -43,8 +47,11 @@ import { HttpModule } from '@angular/http';
   ],
   providers: [
     AppGuard,
-    ImageUtilService
+    ImageUtilService,
+    {provide: MatPaginatorIntl, useValue: getPtBrPaginatorIntl()},
+    {provide: LOCALE_ID, useValue: 'pt-BR'}
   ],
   bootstrap: [AppComponent]
+  
 })
 export class AppModule { }

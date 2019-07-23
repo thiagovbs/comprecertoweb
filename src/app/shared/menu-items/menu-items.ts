@@ -133,9 +133,13 @@ const MERCADO_MENU_ITEMS = [
 
     children: [
       {
+        state: 'informacoes-de-pacote',
+        name: 'Informações de pacote'
+      },
+      {
         state: 'cadastro-easy-buy',
         name: 'Cadastro easy buy'
-      }
+      }     
     ]
   },
   {
@@ -143,7 +147,14 @@ const MERCADO_MENU_ITEMS = [
     name: 'Faqs',
     type: 'link',
     icon: 'add'
+  },
+  {
+    state: 'easy-buy',
+    name: 'easy buy',
+    type: 'link',
+    icon: 'add'
   }
+  
 ];
 
 @Injectable()
