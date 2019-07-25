@@ -16,7 +16,11 @@ export class MercadoLocalidade {
     valorFrete?:number;
     horarioMaximo?:Time;
     horarioMaximoEntrega?:Time;
-    telefone?:string
+    telefone?:string;
+    endereco?:string;
+    rua?:string;
+    numero?:string;
+    complemento?:string;
     
     //pacoteServicos?:any = []
 }

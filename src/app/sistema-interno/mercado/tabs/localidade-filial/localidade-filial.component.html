@@ -36,19 +36,37 @@
     <div fxLayout="row" fxLayoutWrap="wrap">
       <div fxFlex.gt-sm="100" fxFlex.gt-xs="100">
 
-        <mat-tab-group class="demo-tab-group">
+        <mat-tab-group #tabGroup class="demo-tab-group">
           <mat-tab *ngFor="let localidade of mercadoComponent.mercado.mercadoLocalidades; let localidadeIndex = index">
             <ng-template mat-tab-label>
               {{ localidade.bairro.cidade.nome }} - {{ localidade.bairro.nome }}
               <mat-icon (click)="removeLocalidade(localidade)" style="margin-left: 10px">cancel</mat-icon>
             </ng-template>
             <div class="demo-tab-content">
-              <div fxLayout="row" fxLayoutWrap="wrap" *ngFor="let link of localidade.googlemapsLinksTemp; let linkIndex = index">
+              <div fxLayout="row" fxLayoutWrap="wrap" >
                 <div fxFlex.gt-sm="90" fxFlex.gt-xs="90">
                   <mat-form-field class="example-full-width">
-                    <input matInput type="text" name="link" [(ngModel)]="link.value" [placeholder]="'Link Google Maps ' + (linkIndex + 1)">
+                    <input matInput type="text" name="link" [(ngModel)]="localidade.googlemapsLinks" [placeholder]="'Link Google Maps '">
                   </mat-form-field>
-                </div>                
+                </div>
+                <div fxFlex.gt-sm="90" fxFlex.gt-xs="90">
+                  <mat-form-field class="example-full-width">
+                    <input matInput type="text" name="link" [(ngModel)]="localidade.rua" [placeholder]="'Rua'">
+                  </mat-form-field>
+                </div>
+                <div fxFlex.gt-sm="40" fxFlex.gt-xs="40">
+                  <mat-form-field class="example-full-width">
+                    <input matInput type="text" name="link" [(ngModel)]="localidade.numero" [placeholder]="'Número'">
+                  </mat-form-field>
+                </div> 
+                <div fxFlex.gt-sm="10" fxFlex.gt-xs="10">
+                  
+                </div>   
+                <div fxFlex.gt-sm="40" fxFlex.gt-xs="40">
+                  <mat-form-field class="example-full-width">
+                    <input matInput type="text" name="link" [(ngModel)]="localidade.complemento" [placeholder]="'Complemento'">
+                  </mat-form-field>
+                </div>                  
               </div>              
             </div>
           </mat-tab>

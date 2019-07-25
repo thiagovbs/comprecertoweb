@@ -73,10 +73,5 @@ export class PreVisualizacaoComponent implements OnInit {
   anteriorTab(){
     this.mercadoComponent.selectedTab = this.mercadoComponent.tabs.filter(tab => tab.key === 'servicos')[0];
   }
-
-  teste(){
-    console.log(this.servicoService.localidadesEnvio)
-    console.log(this.mercadoComponent.mercado.mercadoLocalidades)
-    
-  } 
+ 
 }

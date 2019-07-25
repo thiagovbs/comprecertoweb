@@ -1,6 +1,6 @@
 import { Estado } from './../../../../models/estado';
 import { Cidade } from './../../../../models/cidade';
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, ViewChild } from '@angular/core';
 import { MercadoComponent } from '../../mercado.component';
 import { NgxViacepService, Endereco, ErroCep } from '@brunoc/ngx-viacep';
 import { Bairro } from '../../../../models/bairro';
@@ -15,25 +15,45 @@ import { ServicoService } from '../../../../services/servico.service';
 })
 export class LocalidadeFilialComponent implements OnInit {
 
+  @ViewChild('tabGroup') tabGroup;
+
   cep: string;
   enderecoTemp: Bairro;
+  ruaTemp: string;
   cepNotFound: string;
-  localidadeServicoTemp:any
+  localidadeServicoTemp: any
   static cepMask = [/\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/];
 
-  constructor(@Inject(MercadoComponent) 
-              private mercadoComponent: MercadoComponent, 
-              private viacep: NgxViacepService,
-              private servicoService: ServicoService) { }
+  constructor(@Inject(MercadoComponent)
+  private mercadoComponent: MercadoComponent,
+    private viacep: NgxViacepService,
+    private servicoService: ServicoService) { }
 
   ngOnInit() {
     this.getServicos()
+    console.log(this.mercadoComponent.mercado.mercadoLocalidades)
+
+    this.mercadoComponent.mercado.mercadoLocalidades.forEach(element => {
+      var endereçoSplitted = element.endereco.split(/(?:(?:\ n\º))|(?:(?:\/))/);
+
+      element.rua = endereçoSplitted[0]
+      element.numero = endereçoSplitted[1]
+      element.complemento = endereçoSplitted[2]
+
+    });
+
+
+
+
+
   }
+
 
   buscarCep() {
     this.viacep.buscarPorCep(this.cep).then((endereco) => {
       console.log(endereco);
       this.enderecoTemp = this.parseEndereco(endereco);
+      this.ruaTemp =  endereco.logradouro;
     }).catch((error: ErroCep) => {
       console.log(error.message);
       this.cepNotFound = error.message;
@@ -68,6 +88,7 @@ export class LocalidadeFilialComponent implements OnInit {
     bairro.cidade = cidade;
     bairro.nome = endereco.bairro;
 
+   
     return bairro;
   }
 
@@ -130,30 +151,39 @@ export class LocalidadeFilialComponent implements OnInit {
 
   getServicos() {
     this.servicoService.getServicos().subscribe(data => {
-        this.localidadeServicoTemp = data.json();
-        console.log(this.localidadeServicoTemp)
+      this.localidadeServicoTemp = data.json();
+      console.log(this.localidadeServicoTemp)
     }, error => {
       console.log(error);
     })
   }
 
+
   addEndereco() {
+
     this.mercadoComponent.mercado.mercadoLocalidades.push({
       idMercado: undefined,
       idMercadoLocalidade: undefined,
       googlemapsLinks: '',
-      googlemapsLinksTemp: [{ id: 0, value: '' }, { id: 1, value: '' }],
+      googlemapsLinksTemp: [{ id: 0, value: '' }],
       mercadoServicos: [],
       bairro: this.enderecoTemp,
+      rua:this.ruaTemp,
+      //endereco: this.enderecoRuaTemp +" nº"+this.enderecoNumeroTemp +"/"+ this.enderecoComplementoTemp,
       servicosTemp: this.localidadeServicoTemp
     });
     this.cep = undefined;
     this.enderecoTemp = undefined;
+    this.ruaTemp = undefined;
   }
 
   proximaTab() {
-    this.mercadoComponent.mercado.mercadoLocalidades.forEach(localidade =>
-      localidade.googlemapsLinks = localidade.googlemapsLinksTemp.filter(link => link.value && link.value !== '').map(link => link.value).join(','));
+
+
+    this.mercadoComponent.mercado.mercadoLocalidades.forEach(localidade => {
+      if (localidade.rua)
+        localidade.endereco = localidade.rua + " nº" + localidade.numero + "/" + localidade.complemento;
+    });
     this.mercadoComponent.selectedTab = this.mercadoComponent.tabs.filter(tab => tab.key === 'servicos')[0];
     this.mercadoComponent.tabs.find(tab => tab.key === 'servicos').disabled = false;
   }
@@ -167,7 +197,7 @@ export class LocalidadeFilialComponent implements OnInit {
     localidade.googlemapsLinksTemp.push({ id: localidade.googlemapsLinksTemp.length - 1, value: '' });
   }
 
-  anteriorTab(){
+  anteriorTab() {
     this.mercadoComponent.selectedTab = this.mercadoComponent.tabs.filter(tab => tab.key === 'dados')[0];
   }
 }
