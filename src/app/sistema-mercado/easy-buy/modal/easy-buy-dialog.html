@@ -58,8 +58,8 @@
             </div>
             <mat-form-field appearance="outline" style="padding-right :24px;" *ngIf="pedido.status!='L'">
                 <mat-select placeholder="Status" [(ngModel)]="pedido.status">
-                    <mat-option *ngFor="let s of getStatusEnum()" [value]="s" [disabled]="pedido.status!='N' && s=='N'"
-                        style="color: #004D40;">
+                    <mat-option *ngFor="let s of getStatusEnum()" [value]="s" [disabled]="(pedido.status!='N' && s=='N') || 
+                    (pedido.entrega==='E' && s=='R') || (pedido.entrega==='R' && s=='T')" style="color: #004D40;">
                         {{statusEnum[s]}}
                     </mat-option>
                 </mat-select>

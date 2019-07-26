@@ -7,6 +7,7 @@ import { Bairro } from '../../../../models/bairro';
 import { Pais } from '../../../../models/pais';
 import { MercadoLocalidade } from '../../../../models/mercado-localidade';
 import { ServicoService } from '../../../../services/servico.service';
+import { MatTabGroup } from '@angular/material';
 
 @Component({
   selector: 'app-localidade-filial',
@@ -15,7 +16,7 @@ import { ServicoService } from '../../../../services/servico.service';
 })
 export class LocalidadeFilialComponent implements OnInit {
 
-  @ViewChild('tabGroup') tabGroup;
+  @ViewChild(MatTabGroup) tabGroup: MatTabGroup;
 
   cep: string;
   enderecoTemp: Bairro;
@@ -175,6 +176,7 @@ export class LocalidadeFilialComponent implements OnInit {
     this.cep = undefined;
     this.enderecoTemp = undefined;
     this.ruaTemp = undefined;
+    this.tabGroup.selectedIndex = this.mercadoComponent.mercado.mercadoLocalidades.length;
   }
 
   proximaTab() {
