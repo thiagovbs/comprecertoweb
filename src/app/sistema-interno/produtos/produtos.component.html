@@ -86,8 +86,12 @@
 
 <div fxLayout="row" fxLayoutWrap="wrap">
     
-    <div fxFlex.gt-sm="33.33%" fxFlex="100" *ngFor="let produto of produtos">
+    <div fxFlex.gt-sm="33.33%" fxFlex="100" *ngFor="let produto of obs | async">
         <app-produtos-form [produto]="produto" (removerProduto)="aoRemover($event)"
             (salvarProduto)="atualizaProduto($event)"></app-produtos-form>
     </div>
+
+   
+ 
 </div>
+<mat-paginator [pageSizeOptions]="[6, 9, 18, 45]"></mat-paginator>

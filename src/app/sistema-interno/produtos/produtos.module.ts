@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ProdutosComponent } from './produtos.component';
 import { RouterModule } from '@angular/router';
 import { ProdutosRoutes } from './produtos.routing';
-import { MatInputModule, MatFormFieldModule, MatCardModule, MatButtonModule, MatSelectModule, MatCheckboxModule, MatToolbarModule, MatIconModule } from '@angular/material';
+import { MatInputModule, MatFormFieldModule, MatCardModule, MatButtonModule, MatSelectModule, MatCheckboxModule, MatToolbarModule, MatIconModule, MatPaginator, MatPaginatorModule } from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ProdutosFormComponent } from './produtos-form/produtos-form.component';
@@ -30,6 +30,7 @@ import { ImageCropperModule } from 'ngx-image-cropper';
     MatSelectModule,
     ReactiveFormsModule,
     MatIconModule,
+    MatPaginatorModule,
     MatToolbarModule,
     MatCheckboxModule,
     HttpModule,

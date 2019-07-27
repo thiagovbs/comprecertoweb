@@ -1,10 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { Produto } from '../../models/produto';
 import { ProdutoService } from '../../services/produto.service';
 import { CategoriaService } from '../../services/categoria.service';
 import { Categoria } from '../../models/categoria';
 
 import * as Lodash from 'lodash';
+import { MatPaginator, MatTableDataSource } from '@angular/material';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-produtos',
@@ -18,20 +20,34 @@ export class ProdutosComponent implements OnInit {
   categorias: Categoria[] = [];
   categoria: Categoria;
 
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  obs: Observable<any>;
+  dataSource= new MatTableDataSource();
+
   constructor(
     private produtoService: ProdutoService,
-    private categoriaService: CategoriaService
-  ) { }
+    private categoriaService: CategoriaService,
+    private changeDetectorRef: ChangeDetectorRef
+  ) {
+
+    this.getProdutos();
+   }
 
   ngOnInit() {
-    this.getProdutos();
-    this.getCategorias();
     
+    this.getCategorias(); 
   }
 
   getProdutos() {
     this.produtoService.getProdutos().subscribe(data => {
       this.produtos = Lodash.orderBy(data.json(), 'idProduto', 'desc');
+      this.changeDetectorRef.detectChanges();
+      this.dataSource = new MatTableDataSource(Lodash.orderBy(data.json(), 'idProduto', 'desc'));
+      this.obs = this.dataSource.connect();
+      
+    this.dataSource.paginator = this.paginator;
+      //this.dataSource = new MatTableDataSource<Produto>();
+      console.log(this.dataSource)
     }, error => console.error(error.json()));
   }
 
@@ -58,9 +74,23 @@ export class ProdutosComponent implements OnInit {
 
   filtrar() {
     if (this.categoria) {
-      this.produtoService.getProdutosPorCategoria(this.categoria.idCategoria).subscribe(data => this.produtos = data.json(), error => console.error(error));
+      this.produtoService.getProdutosPorCategoria(this.categoria.idCategoria).subscribe(data =>{
+        this.changeDetectorRef.detectChanges();
+        this.dataSource = new MatTableDataSource(data.json())
+        this.obs = this.dataSource.connect();
+        
+      this.dataSource.paginator = this.paginator;
+      }
+        
+      , error => console.error(error));
     } else {
       this.getProdutos();
+    }
+  }
+
+  ngOnDestroy() {
+    if (this.dataSource) { 
+      this.dataSource.disconnect(); 
     }
   }
 }
