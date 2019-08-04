@@ -27,8 +27,7 @@ export class PreVisualizacaoComponent implements OnInit {
   localidades:MercadoLocalidade[]= []
 
   constructor(
-    @Inject(MercadoComponent) private mercadoComponent: MercadoComponent,
-    private servicoService: ServicoService,
+    @Inject(MercadoComponent) public mercadoComponent: MercadoComponent,   
     private mercadoService: MercadoService
   ) { }
 

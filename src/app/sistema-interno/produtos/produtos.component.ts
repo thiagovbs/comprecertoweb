@@ -15,6 +15,7 @@ import { Observable } from 'rxjs';
 })
 export class ProdutosComponent implements OnInit {
   public loading = false;
+  filterShow:boolean;
   produtos: Produto[] = [];
 
   categorias: Categoria[] = [];
@@ -40,6 +41,7 @@ export class ProdutosComponent implements OnInit {
 
   getProdutos() {
     this.produtoService.getProdutos().subscribe(data => {
+      console.log(Lodash.orderBy(data.json(), 'idProduto', 'desc'))
       this.produtos = Lodash.orderBy(data.json(), 'idProduto', 'desc');
       this.changeDetectorRef.detectChanges();
       this.dataSource = new MatTableDataSource(Lodash.orderBy(data.json(), 'idProduto', 'desc'));

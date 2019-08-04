@@ -50,15 +50,15 @@
             </p>
             <h3><b>Status</b></h3>
            
-            <div *ngIf="pedido.status==='L'" align="center">
+            <div *ngIf="statusEnum[pedido.status]==='statusEnum.L'" align="center">
 
                 <button mat-button color="warn" (click)="pedido.status='N'" >Recusar</button>
                 <button mat-button color="primary" (click)="pedido.status='A'">Aceitar</button>
 
             </div>
-            <mat-form-field appearance="outline" style="padding-right :24px;" *ngIf="pedido.status!='L'">
+            <mat-form-field appearance="outline" style="padding-right :24px;" *ngIf="statusEnum[pedido.status]!='statusEnum.L'">
                 <mat-select placeholder="Status" [(ngModel)]="pedido.status">
-                    <mat-option *ngFor="let s of getStatusEnum()" [value]="s" [disabled]="(pedido.status!='N' && s=='N') || 
+                    <mat-option *ngFor="let s of enumStatus" [value]="s" [disabled]="(pedido.status!='N' && s=='N') || 
                     (pedido.entrega==='E' && s=='R') || (pedido.entrega==='R' && s=='T')" style="color: #004D40;">
                         {{statusEnum[s]}}
                     </mat-option>

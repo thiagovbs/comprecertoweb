@@ -188,6 +188,7 @@ export class ProdutosMercadoComponent implements OnInit {
         this.localidadeAtual.mercadoServicos.forEach(ms => {
           if (ms.pacoteServico.idPacoteServico === 7 || ms.pacoteServico.idPacoteServico === 8
             || ms.pacoteServico.idPacoteServico === 9) {
+              console.log(ms.pacoteServico.descricao)
             this.qtdProdutosPacote = Number(ms.pacoteServico.descricao)
           }
           if (ms.pacoteServico.idPacoteServico === 10 || ms.pacoteServico.idPacoteServico === 11 ||

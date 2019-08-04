@@ -15,7 +15,7 @@ export class PacoteServicosComponent implements OnInit {
 
   idServMercado: number;
 
-  constructor(@Inject(MercadoComponent) private mercadoComponent: MercadoComponent,
+  constructor(@Inject(MercadoComponent) public mercadoComponent: MercadoComponent,
     private servicoService: ServicoService) {
   }
 

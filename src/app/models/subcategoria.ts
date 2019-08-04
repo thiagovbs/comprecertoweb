@@ -5,5 +5,5 @@ export class Subcategoria {
     idSubcategoria: number;
     fativo: boolean;
     nome: string;
-    // categoria: Categoria = new Categoria();
+    categoria?: Categoria = new Categoria();
 }

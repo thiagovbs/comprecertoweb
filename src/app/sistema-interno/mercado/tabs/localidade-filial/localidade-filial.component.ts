@@ -26,7 +26,7 @@ export class LocalidadeFilialComponent implements OnInit {
   static cepMask = [/\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/];
 
   constructor(@Inject(MercadoComponent)
-  private mercadoComponent: MercadoComponent,
+  public mercadoComponent: MercadoComponent,
     private viacep: NgxViacepService,
     private servicoService: ServicoService) { }
 

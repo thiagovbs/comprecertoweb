@@ -50,10 +50,4 @@ import { EasyBuyDialog } from './modal/easy-buy-dialog';
     ] 
 })
 
-@NgModule({
-  imports: [
-    CommonModule
-  ]
-  
-})
 export class EasyBuyModule { }

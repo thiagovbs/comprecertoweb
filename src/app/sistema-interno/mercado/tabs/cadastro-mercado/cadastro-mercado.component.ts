@@ -10,12 +10,12 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 })
 export class CadastroMercadoComponent implements OnInit {
 
-  private formulario: FormGroup;
+  public formulario: FormGroup;
   maskUtil: MaskUtil = new MaskUtil();
   public maskCnpj = [/\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '\/', /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/]
   public maskTelefone = ['(', /\d/, /\d/, ')', /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]
 
-  constructor(@Inject(MercadoComponent) private mercadoComponent: MercadoComponent, private formBuilder: FormBuilder) {
+  constructor(@Inject(MercadoComponent) public mercadoComponent: MercadoComponent, private formBuilder: FormBuilder) {
     this.formulario = formBuilder.group({
       razaoSocial: ['', [Validators.required, Validators.maxLength(150)]],
       nomeFantasia: ['', [Validators.required, Validators.maxLength(150)]],

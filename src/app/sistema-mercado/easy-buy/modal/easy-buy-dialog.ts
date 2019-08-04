@@ -22,6 +22,7 @@ export class EasyBuyDialog {
     pedido: Pedido;
     valorFrete: number = 0;
     valorMinimoFrete: number = 0;
+    enumStatus:string[]=Object.keys(this.statusEnum)
 
 
     constructor(
@@ -36,7 +37,7 @@ export class EasyBuyDialog {
         this.valorFrete=this.data.valorFrete;
         this.valorMinimoFrete=this.data.valorMinimoFrete;
 
-        console.log(this.pedido.dataHorarioRetirada)
+        this.filteredStatus()
     }
 
 
@@ -44,9 +45,6 @@ export class EasyBuyDialog {
         this.dialogRef.close();
     }
 
-    getStatusEnum() {
-        return Object.keys(this.statusEnum)
-    }
 
     valorTotalPedido(pedidoProdutos: PedidoProduto[]) {
         let total = 0;
@@ -97,14 +95,23 @@ export class EasyBuyDialog {
        
       }
 
-      aprovarPedido(pedido:Pedido){
-        let teste: Status = "N" as Status;
-        console.log(teste)
-        
+    
 
-      }
-      recusarPedido(pedido:Pedido){
-        pedido.status=this.statusEnum.N
+     filteredStatus() {
+       let enums:string[] = [];
+       enums.push(this.statusEnum.N)
+       enums.push(this.statusEnum.L)
+       enums.push(this.statusEnum.A)
+       enums.push(this.statusEnum.S)
+       enums.push(this.statusEnum.F)
+       if(this.pedido.entrega==='R'){
+        enums.push(this.statusEnum.R)
+       }else{
+        enums.push(this.statusEnum.E)
+        enums.push(this.statusEnum.T)
+       }
+            
+      return enums;
       }
 
       
