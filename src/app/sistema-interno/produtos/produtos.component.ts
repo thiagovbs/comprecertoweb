@@ -41,7 +41,7 @@ export class ProdutosComponent implements OnInit {
 
   getProdutos() {
     this.produtoService.getProdutos().subscribe(data => {
-      console.log(Lodash.orderBy(data.json(), 'idProduto', 'desc'))
+      //console.log(Lodash.orderBy(data.json(), 'idProduto', 'desc'))
       this.produtos = Lodash.orderBy(data.json(), 'idProduto', 'desc');
       this.changeDetectorRef.detectChanges();
       this.dataSource = new MatTableDataSource(Lodash.orderBy(data.json(), 'idProduto', 'desc'));
@@ -49,7 +49,7 @@ export class ProdutosComponent implements OnInit {
       
     this.dataSource.paginator = this.paginator;
       //this.dataSource = new MatTableDataSource<Produto>();
-      console.log(this.dataSource)
+      //console.log(this.dataSource)
     }, error => console.error(error.json()));
   }
 
