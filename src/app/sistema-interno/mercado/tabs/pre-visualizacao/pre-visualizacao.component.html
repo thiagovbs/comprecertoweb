@@ -87,7 +87,7 @@
               <!-- Fim sem edição -->
 
               <!-- Com edição -->
-              <div fxFlex.gt-sm="100" *ngIf="this.servicoService.localidadesEnvio.length !== 0">
+              <div fxFlex.gt-sm="100" *ngIf="localidade.length !== 0">
                 <div *ngFor="let pacote of localidade.pacoteServicos">
                   {{ '- ' + pacote.nome }}
                 </div>
