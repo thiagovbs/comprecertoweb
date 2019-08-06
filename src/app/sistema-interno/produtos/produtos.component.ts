@@ -55,6 +55,11 @@ export class ProdutosComponent implements OnInit {
 
   adicionarProdutoForm() {
     this.produtos.unshift(new Produto());
+    this.changeDetectorRef.detectChanges();
+      this.dataSource = new MatTableDataSource(this.produtos);
+      this.obs = this.dataSource.connect();
+      
+    this.dataSource.paginator = this.paginator;
   }
 
   aoRemover(produtoRemovida) {
@@ -65,6 +70,7 @@ export class ProdutosComponent implements OnInit {
     console.log(salvo)
     if (salvo) {
       this.getProdutos();
+      this.filtrar();
     }
   }
 
