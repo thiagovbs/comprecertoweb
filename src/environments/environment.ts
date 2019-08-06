@@ -4,7 +4,7 @@
 // The list of which env maps to which file can be found in `.angular-cli.json`.
 
 export const environment = {
-  
+  production: false,
     //urlSpring: 'https://sheap.herokuapp.com/rest',
     //urlAuth: 'https://sheap.herokuapp.com',
     urlSpring: 'http://167.86.118.44:8080/rest',
