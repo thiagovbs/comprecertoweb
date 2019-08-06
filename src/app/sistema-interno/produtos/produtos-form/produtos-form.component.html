@@ -8,7 +8,7 @@
         <mat-card-content>
             <div fxLayout="row" fxLayoutWrap="wrap">
                 <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" class="img-card" style="margin: 10px auto;">
-                    <img mat-card-md-image [src]="myImage" alt="">
+                    <img mat-card-md-image [src]="myImage" alt="" *ngIf="myImage">
                 </div>
                 <image-cropper style="width:100%;margin:0 auto;" [imageChangedEvent]="imageChangedEvent"
                     [resizeToWidth]="180" [maintainAspectRatio]="true" [aspectRatio]=" 1 / 1 " format="png"

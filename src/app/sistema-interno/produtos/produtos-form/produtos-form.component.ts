@@ -58,6 +58,7 @@ export class ProdutosFormComponent implements OnInit {
     this.getSubcategorias();
 
     if (this.produto.idProduto) {
+     
       this.myImage = this.produto.imagemUrl;
       if (this.myImage) {
         this.formulario = new FormGroup({
