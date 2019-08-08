@@ -47,7 +47,7 @@ export class PreVisualizacaoComponent implements OnInit {
   }
 
   getValorTotal() {
-    //return this.mercadoComponent.mercado.mercadoLocalidades.map(localidade => this.getValorRegional(localidade)).reduce((total, valor) => total += valor);
+    return this.mercadoComponent.mercado.mercadoLocalidades.map(localidade => this.getValorRegional(localidade)).reduce((total, valor) => total += valor);
   }
 
   getValorRegional(localidade: MercadoLocalidade) {

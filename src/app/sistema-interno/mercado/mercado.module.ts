@@ -19,7 +19,7 @@ import { PreVisualizacaoComponent } from './tabs/pre-visualizacao/pre-visualizac
 import { ImageCropperModule } from 'ngx-image-cropper';
 import { ImageUtilService } from '../../services/image-util.service';
 import { AuthenticationService } from '../../services/authentication.service';
-//import { NgxLoadingModule } from 'ngx-loading';
+import { NgxLoadingModule } from 'ngx-loading';
 
 @NgModule({
   imports: [
@@ -46,7 +46,7 @@ import { AuthenticationService } from '../../services/authentication.service';
     MatCheckboxModule,
     MatSlideToggleModule,
     ImageCropperModule,
-    //NgxLoadingModule.forRoot({})
+    NgxLoadingModule.forRoot({})
     
   ],
   declarations: [
