@@ -7,6 +7,7 @@ import Swal from 'sweetalert2';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PacoteServico } from '../../models/pacote-servico';
 import { ServicoService } from '../../services/servico.service';
+import { Template } from '@angular/compiler/src/render3/r3_ast';
 
 @Component({
   selector: 'app-mercado',
@@ -17,6 +18,7 @@ export class MercadoComponent implements OnInit {
 
   private mediaMatcher: MediaQueryList = matchMedia(`(max-width: 960px)`);
 
+  customLoadingTemplate:Template;
   public config: PerfectScrollbarConfigInterface = {};
   loading: boolean = false;
   displayMode = 'default';
