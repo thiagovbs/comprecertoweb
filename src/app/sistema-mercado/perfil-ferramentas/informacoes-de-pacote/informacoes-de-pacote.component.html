@@ -31,7 +31,8 @@
                 <label for="Tipo">SERVIÇOS:</label>
                 <mat-list>
                   <mat-list-item *ngFor="let mercadoServicos of localidade.mercadoServicos; let i = index">
-                    {{i+1}} - {{mercadoServicos.pacoteServico.nome}} {{mercadoServicos.pacoteServico.descricao}} 
+                    {{i+1}} - {{mercadoServicos.pacoteServico.nome}}{{descricaoServico(mercadoServicos.pacoteServico)}}
+                    
                   </mat-list-item>
 
                 </mat-list>

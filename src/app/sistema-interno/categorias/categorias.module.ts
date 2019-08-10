@@ -12,6 +12,7 @@ import { HttpModule } from '@angular/http';
 import { UnidadeMedidaService } from '../../services/unidade-medida.service';
 import { ImageCropperModule } from 'ngx-image-cropper';
 import { ImageUtilService } from '../../services/image-util.service';
+import { NgxLoadingModule } from 'ngx-loading';
 @NgModule({
   imports: [
     CommonModule,
@@ -32,7 +33,8 @@ import { ImageUtilService } from '../../services/image-util.service';
     HttpModule,
     MatChipsModule,
     MatIconModule,
-    ImageCropperModule
+    ImageCropperModule,
+    NgxLoadingModule.forRoot({})
   ],
   declarations: [CategoriasComponent, CategoriasFormComponent],
   providers: [

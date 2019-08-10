@@ -7,6 +7,7 @@ import { Categoria } from '../../models/categoria';
 import * as Lodash from 'lodash';
 import { MatPaginator, MatTableDataSource } from '@angular/material';
 import { Observable } from 'rxjs';
+import { ProdutosFormComponent } from './produtos-form/produtos-form.component';
 
 @Component({
   selector: 'app-produtos',
@@ -17,6 +18,7 @@ export class ProdutosComponent implements OnInit {
   public loading = false;
   filterShow:boolean;
   produtos: Produto[] = [];
+
 
   categorias: Categoria[] = [];
   categoria: Categoria;
@@ -63,7 +65,14 @@ export class ProdutosComponent implements OnInit {
   }
 
   aoRemover(produtoRemovida) {
+    
     this.produtos = this.produtos.filter(produto => produto !== produtoRemovida);
+    this.changeDetectorRef.detectChanges();
+      this.dataSource = new MatTableDataSource(this.produtos);
+      this.obs = this.dataSource.connect();
+      
+    this.dataSource.paginator = this.paginator;
+    
   }
 
   atualizaProduto(salvo) {
@@ -101,4 +110,6 @@ export class ProdutosComponent implements OnInit {
       this.dataSource.disconnect(); 
     }
   }
+
+ 
 }

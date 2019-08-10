@@ -7,6 +7,7 @@ import swal from 'sweetalert2';
 
 import { MatDialog } from '@angular/material';
 import { MudarSenhaDialog } from './modal/mudar-senha-dialog';
+import { PacoteServico } from '../../../models/pacote-servico';
 
 
 @Component({
@@ -16,13 +17,13 @@ import { MudarSenhaDialog } from './modal/mudar-senha-dialog';
 })
 export class InformacoesDePacoteComponent implements OnInit {
   myImage: string;
-  
+
   mercadoAtual: Mercado = new Mercado();
-  
+
 
   constructor(private mercadoService: MercadoService,
     private authService: AuthenticationService
-    ,public dialog: MatDialog) {
+    , public dialog: MatDialog) {
   }
 
   ngOnInit() {
@@ -31,32 +32,45 @@ export class InformacoesDePacoteComponent implements OnInit {
     this.mercadoService.getMercadoPorId(idMercado).subscribe(data => {
       this.mercadoAtual = data.json();
       //console.log(this.mercadoAtual)
-      this.myImage=this.mercadoAtual.imagemUrl;
+      this.myImage = this.mercadoAtual.imagemUrl;
     }), error => console.log(error);
 
   }
 
+  descricaoServico(pacote: PacoteServico) {
 
+    let tmp: string = ""
+    if (pacote.idPacoteServico === 19 || pacote.idPacoteServico === 20 || pacote.idPacoteServico === 21 || pacote.idPacoteServico === 22 ||
+      pacote.idPacoteServico === 24 || pacote.idPacoteServico === 25) {
+      tmp = " - "+pacote.descricao + "/MÊS"
+    } else if (pacote.idPacoteServico === 7 ||
+      pacote.idPacoteServico === 8 || pacote.idPacoteServico === 9 || pacote.idPacoteServico === 10 || pacote.idPacoteServico === 11 ||
+      pacote.idPacoteServico === 12 || pacote.idPacoteServico === 13) {
+      tmp = " - "+pacote.descricao + "/DATA DE ENTRADA"
+    }
+    return tmp
 
- 
-
-  
-
-  tabChanged(tabChangeEvent: any) {    
-    
   }
 
- 
- 
 
- 
- 
+
+
+
+  tabChanged(tabChangeEvent: any) {
+
+  }
+
+
+
+
+
+
   openDialog() {
     const dialogRef = this.dialog.open(MudarSenhaDialog, {
 
-      data: { pedido: "teste"},
+      data: { pedido: "teste" },
       autoFocus: false,
-       disableClose: true 
+      disableClose: true
     });
 
     dialogRef.afterClosed().subscribe(result => {

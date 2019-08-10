@@ -3,9 +3,9 @@
         <div fxLayout="row" fxLayoutWrap="wrap">
             <div fxFlex.gt-sm="30" fxFlex.gt-xs="30">
                 <mat-form-field class="m-r-0  m-t-10">
-                    <mat-select placeholder="Categoria" [(ngModel)]="categoria">
+                    <mat-select placeholder="Categoria" [(ngModel)]="categoria" >
                         <mat-option [value]="undefined">Selecione uma opção</mat-option>
-                        <mat-option *ngFor="let categoria of categorias" [value]="categoria">
+                        <mat-option *ngFor="let categoria of categorias"  [value]="categoria">
                             {{categoria.nome}}
                         </mat-option>
                     </mat-select>
@@ -87,7 +87,7 @@
 <div fxLayout="row" fxLayoutWrap="wrap">
     
     <div fxFlex.gt-sm="33.33%" fxFlex="100" *ngFor="let produto of obs | async">
-        <app-produtos-form [produto]="produto" (removerProduto)="aoRemover($event)"
+        <app-produtos-form [produto]="produto" [categoriaParent]="categoria" (removerProduto)="aoRemover($event)"
             (salvarProduto)="atualizaProduto($event)"></app-produtos-form>
     </div>
 

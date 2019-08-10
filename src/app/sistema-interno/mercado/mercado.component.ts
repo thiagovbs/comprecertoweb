@@ -19,8 +19,9 @@ export class MercadoComponent implements OnInit {
   private mediaMatcher: MediaQueryList = matchMedia(`(max-width: 960px)`);
 
   customLoadingTemplate:Template;
-  public config: PerfectScrollbarConfigInterface = {};
   loading: boolean = false;
+  public config: PerfectScrollbarConfigInterface = {};
+  
   displayMode = 'default';
 
   tabs: any = [

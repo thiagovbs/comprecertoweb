@@ -11,6 +11,7 @@ import Swal from 'sweetalert2';
 import * as Lodash from 'lodash';
 import { ImageCroppedEvent } from 'ngx-image-cropper';
 import { environment } from '../../../../environments/environment';
+import { Template } from '@angular/compiler/src/render3/r3_ast';
 
 
 @Component({
@@ -41,6 +42,10 @@ export class CategoriasFormComponent implements OnInit {
 
   // Enter, comma
   separatorKeysCodes = [ENTER, COMMA];
+
+  
+ customLoadingTemplate:Template;
+ loading: boolean = false;
 
   constructor(
     private categoriaService: CategoriaService,
@@ -138,6 +143,7 @@ export class CategoriasFormComponent implements OnInit {
   }
 
   salvar() {
+    this.loading = true;
     if (this.formulario.valid) {
       if (this.listsValid()) {
         console.log(this.categoria.imagemUrl)
@@ -151,12 +157,14 @@ export class CategoriasFormComponent implements OnInit {
 
             
             this.atualizaCategoria.emit(true);
-
+            
           }, error => {
+            this.loading = false;
             console.log(error.json());
           }, () => {
             this.formulario.disable();
             this.hasEdit = false;
+            this.loading = false;
             Swal('Atualização', `A categoria ${this.categoria.nome} foi atualizada!`, "success")
           })
         } else {
@@ -167,10 +175,12 @@ export class CategoriasFormComponent implements OnInit {
             this.sendImage();
 
           }, error => {
+            this.loading = false;
             console.log(error);
           }, () => {
             this.formulario.disable();
             this.hasEdit = false;
+            this.loading = false;
             Swal('Inclusão', `A categoria ${this.categoria.nome} foi salva!`, "success")
           })
         }
@@ -179,6 +189,7 @@ export class CategoriasFormComponent implements OnInit {
   }
 
   excluir() {
+    
     Swal({
       title: 'Exclusão de categoria',
       text: `Deseja excluir a categoria: ${this.categoria.nome}?`,
@@ -187,12 +198,15 @@ export class CategoriasFormComponent implements OnInit {
       confirmButtonText: 'Sim',
       cancelButtonText: 'Não'
     }).then((result) => {
+      this.loading = true;
       if (result.value) {
         this.categoriaService.deleteCategoria(this.categoria.idCategoria).subscribe(data => {
         }, error => {
+          this.loading = false;
           console.log(error.json())
         }, () => {
           this.atualizaCategoria.emit(true);
+          this.loading = false;
           Swal('Exclusão', 'A categoria foi deletada!', "success")
         })
       }

@@ -11,6 +11,7 @@ import { UnidadeMedida } from '../../../models/unidade-medida';
 import Swal from 'sweetalert2';
 import * as Lodash from 'lodash';
 import { ImageCroppedEvent } from 'ngx-image-cropper';
+import { Categoria } from '../../../models/categoria';
 
 
 @Component({
@@ -26,7 +27,8 @@ export class ProdutosFormComponent implements OnInit {
   produto: Produto = new Produto();
   subcategorias: Subcategoria[] = [];
   unidadesMedida: UnidadeMedida[] = [];
-
+  @Input() categoriaParent: Categoria;
+ 
   @Output("removerProduto")
   produtoRemovida = new EventEmitter();
 
@@ -54,7 +56,7 @@ export class ProdutosFormComponent implements OnInit {
   }
 
   ngOnInit() {
-    //console.log(this.produto)
+    console.log(this.categoriaParent)
     this.getSubcategorias();
 
     if (this.produto.idProduto) {
@@ -116,6 +118,7 @@ export class ProdutosFormComponent implements OnInit {
   }
 
   cancelar() {
+    console.log(this.produto.idProduto)
     this.produtoService.croppedFile = null
     if (this.produto.idProduto) {
       this.formulario.disable();
@@ -124,6 +127,7 @@ export class ProdutosFormComponent implements OnInit {
 
       this.myImage = this.produto.imagemUrl;
     } else {
+      console.log("this.produto.idProduto")
       this.produtoRemovida.emit(this.produto);
     }
   }
@@ -191,9 +195,16 @@ export class ProdutosFormComponent implements OnInit {
   }
 
   getSubcategorias() {
-    this.subcategoriaService.getSubcategorias().subscribe(data => {
-      this.subcategorias = Lodash.orderBy(data.json(), 'nome', 'asc');
-    }, error => console.log(error))
+    if(!this.categoriaParent){
+      this.subcategoriaService.getSubcategorias().subscribe(data => {
+        this.subcategorias = Lodash.orderBy(data.json(), 'nome', 'asc');
+      }, error => console.log(error))
+    }else{
+      this.subcategoriaService.getSubcategoriasByCategoria(this.categoriaParent.idCategoria).subscribe(data => {
+        this.subcategorias = Lodash.orderBy(data.json(), 'nome', 'asc');
+      }, error => console.log(error))
+    }
+    
   }
 
 
