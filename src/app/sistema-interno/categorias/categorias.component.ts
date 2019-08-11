@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { Categoria } from '../../models/categoria';
 
 import * as Lodash from "lodash";
+import { Template } from '@angular/compiler/src/render3/r3_ast';
 
 @Component({
   selector: 'app-categorias',
@@ -12,7 +13,8 @@ import * as Lodash from "lodash";
 export class CategoriasComponent implements OnInit {
 
   categorias: Categoria[] = [];
-
+  customLoadingTemplate:Template;
+  loading: boolean = false;
   constructor(private categoriaService: CategoriaService) { }
 
   ngOnInit() {
