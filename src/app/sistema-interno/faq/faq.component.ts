@@ -13,7 +13,7 @@ export class FaqComponent implements OnInit {
 
   faqs: Faq[] = []
   loading:boolean;
-
+  customLoadingTemplate:any;
   constructor(private faqService: FaqService) { }
 
   ngOnInit() {

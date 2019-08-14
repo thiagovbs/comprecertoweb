@@ -18,6 +18,7 @@ export class ProdutosComponent implements OnInit {
   public loading = false;
   filterShow:boolean;
   produtos: Produto[] = [];
+  customLoadingTemplate:any;
 
 
   categorias: Categoria[] = [];

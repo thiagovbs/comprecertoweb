@@ -16,6 +16,7 @@ export class FaqFormComponent implements OnInit {
   faq: Faq = new Faq();
   plataformas: any[] = [{ id: 'APP', value: 'App' }, { id: 'SISTEMA', value: 'Sistema' }];
   loading:boolean;
+  customLoadingTemplate:any;
 
   @Output("removerFaq")
   faqRemovida = new EventEmitter();

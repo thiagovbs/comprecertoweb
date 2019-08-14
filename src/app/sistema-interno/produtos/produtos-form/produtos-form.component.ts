@@ -28,6 +28,7 @@ export class ProdutosFormComponent implements OnInit {
   subcategorias: Subcategoria[] = [];
   unidadesMedida: UnidadeMedida[] = [];
   @Input() categoriaParent: Categoria;
+  customLoadingTemplate:any;
  
   @Output("removerProduto")
   produtoRemovida = new EventEmitter();

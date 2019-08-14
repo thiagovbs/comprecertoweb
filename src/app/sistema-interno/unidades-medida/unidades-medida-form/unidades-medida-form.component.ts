@@ -13,6 +13,7 @@ import { UnidadeMedidaService } from '../../../services/unidade-medida.service';
 export class UnidadesMedidaFormComponent implements OnInit {
 
   loading:boolean
+  customLoadingTemplate:any;
 
   @Input("unidadeMedida")
   unidadeMedida: UnidadeMedida = new UnidadeMedida();

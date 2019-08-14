@@ -12,7 +12,8 @@ import { UnidadeMedidaService } from '../../services/unidade-medida.service';
 export class UnidadesMedidaComponent implements OnInit {
 
   unidadesMedida: UnidadeMedida[] = [];
-  loading:boolean
+  loading:boolean;
+  customLoadingTemplate:any;
   constructor(private unidadeMedidaService: UnidadeMedidaService) { }
 
   ngOnInit() {
