@@ -134,23 +134,23 @@ const MERCADO_MENU_ITEMS = [
     children: [
       {
         state: 'informacoes-de-pacote',
-        name: 'Informações de pacote'
+        name: 'Informações de Pacotes'
       },
       {
         state: 'cadastro-easy-buy',
-        name: 'Cadastro easy buy'
+        name: 'Cadastro Easy Buy'
       }     
     ]
   },
   {
     state: 'faqs',
-    name: 'Faqs',
+    name: 'FAQs',
     type: 'link',
     icon: 'add'
   },
   {
     state: 'easy-buy',
-    name: 'easy buy',
+    name: 'Easy Buy',
     type: 'link',
     icon: 'add'
   }

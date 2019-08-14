@@ -9,7 +9,7 @@
     <div class="info-mercado">
       <div fxLayout="row">
         <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" style=" text-align: center !important">
-          <img height="75" [src]="myImage" style=" text-align: center !important">
+          <img height="120" [src]="myImage" style=" text-align: center !important" class="img-border">
           <h3 style=" text-align: center !important">{{mercadoAtual.nomeFantasia}}</h3>
           <button mat-button class="btn_limpar" (click)="openDialog()">Alterar senha</button>
         </div>
@@ -27,7 +27,7 @@
             </ng-template>
             <hr style="background:#009b89; margin-top:0.0009em;">
             <div class="demo-tab-content" class="card-tab">
-              <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" class="m-t-20">
+              <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" style="margin-top: -50px;margin-left: -25px;">
                 <label for="Tipo">SERVIÇOS:</label>
                 <mat-list>
                   <mat-list-item *ngFor="let mercadoServicos of localidade.mercadoServicos; let i = index">
