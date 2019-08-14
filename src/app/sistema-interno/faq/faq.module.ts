@@ -14,6 +14,7 @@ import { FaqComponent } from "./faq.component";
 import { FAQRoutes } from "./faq.routing";
 import { FaqFormComponent } from './faq-form/faq-form.component';
 import { FaqService } from "../../services/faq.service";
+import { NgxLoadingModule } from 'ngx-loading';
 
 @NgModule({
     imports:[
@@ -31,7 +32,8 @@ import { FaqService } from "../../services/faq.service";
         MatToolbarModule,
         MatCheckboxModule,
         HttpModule,
-        MatSelectModule
+        MatSelectModule,
+        NgxLoadingModule.forRoot({})
     ],
     declarations:[FaqComponent, FaqFormComponent],
     providers:[

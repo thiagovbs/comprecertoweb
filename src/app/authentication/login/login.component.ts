@@ -9,6 +9,7 @@ import {
 } from '@angular/forms';
 import { AuthenticationService } from '../../services/authentication.service';
 
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -17,7 +18,7 @@ import { AuthenticationService } from '../../services/authentication.service';
 export class LoginComponent implements OnInit {
 
   public form: FormGroup;
-
+  loading:boolean
   error = false;
 
   constructor(
@@ -35,18 +36,16 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit() {
+    this.loading = true
     this.authenticationService.login(this.form.get('username').value, this.form.get('password').value).subscribe(
       (data:any) => {
+        this.loading = false
         console.log(data)
         this.authenticationService.armazenarToken(data['access_token']);
-        
-
         if (!this.usuarioService.hasPermissoes()) {
           console.log('O usuário não possui nenhum permissão');
           return;
         }
-
-
         this.error = false;
         if(data.user.permissoes[0].descricao === "MERCADO_OPERADOR"){
           this.router.navigate(['/secure/analytics-mercado']);    
@@ -55,12 +54,13 @@ export class LoginComponent implements OnInit {
         }
         
       }, error => {
+        this.loading = false
         if (error.status === 400) {
           const responseJson = error.error;
 
           if (responseJson.error === 'invalid_grant') {
             this.error = true;
-            // Swal('Login', 'Usuário ou senha inválida!', 'error');
+             //Swal('Login', 'Usuário ou senha inválida!', 'error');
           }
         }
       }

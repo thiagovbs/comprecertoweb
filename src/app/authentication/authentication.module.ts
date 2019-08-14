@@ -21,6 +21,7 @@ import { AuthenticationService } from '../services/authentication.service';
 import { HttpClientModule } from '@angular/common/http';
 import { Http, RequestOptions } from '@angular/http';
 import { AuthHttp, AuthConfig } from 'angular2-jwt';
+import { NgxLoadingModule } from 'ngx-loading';
 
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {
   return new AuthHttp(new AuthConfig({
@@ -42,7 +43,7 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     FlexLayoutModule,
     FormsModule,
     ReactiveFormsModule,
-
+    NgxLoadingModule.forRoot({}),
     HttpClientModule
   ],
   declarations: [

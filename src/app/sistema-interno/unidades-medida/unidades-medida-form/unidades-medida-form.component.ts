@@ -12,6 +12,8 @@ import { UnidadeMedidaService } from '../../../services/unidade-medida.service';
 })
 export class UnidadesMedidaFormComponent implements OnInit {
 
+  loading:boolean
+
   @Input("unidadeMedida")
   unidadeMedida: UnidadeMedida = new UnidadeMedida();
 
@@ -50,11 +52,14 @@ export class UnidadesMedidaFormComponent implements OnInit {
   }
 
   salvar() {
+    this.loading = true
     if (this.formulario.valid) {
       if (this.unidadeMedida.idUnidade) {
         this.unidadeMedidaService.putUnidadeMedida(this.unidadeMedida).subscribe(data => {
           this.atualizaUnidadeMedida.emit(true);
+          this.loading = false
         }, error => {
+          this.loading = false
           console.log(error.json());
         }, () => {
           this.formulario.disable();
@@ -64,7 +69,9 @@ export class UnidadesMedidaFormComponent implements OnInit {
       } else {
         this.unidadeMedidaService.postUnidadeMedida(this.unidadeMedida).subscribe(data => {
           this.atualizaUnidadeMedida.emit(true);
+          this.loading = false
         }, error => {
+          this.loading = false
           console.log(error.json());
         }, () => {
           this.formulario.disable();
@@ -76,6 +83,7 @@ export class UnidadesMedidaFormComponent implements OnInit {
   }
 
   excluir() {
+    this.loading = true
     Swal({
       title: 'Exclusão de unidadeMedida',
       text: `Deseja excluir a unidadeMedida: ${this.unidadeMedida.nome}?`,
@@ -86,7 +94,9 @@ export class UnidadesMedidaFormComponent implements OnInit {
     }).then((result) => {
       if (result.value) {
         this.unidadeMedidaService.deleteUnidadeMedida(this.unidadeMedida.idUnidade).subscribe(data => {
+          this.loading = false
         }, error => {
+          this.loading = false
           console.log(error.json())
         }, () => {
           this.atualizaUnidadeMedida.emit(true);

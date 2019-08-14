@@ -12,7 +12,7 @@ import { UnidadeMedidaService } from '../../services/unidade-medida.service';
 export class UnidadesMedidaComponent implements OnInit {
 
   unidadesMedida: UnidadeMedida[] = [];
-
+  loading:boolean
   constructor(private unidadeMedidaService: UnidadeMedidaService) { }
 
   ngOnInit() {
@@ -20,9 +20,11 @@ export class UnidadesMedidaComponent implements OnInit {
   }
 
   getUnidadesMedida() {
+    this.loading = true
     this.unidadeMedidaService.getUnidadesMedida().subscribe(data => {
       this.unidadesMedida = Lodash.orderBy(data.json(), 'idUnidade', 'desc')
-    }, error => console.log(error.json()));
+      this.loading = false
+    }, error => this.loading = false);
   }
 
   adicionarUnidadeMedidaForm() {

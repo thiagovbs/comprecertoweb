@@ -14,7 +14,8 @@ export class FaqFormComponent implements OnInit {
 
   @Input('faq')
   faq: Faq = new Faq();
-  plataformas: any[] = [{ id: 'APP', value: 'App' }, { id: 'SISTEMA', value: 'Sistema' }]
+  plataformas: any[] = [{ id: 'APP', value: 'App' }, { id: 'SISTEMA', value: 'Sistema' }];
+  loading:boolean;
 
   @Output("removerFaq")
   faqRemovida = new EventEmitter();
@@ -55,11 +56,14 @@ export class FaqFormComponent implements OnInit {
   }
 
   salvar() {
+    this.loading = true
     if (this.formulario.valid) {
       if (this.faq.idFaq) {
         this.faqService.putFaq(this.faq).subscribe(data => {
+          this.loading = false
           this.atualizaFaq.emit(true);
         }, error => {
+          this.loading = false
           console.log(error.json());
         }, () => {
           this.formulario.disable();
@@ -68,8 +72,10 @@ export class FaqFormComponent implements OnInit {
         })
       } else {
         this.faqService.postFaq(this.faq).subscribe(data => {
+          this.loading = false
           this.atualizaFaq.emit(true);
         }, error => {
+          this.loading = false
           console.log(error.json());
         }, () => {
           this.formulario.disable();
@@ -81,6 +87,7 @@ export class FaqFormComponent implements OnInit {
   }
 
   excluir() {
+    
     swal({
       title: 'Exclusão de Faq',
       text: `Deseja excluir a faq?`,
@@ -90,8 +97,11 @@ export class FaqFormComponent implements OnInit {
       cancelButtonText: 'Não'
     }).then((result) => {
       if (result.value) {
+        this.loading = true
         this.faqService.deleteFaq(this.faq.idFaq).subscribe(data => {
+          this.loading = false;
         }, error => {
+          this.loading = false;
           console.log(error.json())
         }, () => {
           this.atualizaFaq.emit(true);

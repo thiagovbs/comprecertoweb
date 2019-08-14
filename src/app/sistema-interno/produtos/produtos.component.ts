@@ -7,7 +7,7 @@ import { Categoria } from '../../models/categoria';
 import * as Lodash from 'lodash';
 import { MatPaginator, MatTableDataSource } from '@angular/material';
 import { Observable } from 'rxjs';
-import { ProdutosFormComponent } from './produtos-form/produtos-form.component';
+
 
 @Component({
   selector: 'app-produtos',
@@ -42,7 +42,9 @@ export class ProdutosComponent implements OnInit {
   }
 
   getProdutos() {
+    this.loading = true;
     this.produtoService.getProdutos().subscribe(data => {
+      this.loading = false;
       //console.log(Lodash.orderBy(data.json(), 'idProduto', 'desc'))
       this.produtos = Lodash.orderBy(data.json(), 'idProduto', 'desc');
       this.changeDetectorRef.detectChanges();

@@ -12,6 +12,7 @@ import * as Lodash from 'lodash';
 export class FaqComponent implements OnInit {
 
   faqs: Faq[] = []
+  loading:boolean;
 
   constructor(private faqService: FaqService) { }
 
@@ -20,7 +21,9 @@ export class FaqComponent implements OnInit {
   }
 
   getFaqs() {
+    this.loading = true;
     this.faqService.getFaqs().subscribe(data => {
+      this.loading = false;
       this.faqs = Lodash.orderBy(data.json(), 'idFaq', 'desc')
     }, error => console.log(error.json()));
   }

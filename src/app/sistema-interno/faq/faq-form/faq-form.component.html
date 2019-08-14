@@ -8,20 +8,24 @@
         <div fxFlex.gt-sm="100" fxFlex.gt-xs="100">
           <mat-form-field class="example-full-width">
             <input matInput placeholder="Titulo" formControlName="titulo" [(ngModel)]="faq.titulo">
-            <mat-hint *ngIf="formulario.controls['titulo'].hasError('required') && formulario.controls['titulo'].touched"
+            <mat-hint
+              *ngIf="formulario.controls['titulo'].hasError('required') && formulario.controls['titulo'].touched"
               class="text-danger font-14">O título é obrigatório.</mat-hint>
           </mat-form-field>
         </div>
         <div fxFlex.gt-sm="100" fxFlex.gt-xs="100">
           <mat-form-field class="example-full-width">
-            <textarea matInput placeholder="Descrição" formControlName="descricao" [(ngModel)]="faq.descricao"></textarea>
-            <mat-hint *ngIf="formulario.controls['descricao'].hasError('descricao') && formulario.controls['descricao'].touched"
+            <textarea matInput placeholder="Descrição" formControlName="descricao"
+              [(ngModel)]="faq.descricao"></textarea>
+            <mat-hint
+              *ngIf="formulario.controls['descricao'].hasError('descricao') && formulario.controls['descricao'].touched"
               class="text-danger font-14">O descrição é obrigatório.</mat-hint>
           </mat-form-field>
         </div>
         <div fxFlex.gt-sm="100" fxFlex.gt-xs="100">
           <mat-form-field>
-            <mat-select placeholder="Selecione uma plataforma" formControlName="plataforma" [(ngModel)]="faq.plataforma">
+            <mat-select placeholder="Selecione uma plataforma" formControlName="plataforma"
+              [(ngModel)]="faq.plataforma">
               <mat-option *ngFor="let plataforma of plataformas" [value]="plataforma.id">
                 {{ plataforma.value }}
               </mat-option>
@@ -36,8 +40,13 @@
     <mat-card-actions>
       <button mat-button color="warn" *ngIf="hasEdit" (click)="cancelar()">CANCELAR</button>
       <button mat-button color="warn" *ngIf="hasEdit && faq.idFaq" (click)="excluir()">EXCLUIR</button>
-      <button mat-button color="primary" *ngIf="hasEdit" [disabled]="formulario.invalid" (click)="salvar()">SALVAR/OK</button>
+      <button mat-button color="primary" *ngIf="hasEdit" [disabled]="formulario.invalid"
+        (click)="salvar()">SALVAR/OK</button>
       <button mat-button color="primary" *ngIf="!hasEdit" (click)="formulario.enable(); hasEdit = true">EDITAR</button>
     </mat-card-actions>
   </form>
+
+  <ngx-loading [show]="loading" [config]="{ primaryColour:'#009b89',secondaryColour:'#009b89',tertiaryColour:'#009b89'}"
+    [template]="customLoadingTemplate">
+  </ngx-loading>
 </mat-card>

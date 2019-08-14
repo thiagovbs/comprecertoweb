@@ -3,9 +3,9 @@
         <div fxLayout="row" fxLayoutWrap="wrap">
             <div fxFlex.gt-sm="30" fxFlex.gt-xs="30">
                 <mat-form-field class="m-r-0  m-t-10">
-                    <mat-select placeholder="Categoria" [(ngModel)]="categoria" >
+                    <mat-select placeholder="Categoria" [(ngModel)]="categoria">
                         <mat-option [value]="undefined">Selecione uma opção</mat-option>
-                        <mat-option *ngFor="let categoria of categorias"  [value]="categoria">
+                        <mat-option *ngFor="let categoria of categorias" [value]="categoria">
                             {{categoria.nome}}
                         </mat-option>
                     </mat-select>
@@ -85,13 +85,15 @@
 </form>
 
 <div fxLayout="row" fxLayoutWrap="wrap">
-    
+    <ngx-loading [show]="loading"
+        [config]="{ primaryColour:'#009b89',secondaryColour:'#009b89',tertiaryColour:'#009b89'}"
+        [template]="customLoadingTemplate">
+    </ngx-loading>
+
     <div fxFlex.gt-sm="33.33%" fxFlex="100" *ngFor="let produto of obs | async">
         <app-produtos-form [produto]="produto" [categoriaParent]="categoria" (removerProduto)="aoRemover($event)"
             (salvarProduto)="atualizaProduto($event)"></app-produtos-form>
     </div>
 
-   
- 
 </div>
 <mat-paginator [pageSizeOptions]="[6, 9, 18, 45]"></mat-paginator>

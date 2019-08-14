@@ -9,6 +9,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { UnidadeMedidaService } from '../../services/unidade-medida.service';
+import { NgxLoadingModule } from 'ngx-loading';
 
 @NgModule({
   imports: [
@@ -27,7 +28,8 @@ import { UnidadeMedidaService } from '../../services/unidade-medida.service';
     MatIconModule,
     MatToolbarModule,
     MatCheckboxModule,
-    HttpModule
+    HttpModule,
+    NgxLoadingModule.forRoot({})
   ],
   declarations: [UnidadesMedidaComponent, UnidadesMedidaFormComponent],
   providers: [
