@@ -36,8 +36,8 @@ export class LoginComponent implements OnInit {
 
   onSubmit() {
     this.authenticationService.login(this.form.get('username').value, this.form.get('password').value).subscribe(
-      data => {
-        //console.log(data)
+      (data:any) => {
+        console.log(data)
         this.authenticationService.armazenarToken(data['access_token']);
         
 
@@ -46,8 +46,14 @@ export class LoginComponent implements OnInit {
           return;
         }
 
+
         this.error = false;
-        this.router.navigate(['/secure/analytics']);
+        if(data.user.permissoes[0].descricao === "MERCADO_OPERADOR"){
+          this.router.navigate(['/secure/analytics-mercado']);    
+        }else{
+          this.router.navigate(['/secure/analytics']);
+        }
+        
       }, error => {
         if (error.status === 400) {
           const responseJson = error.error;

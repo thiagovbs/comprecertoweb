@@ -319,4 +319,14 @@ export class ProdutosMercadoComponent implements OnInit {
     return this.qtdBoostPacote - this.boostTotal;
   }
 
+  boostEmitter(event){
+    console.log(event)
+    if(event===2){
+      this.boostTotal =this.boostTotal+1
+    }else{
+      this.boostTotal= this.boostTotal-1
+    }
+    this.qntBoostRestante = this.qtdBoostPacote - this.boostTotal;
+  }
+
 }

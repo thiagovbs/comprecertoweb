@@ -8,6 +8,8 @@ import { Pedido } from "../../../models/pedido";
 import { PedidoProduto } from "../../../models/pedido-produto";
 import { PedidoService } from "../../../services/pedido.service";
 import swal from "sweetalert2";
+import { StatusEntrega } from "../../../models/status-entrega";
+import { StatusRetirada } from "../../../models/status-retirada";
 
 @Component({
     selector: 'easy-buy-dialog',
@@ -18,11 +20,15 @@ export class EasyBuyDialog {
     entregaEnum = Entrega;
     pagamentoEnum = Pagamento;
     statusEnum = Status;
+    statusEntrega = StatusEntrega;
+    statusRetirada = StatusRetirada;
     substituicaoEnum = Substituicao;
     pedido: Pedido;
     valorFrete: number = 0;
     valorMinimoFrete: number = 0;
     enumStatus:string[]=Object.keys(this.statusEnum)
+    enumStatusEntrega:string[]=Object.keys(this.statusEntrega)
+    enumStatusRetirada:string[]=Object.keys(this.statusRetirada)
 
 
     constructor(

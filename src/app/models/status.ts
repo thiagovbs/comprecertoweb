@@ -1,5 +1,11 @@
 export enum Status {
-    S="Em separação", T="Em transporte", E="Entregue" , N="Pedido negado" , 
-    L="Em análise", A="Aprovado", R="Aguardando retirada", F="Finalizado",
-    
+    N = "Pedido negado",
+    L = "Em análise", 
+    A = "Aprovado", 
+    S = "Em separação", 
+    T = "Em transporte", 
+    R = "Aguardando retirada", 
+    E = "Entregue", 
+    F = "Finalizado",
+
 }

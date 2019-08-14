@@ -39,14 +39,11 @@ export class LocalidadeFilialComponent implements OnInit {
 
       element.rua = endereçoSplitted[0]
       element.numero = endereçoSplitted[1]
+      if(endereçoSplitted[2] === undefined){
       element.complemento = endereçoSplitted[2]
+    }
 
     });
-
-
-
-
-
   }
 
 
@@ -157,6 +154,23 @@ export class LocalidadeFilialComponent implements OnInit {
     }, error => {
       console.log(error);
     })
+  }
+
+  verficaForm() {
+    let tmp=false;
+    if(this.mercadoComponent.mercado.mercadoLocalidades.length != 0){
+      tmp=true;
+    }
+    this.mercadoComponent.mercado.mercadoLocalidades.forEach(localidade=>{
+      if(!localidade.googlemapsLinks || localidade.googlemapsLinks ==="" || 
+      !localidade.rua || localidade.rua ==="" || !localidade.numero || localidade.numero===""){
+        tmp=false;
+      }
+    });
+   
+      return tmp;
+    
+    
   }
 
 

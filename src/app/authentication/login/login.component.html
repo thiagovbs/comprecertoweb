@@ -15,12 +15,12 @@
                             <div fxLayout="row" fxLayoutWrap="wrap">
                                 <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100">
                                     <mat-form-field>
-                                        <input matInput placeholder="Username"
+                                        <input matInput placeholder="username"
                                             [formControl]="form.controls['username']">
                                     </mat-form-field>
                                     <small
                                         *ngIf="form.controls['username'].hasError('required') && form.controls['username'].touched"
-                                        class="text-danger support-text">Username is required.</small>
+                                        class="text-danger support-text">O nome de usuário é obrigatório.</small>
                                 </div>
                                 <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100">
                                     <mat-form-field>
@@ -29,7 +29,7 @@
                                     </mat-form-field>
                                     <small
                                         *ngIf="form.controls['password'].hasError('required') && form.controls['password'].touched"
-                                        class="text-danger support-text">Password is required.</small>
+                                        class="text-danger support-text">A senha é obrigatória.</small>
                                 </div>
                                 <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100" class="text-center"
                                     *ngIf="error">

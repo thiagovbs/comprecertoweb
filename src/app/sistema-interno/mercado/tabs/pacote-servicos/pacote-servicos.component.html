@@ -38,7 +38,7 @@
                       </mat-form-field>
                     </div>
                     <div fxFlex.gt-sm="20" fxFlex.gt-xs="20" class="toggle">
-                      <mat-slide-toggle [checked]="mercadoComponent.mercado.idMercado && servico.pacoteSelecionado.fativo" (change)="toogleServico($event, localidade, servico)"></mat-slide-toggle>
+                      <mat-slide-toggle [disabled]="!servico.pacoteSelecionado.idPacoteServico" [checked]="mercadoComponent.mercado.idMercado && servico.pacoteSelecionado.fativo" (change)="toogleServico($event, localidade, servico)"></mat-slide-toggle>
                     </div>
                   </div>
                 </div>

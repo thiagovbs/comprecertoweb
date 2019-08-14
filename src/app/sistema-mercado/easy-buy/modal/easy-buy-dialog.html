@@ -57,12 +57,22 @@
 
             </div>
             <mat-form-field appearance="outline" style="padding-right :24px;" *ngIf="statusEnum[pedido.status]!=statusEnum.L">
-                <mat-select placeholder="Status" [(ngModel)]="pedido.status">
-                    <mat-option *ngFor="let s of enumStatus" [value]="s" [disabled]="(pedido.status!='N' && s=='N') || 
+                
+                <mat-select placeholder="Status" [(ngModel)]="pedido.status" *ngIf="pedido.entrega==='E'">
+                    <mat-option *ngFor="let s of enumStatusEntrega" [value]="s" [disabled]="(pedido.status!='N' && s=='N') || 
                     (pedido.entrega==='E' && s=='R') || (pedido.entrega==='R' && s=='T')" style="color: #004D40;">
                         {{statusEnum[s]}}
                     </mat-option>
                 </mat-select>
+
+                <mat-select placeholder="Status" [(ngModel)]="pedido.status" *ngIf="pedido.entrega==='R'">
+                    <mat-option *ngFor="let s of enumStatusRetirada" [value]="s" [disabled]="(pedido.status!='N' && s=='N') || 
+                    (pedido.entrega==='E' && s=='R') || (pedido.entrega==='R' && s=='T')" style="color: #004D40;">
+                        {{statusEnum[s]}}
+                    </mat-option>
+                </mat-select>
+
+
             </mat-form-field>
         </div>
         <mat-divider [vertical]="true"></mat-divider>

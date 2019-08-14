@@ -68,13 +68,16 @@
                     </form>
                 </mat-form-field>
             </div>
-            <div fxFlex.gt-sm="40" fxFlex.gt-xs="40">
+            <div fxFlex.gt-sm="70" fxFlex.gt-xs="70">
                 <div style="margin-top: 12px;">
-                    <div fxFlex.gt-sm="50" fxFlex.gt-xs="50">
-                        <p>Quantidade Produtos: {{produtosTotal || 0}}</p>
+                    <div fxFlex.gt-sm="25" fxFlex.gt-xs="25">
+                        <p>Produtos: {{produtosTotal || 0}}</p>
                     </div>
-                    <div fxFlex.gt-sm="50" fxFlex.gt-xs="50">
-                        <p>Quantidade Produtos Restante: {{qntProdutosRestante()}}</p>
+                    <div fxFlex.gt-sm="40" fxFlex.gt-xs="40">
+                        <p>Produtos Restante: {{qntProdutosRestante()}}</p>
+                    </div>
+                    <div fxFlex.gt-sm="35" fxFlex.gt-xs="35">
+                        <p>Boost Restante: {{getqntBoostRestante()}}</p>
                     </div>
                 </div>
             </div>
@@ -91,7 +94,7 @@
         <app-produtos-mercado-form [mercadoProduto]="mercadoProduto" [localidadeAtual]="localidadeAtual"
             [dtEntrada]="dtEntrada" [qntBoostRestante]="qntBoostRestante"
             (salvarMercadoProduto)="atualizaProduto($event)" (removerMercadoProduto)="aoRemover($event)"
-            [mercadoCategoria]="categoriaEscolhida">
+            [mercadoCategoria]="categoriaEscolhida" (boostEmitter)="boostEmitter($event)" boostEmitter>
         </app-produtos-mercado-form>
     </div>
 </div>

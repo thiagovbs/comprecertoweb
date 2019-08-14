@@ -33,13 +33,16 @@ export class ProdutosMercadoFormComponent implements OnInit {
 
   @Output('salvarMercadoProduto')
   atualizaMercadoProduto = new EventEmitter();
-  
+
   @Output('removerMercadoProduto')
   removerMercadoProduto = new EventEmitter();
 
   produto: Produto = new Produto();
   produtos: Produto[] = [];
   produtoImagem: string = null;
+
+  @Output('boostEmitter')
+  boostEmitter = new EventEmitter();
 
   boostOn: any;
   categorias: Categoria[] = [];
@@ -69,13 +72,13 @@ export class ProdutosMercadoFormComponent implements OnInit {
       produto: [{ value: '', disable: true }, [Validators.required]],
       peso: [{ value: '', disable: true }, [Validators.required]],
       preco: [{ value: '' }, [Validators.required]],
-      observacao: [{ value: ''}],
+      observacao: [{ value: '' }],
       boost: [{ value: '', disable: true }, [Validators.required]]
     });
   }
 
   ngOnInit() {
-    
+
     // pegando os produtos dos mercados listados
     if (this.mercadoProduto.idMercadoProduto) {
       this.produtoImagem = this.mercadoProduto.produto.imagemUrl
@@ -212,14 +215,14 @@ export class ProdutosMercadoFormComponent implements OnInit {
   btnSalvar() {
 
     this.mercadoProduto.mercadoLocalidade = this.localidadeAtual;
-    
+
     if (this.produto.idProduto) {
       this.mercadoProduto.produto = this.produto;
     }
     this.mercadoProduto.preco = this.formulario.get('preco').value;
     this.mercadoProduto.observacao = this.formulario.get('observacao').value;
 
-    if(!this.formulario.get('observacao').touched){
+    if (!this.formulario.get('observacao').touched) {
       this.mercadoProduto.observacao = "";
     }
 
@@ -230,7 +233,7 @@ export class ProdutosMercadoFormComponent implements OnInit {
     else
       this.mercadoProduto.fdestaque = false;
 
-    
+
     if (this.mercadoProduto.idMercadoProduto) {
 
       this.mercadoProdutoService.putProdutosMercado(this.mercadoProduto).subscribe(data => {
@@ -270,4 +273,23 @@ export class ProdutosMercadoFormComponent implements OnInit {
       swal('Preencha os campos', `O produto não pode ser atualizado!`, 'warning');
     });
   }
+
+  boostSelect(boost: any) {
+
+    if (this.mercadoProduto.fdestaque && boost.id === 1) {
+      this.boostEmitter.emit(boost.id)
+    } else if (!this.mercadoProduto.fdestaque && boost.id === 2) {
+      this.boostEmitter.emit(boost.id)
+    }
+
+    if (this.formulario.get('boost').value === 2) {
+      console.log("true")
+      this.mercadoProduto.fdestaque = true;
+    } else {
+      console.log("false")
+      this.mercadoProduto.fdestaque = false;
+    }
+  }
+
+
 }
