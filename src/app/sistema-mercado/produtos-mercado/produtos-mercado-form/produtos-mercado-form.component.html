@@ -91,7 +91,7 @@
         <div fxFlex.gt-sm="100" fxFlex.gt-xs="100">
           <mat-form-field class="example-full-width">
             <mat-select placeholder="boost" formControlName="boost" [(ngModel)]="boostOn">
-              <mat-option *ngFor="let boost of boosts" [value]="boost.id" (click)="boostSelect(boost)" [disabled]="boost.id ===2 && qntBoostRestante === 0">
+              <mat-option *ngFor="let boost of boosts" [value]="boost.id" (selectionChange)="boostSelect(boost)" [disabled]="boost.id ===2 && qntBoostRestante === 0">
                 {{boost.name}}
               </mat-option>
             </mat-select>
