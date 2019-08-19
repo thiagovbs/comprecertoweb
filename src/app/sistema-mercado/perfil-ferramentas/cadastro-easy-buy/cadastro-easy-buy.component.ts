@@ -20,7 +20,7 @@ export class CadastroEasyBuyComponent implements OnInit {
   entrega: string = "";
   mercadoAtual: Mercado = new Mercado();
   maskTelefone = ['(', /\d/, /\d/, ')', /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]
-
+  loading:boolean;
   isEntrega: boolean = false;
   isFrete: boolean = false;
   verificarIsEntregaIsNull: boolean = false;
@@ -136,8 +136,8 @@ export class CadastroEasyBuyComponent implements OnInit {
   }
 
   EnviarForm() {
-    console.log(this.isFrete)
-
+    
+    this.loading = true
     let vlMinimo = this.cadastroEasyBuyForm[this.atual].controls['vl_minimo'].value
     let vlFrete = this.cadastroEasyBuyForm[this.atual].controls['tx_frete'].value
     let telefone = this.cadastroEasyBuyForm[this.atual].controls['tel'].value
@@ -167,9 +167,11 @@ export class CadastroEasyBuyComponent implements OnInit {
       swal('Opa', `Tem alguma coisa errada!`, 'warning');
     } else {
       this.mercadoService.putMercado(this.mercadoAtual).subscribe(data => {
+        this.loading = false;
         swal('Inclusão', `Parabéns ${this.mercadoAtual.nomeFantasia}, esta localidade agora possui
          serviço de Easy Buy!`, 'success');
       }, error => {
+        this.loading = false;
         console.error(error.json());
       });
     }

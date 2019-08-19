@@ -41,7 +41,8 @@
                   </div>
                   <div fxFlex.gt-sm="40" fxFlex.gt-xs="40" class="m-t-40">
                     <mat-form-field style="margin-top: -20px;">
-                      <input matInput type="time" formControlName="hr_maximo_entrega" [value]="localidade.horarioMaximoEntrega" />
+                      <input matInput type="time" formControlName="hr_maximo_entrega"
+                        [value]="localidade.horarioMaximoEntrega" />
                     </mat-form-field>
                   </div>
                   <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" class="m-t-40" [class.block-frete]="!isEntrega">
@@ -51,7 +52,7 @@
                       <mat-chip selected="{{!isFrete && isEntrega}}" (click)="btnFrete($event)">Não</mat-chip>
                     </mat-chip-list>
 
-                  </div>                 
+                  </div>
                   <div fxFlex.gt-sm="70" fxFlex.gt-xs="70" class="m-t-30">
                     <label for="vlMinimoFrete">Valor mínimo para não cobrar frete:</label>
                   </div>
@@ -71,7 +72,7 @@
                         [value]="localidade.valorFrete | moedaPadrao"
                         [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',', align:'left'}" />
                     </mat-form-field>
-                  </div>                 
+                  </div>
                   <div fxFlex.gt-sm="60" fxFlex.gt-xs="60" class="m-t-40">
                     <label for="hr_maximo">Horário máxímo para Retirada:</label>
                   </div>
@@ -81,7 +82,7 @@
                     </mat-form-field>
                   </div>
 
-                  
+
 
                 </div>
               </form>
@@ -100,4 +101,7 @@
     </div>
 
   </mat-card-content>
+  <ngx-loading [show]="loading" [config]="{ primaryColour:'#009b89',secondaryColour:'#009b89',tertiaryColour:'#009b89'}"
+    [template]="customLoadingTemplate">
+  </ngx-loading>
 </mat-card>

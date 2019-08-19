@@ -11,7 +11,7 @@ import { ImageCropperModule } from 'ngx-image-cropper';
 import { NgxCurrencyModule } from 'ngx-currency';
 import { SharedPipeModule } from '../../util/shared.pipe.module';
 import { EasyBuyDialog } from './modal/easy-buy-dialog';
-
+import { NgxLoadingModule } from 'ngx-loading';
 @NgModule({
   imports: [
     CommonModule,
@@ -41,7 +41,8 @@ import { EasyBuyDialog } from './modal/easy-buy-dialog';
     ImageCropperModule,
     MatDatepickerModule,
     NgxCurrencyModule,
-    SharedPipeModule
+    SharedPipeModule,
+    NgxLoadingModule.forRoot({})
   ],
   declarations: [EasyBuyComponent,EasyBuyDialog]
   ,

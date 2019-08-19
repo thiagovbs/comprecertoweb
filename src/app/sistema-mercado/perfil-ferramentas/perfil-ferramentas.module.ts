@@ -31,6 +31,7 @@ import { TextMaskModule } from 'angular2-text-mask';
 import { InformacoesDePacoteComponent } from './informacoes-de-pacote/informacoes-de-pacote.component';
 import { ImageCropperModule } from 'ngx-image-cropper';
 import { MudarSenhaDialog } from './informacoes-de-pacote/modal/mudar-senha-dialog';
+import { NgxLoadingModule } from 'ngx-loading';
 registerLocaleData(ptBr)
 
 @NgModule({
@@ -59,7 +60,8 @@ registerLocaleData(ptBr)
     MatChipsModule,
     ReactiveFormsModule,
     SharedPipeModule,
-    TextMaskModule
+    TextMaskModule,
+    NgxLoadingModule.forRoot({})
   ],
   declarations: [CadastroEasyBuyComponent, InformacoesDePacoteComponent,MudarSenhaDialog],
   providers: [

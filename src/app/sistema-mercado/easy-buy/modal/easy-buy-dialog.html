@@ -49,15 +49,16 @@
                 <b>Produto zerado no estoque: </b>{{substituicaoEnum[pedido.substituicao]}}
             </p>
             <h3><b>Status</b></h3>
-           
+
             <div *ngIf="statusEnum[pedido.status]===statusEnum.L" align="center">
 
-                <button mat-button color="warn" (click)="pedido.status='N'" >Recusar</button>
+                <button mat-button color="warn" (click)="pedido.status='N'">Recusar</button>
                 <button mat-button color="primary" (click)="pedido.status='A'">Aceitar</button>
 
             </div>
-            <mat-form-field appearance="outline" style="padding-right :24px;" *ngIf="statusEnum[pedido.status]!=statusEnum.L">
-                
+            <mat-form-field appearance="outline" style="padding-right :24px;"
+                *ngIf="statusEnum[pedido.status]!=statusEnum.L">
+
                 <mat-select placeholder="Status" [(ngModel)]="pedido.status" *ngIf="pedido.entrega==='E'">
                     <mat-option *ngFor="let s of enumStatusEntrega" [value]="s" [disabled]="(pedido.status!='N' && s=='N') || 
                     (pedido.entrega==='E' && s=='R') || (pedido.entrega==='R' && s=='T')" style="color: #004D40;">
@@ -92,6 +93,10 @@
                 </span>
             </div>
         </div>
+        <ngx-loading [show]="loading"
+            [config]="{ primaryColour:'#009b89',secondaryColour:'#009b89',tertiaryColour:'#009b89'}"
+            [template]="customLoadingTemplate">
+        </ngx-loading>
     </mat-card-content>
 </mat-dialog-content>
 <mat-dialog-actions align="end">
