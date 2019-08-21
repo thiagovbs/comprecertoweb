@@ -24,6 +24,7 @@ export class CadastroEasyBuyComponent implements OnInit {
   isEntrega: boolean = false;
   isFrete: boolean = false;
   verificarIsEntregaIsNull: boolean = false;
+  customLoadingTemplate:any;
 
   cadastroEasyBuyForm: FormGroup = {} as FormGroup;
 

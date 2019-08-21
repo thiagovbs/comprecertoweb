@@ -17,6 +17,7 @@ import { StatusRetirada } from "../../../models/status-retirada";
 })
 export class EasyBuyDialog {
 
+  customLoadingTemplate:any;
   entregaEnum = Entrega;
   pagamentoEnum = Pagamento;
   statusEnum = Status;
