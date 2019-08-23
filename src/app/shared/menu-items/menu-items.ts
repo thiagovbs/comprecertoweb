@@ -98,14 +98,14 @@ const MERCADO_ADMIN_MENU_ITEMS = [
     icon: 'add'
   },
   {
-    state: 'cadastro-faq',
-    name: 'Cadastro de FAQ',
+    state: 'liberacao-push',
+    name: 'Liberação de PUSHs',
     type: 'link',
     icon: 'add'
   },
   {
-    state: 'liberacao-push',
-    name: 'Liberação de PUSHs',
+    state: 'cadastro-faq',
+    name: 'Cadastro de FAQ',
     type: 'link',
     icon: 'add'
   }
@@ -143,14 +143,14 @@ const MERCADO_MENU_ITEMS = [
     ]
   },
   {
-    state: 'faqs',
-    name: 'FAQs',
+    state: 'easy-buy',
+    name: 'Easy Buy',
     type: 'link',
     icon: 'add'
   },
   {
-    state: 'easy-buy',
-    name: 'Easy Buy',
+    state: 'faqs',
+    name: 'FAQs',
     type: 'link',
     icon: 'add'
   }
