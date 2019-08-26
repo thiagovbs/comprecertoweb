@@ -39,6 +39,7 @@ import { NgxCurrencyModule } from "ngx-currency";
 import ptBr from '@angular/common/locales/pt';
 import { registerLocaleData } from '@angular/common';
 import { SharedPipeModule } from '../../util/shared.pipe.module';
+import { NgxLoadingModule } from 'ngx-loading';
 registerLocaleData(ptBr)
 
 @NgModule({
@@ -61,7 +62,8 @@ registerLocaleData(ptBr)
     ImageCropperModule,
     MatDatepickerModule,
     NgxCurrencyModule,
-    SharedPipeModule
+    SharedPipeModule,
+    NgxLoadingModule.forRoot({})
   ],
   declarations: [ProdutosMercadoComponent, ProdutosMercadoFormComponent, DateFormatPipe],
   providers: [

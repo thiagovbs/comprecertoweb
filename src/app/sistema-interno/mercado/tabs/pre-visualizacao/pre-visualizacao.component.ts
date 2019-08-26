@@ -46,13 +46,21 @@ export class PreVisualizacaoComponent implements OnInit {
     }
   }
 
-  getValorTotal() {
-    return this.mercadoComponent.mercado.mercadoLocalidades.map(localidade => this.getValorRegional(localidade)).reduce((total, valor) => total += valor);
+  getValorRegional(localidade: MercadoLocalidade) {    
+    let valor = 0;
+    localidade.mercadoServicos.map(servico => {
+      valor = valor + ((servico.pacoteServico.valor + servico.pacoteServico.acrescimo)
+        - servico.pacoteServico.desconto)
+    });
+    return valor;
   }
 
-  getValorRegional(localidade: MercadoLocalidade) {
-    // tslint:disable-next-line: max-line-length
-    return localidade.mercadoServicos.map(servico => (servico.pacoteServico.valor - servico.pacoteServico.acrescimo) - servico.pacoteServico.desconto).reduce((total, valor) => total += valor);
+  getValorTotal() {
+    let valor = 0;
+    this.mercadoComponent.mercado.mercadoLocalidades.map(localidade => {
+      valor = valor + this.getValorRegional(localidade)
+    });
+    return valor
   }
 
   fileChangeEvent(event: any): void {

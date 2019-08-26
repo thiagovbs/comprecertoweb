@@ -11,6 +11,7 @@ import { MercadoProduto } from '../../../models/mercado-produto';
 import { MercadoLocalidade } from '../../../models/mercado-localidade';
 import { MercadoProdutoService } from '../../../services/mercado-produto.service';
 import swal from 'sweetalert2';
+import { Template } from '@angular/compiler/src/render3/r3_ast';
 
 @Component({
   selector: 'app-produtos-mercado-form',
@@ -58,6 +59,9 @@ export class ProdutosMercadoFormComponent implements OnInit {
 
   formulario: FormGroup;
   hasEdit = true;
+
+  customLoadingTemplate:Template;
+  loading: boolean = false;
 
   constructor(private formBuilder: FormBuilder,
     private produtoService: ProdutoService,
@@ -213,7 +217,7 @@ export class ProdutosMercadoFormComponent implements OnInit {
   }
 
   btnSalvar() {
-
+    this.loading=true;
     this.mercadoProduto.mercadoLocalidade = this.localidadeAtual;
 
     if (this.produto.idProduto) {
@@ -238,7 +242,9 @@ export class ProdutosMercadoFormComponent implements OnInit {
 
       this.mercadoProdutoService.putProdutosMercado(this.mercadoProduto).subscribe(data => {
         this.atualizaMercadoProduto.emit(true);
+        this.loading=false;
       }, error => {
+        this.loading=false;
         console.error(error.json());
         swal('Preencha os campos', `O produto não pode ser atualizado!`, 'warning');
       }, () => {
@@ -250,8 +256,10 @@ export class ProdutosMercadoFormComponent implements OnInit {
     } else {
       this.mercadoProdutoService.salvarProdutosNoMercado(this.mercadoProduto)
         .subscribe(resp => {
+          this.loading=false;
           this.atualizaMercadoProduto.emit(this.mercadoProduto);
         }, erro => {
+          this.loading=false;
           swal('Preencha os campos', `O produto não pode ser atualizado!`, 'warning');
           console.error(erro.json());
         }, () => {
@@ -263,12 +271,14 @@ export class ProdutosMercadoFormComponent implements OnInit {
   }
 
   excluir() {
-
+    this.loading=true;
     this.mercadoProdutoService.deleteMercadoProduto(this.mercadoProduto.idMercadoProduto).subscribe(data => {
       this.removerMercadoProduto.emit(this.mercadoProduto);
+      this.loading=false;
       swal('Exclusão', `O produto ${this.mercadoProduto.produto.marca} foi Excluído!`, 'success');
-
+      
     }, error => {
+      this.loading=false;
       console.error(error.json());
       swal('Preencha os campos', `O produto não pode ser atualizado!`, 'warning');
     });

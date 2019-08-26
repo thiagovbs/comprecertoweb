@@ -23,22 +23,30 @@ export class PerfilMercadoComponent implements OnInit {
   constructor(private mercadoService: MercadoService) { }
 
   ngOnInit() {
-    
+
     this.myImage = this.mercado.imageBase64;
   }
 
   getValorRegional(localidade: MercadoLocalidade) {
-    return localidade.mercadoServicos.map(servico =>
-      (servico.pacoteServico.valor - servico.pacoteServico.acrescimo) - servico.pacoteServico.desconto)
-      .reduce((total, valor) => total += valor);
+    
+    let valor = 0;
+    localidade.mercadoServicos.map(servico => {
+      valor = valor + ((servico.pacoteServico.valor + servico.pacoteServico.acrescimo)
+        - servico.pacoteServico.desconto)
+    });
+    return valor;
   }
 
   getValorTotal() {
-    return this.mercado.mercadoLocalidades.map(localidade =>
-      this.getValorRegional(localidade)).reduce((total, valor) => total += valor);
+    let valor = 0;
+    this.mercado.mercadoLocalidades.map(localidade => {
+      valor = valor + this.getValorRegional(localidade)
+    });
+    return valor
   }
 
-  ativar(){
+
+  ativar() {
     swal({
       title: 'Ativação de mercado',
       text: `Deseja ativar o mercado: ${this.mercado.nomeFantasia}?`,

@@ -20,64 +20,62 @@ export class PacoteServicosComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log(this.mercadoComponent.mercado.mercadoLocalidades[0].servicosTemp);
+    //console.log(this.mercadoComponent.mercado.mercadoLocalidades[0].servicosTemp);
     this.mercadoComponent.mercado.mercadoLocalidades.map(localidade => {
       //console.log(localidade.servicosTemp)
       //console.log(localidade.mercadoServicos)
       let idPacote;
-      let fativo;
+
       localidade.mercadoServicos.map(servico => {
         idPacote = servico.pacoteServico.idPacoteServico;
-        fativo = servico.fativo;  
-       });
 
-
-     localidade.servicosTemp.map(servicotmp => {    
-       //console.log(servicotmp)
-       if(servicotmp.pacoteSelecionado.idPacoteServico === idPacote){
-         servicotmp.pacoteSelecionado.fativo = fativo;
-       }
-     });
-
+        localidade.servicosTemp.map(servicotmp => {
+          servicotmp.pacoteServicos.map(pacotesServicoTmp => {
+            if (pacotesServicoTmp.idPacoteServico === idPacote) {
+              servicotmp.pacoteSelecionado = servico.pacoteServico;
+            }
+          });
+        });
+      });
     });
   }
 
   mudarSelect(pacoteIdEscolhido, localidade: MercadoLocalidade, servicoAtivo: MercadoServico) {
-    
+    //console.log(this.mercadoComponent.mercado.mercadoLocalidades)
     let pacotesServicos = servicoAtivo.pacoteServicos;
     let idPacoteAntigo = servicoAtivo.pacoteSelecionado.idPacoteServico;
-    
-    let novoServico=new MercadoServico();
-    
+
+    let novoServico = new MercadoServico();
+
     let pacoteAtivo: any = pacotesServicos.find(pacoteServico => pacoteServico.idPacoteServico === pacoteIdEscolhido);
-        
+
     if (localidade.idMercadoLocalidade) {
-      let achou=false;  
+      let achou = false;
       localidade.mercadoServicos.map(servicotmp => {
         //console.log(servicotmp)
-        if(servicotmp.pacoteServico.idPacoteServico === idPacoteAntigo){
+        if (servicotmp.pacoteServico.idPacoteServico === idPacoteAntigo) {
           this.idServMercado = servicotmp.idMercadoServico;
-          //console.log(idServMercado);
-          if(servicotmp.idMercadoServico === this.idServMercado){          
+          //console.log(this.idServMercado);
+          if (servicotmp.idMercadoServico === this.idServMercado) {
             servicotmp.pacoteServico = pacoteAtivo;
-            achou=true;
+            achou = true;
           }
         }
-        });
-      if(!achou){
-          //console.log(novoServico);
-          novoServico.pacoteServico=pacoteAtivo;
-          novoServico.saldo=pacoteAtivo.valor;
-          localidade.mercadoServicos.push(novoServico);
-        }
-        achou=false;
+      });
+      if (!achou) {
+        //console.log(novoServico);
+        novoServico.pacoteServico = pacoteAtivo;
+        novoServico.saldo = pacoteAtivo.valor;
+        localidade.mercadoServicos.push(novoServico);
+      }
+      achou = false;
     } else {
-      novoServico.pacoteServico=pacoteAtivo;
-      novoServico.saldo=pacoteAtivo.valor;
+      novoServico.pacoteServico = pacoteAtivo;
+      novoServico.saldo = pacoteAtivo.valor;
       localidade.mercadoServicos.push(novoServico);
-    }  
-    //console.log(localidade);
-    
+    }
+    console.log(localidade);
+
   }
 
   proximaTab() {
@@ -90,26 +88,25 @@ export class PacoteServicosComponent implements OnInit {
     this.mercadoComponent.selectedTab = this.mercadoComponent.tabs.filter(tab => tab.key === 'localidade-filial')[0];
   }
 
-  toogleServico(valor, localidade: MercadoLocalidade, servicoAtivo: MercadoServico) {  
+  toogleServico(valor, localidade: MercadoLocalidade, servicoAtivo: MercadoServico) {
     //console.log(this.idServMercado);
-    
+
     let idPacoteAntigo = servicoAtivo.pacoteSelecionado.idPacoteServico;
-    if (localidade.idMercadoLocalidade) {      
+    if (localidade.idMercadoLocalidade) {
       localidade.mercadoServicos.map(servicotmp => {
         //console.log(servicotmp);
-        if(servicotmp.pacoteServico.idPacoteServico === idPacoteAntigo){
+        if (servicotmp.pacoteServico.idPacoteServico === idPacoteAntigo) {
           this.idServMercado = servicotmp.idMercadoServico;
           //console.log(idServMercado);
-          if(servicotmp.idMercadoServico === this.idServMercado){          
-            servicotmp.fativo =valor.checked;
-          } 
+          if (servicotmp.idMercadoServico === this.idServMercado) {
+            servicotmp.fativo = valor.checked;
           }
-        
-        });
-     
-    //console.log(localidade);
+        }
+
+      });
+    }
+    console.log(localidade);
   }
-}
 
 
 

@@ -186,13 +186,13 @@ export class ProdutosMercadoComponent implements OnInit {
         }
 
         this.localidadeAtual.mercadoServicos.forEach(ms => {
-          if (ms.pacoteServico.idPacoteServico === 7 || ms.pacoteServico.idPacoteServico === 8
-            || ms.pacoteServico.idPacoteServico === 9) {
+          if (ms.pacoteServico.idPacoteServico === 1 || ms.pacoteServico.idPacoteServico === 2
+            || ms.pacoteServico.idPacoteServico === 3) {
               console.log(ms.pacoteServico.descricao)
             this.qtdProdutosPacote = Number(ms.pacoteServico.descricao)
           }
-          if (ms.pacoteServico.idPacoteServico === 10 || ms.pacoteServico.idPacoteServico === 11 ||
-            ms.pacoteServico.idPacoteServico === 12 || ms.pacoteServico.idPacoteServico === 13) {
+          if (ms.pacoteServico.idPacoteServico === 4 || ms.pacoteServico.idPacoteServico === 5 ||
+            ms.pacoteServico.idPacoteServico === 6 || ms.pacoteServico.idPacoteServico === 7) {
             this.qtdBoostPacote = Number(ms.pacoteServico.descricao)
           }
         });
