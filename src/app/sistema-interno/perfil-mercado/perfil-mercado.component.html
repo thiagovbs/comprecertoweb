@@ -63,7 +63,7 @@
             <mat-tab-group class="demo-tab-group">
               <mat-tab *ngFor="let localidade of mercado.mercadoLocalidades">
                 <ng-template mat-tab-label>
-                  {{ localidade.bairro.cidade.nome }} - {{ localidade.bairro.nome }}
+                  {{ localidade.bairro.cidade.nome }} - {{ localidade.bairro.nome }} - {{ localidade.idMercadoLocalidade }}
                 </ng-template>
                 <div class="demo-tab-content">
                   <div fxLayout="row" fxLayoutWrap="wrap">
