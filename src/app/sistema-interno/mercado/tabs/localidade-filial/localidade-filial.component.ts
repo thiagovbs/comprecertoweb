@@ -32,16 +32,18 @@ export class LocalidadeFilialComponent implements OnInit {
 
   ngOnInit() {
     this.getServicos()
-    console.log(this.mercadoComponent.mercado.mercadoLocalidades)
-
+  
     this.mercadoComponent.mercado.mercadoLocalidades.forEach(element => {
-      var endereçoSplitted = element.endereco.split(/(?:(?:\ n\º))|(?:(?:\/))/);
-
-      element.rua = endereçoSplitted[0]
-      element.numero = endereçoSplitted[1]
-      if(endereçoSplitted[2] === undefined){
-      element.complemento = endereçoSplitted[2]
-    }
+      let endereçoSplitted = element.endereco.split(/(?:(?:\ n\º))|(?:(?:\/))/);
+      console.log(endereçoSplitted)
+      element.rua = endereçoSplitted[0];
+      element.numero = endereçoSplitted[1];
+      
+      if (endereçoSplitted[2] === "undefined") { 
+        element.complemento = " ";  
+      }else{
+        element.complemento = endereçoSplitted[2];
+      }
 
     });
   }
@@ -49,9 +51,8 @@ export class LocalidadeFilialComponent implements OnInit {
 
   buscarCep() {
     this.viacep.buscarPorCep(this.cep).then((endereco) => {
-      console.log(endereco);
       this.enderecoTemp = this.parseEndereco(endereco);
-      this.ruaTemp =  endereco.logradouro;
+      this.ruaTemp = endereco.logradouro;
     }).catch((error: ErroCep) => {
       console.log(error.message);
       this.cepNotFound = error.message;
@@ -86,7 +87,7 @@ export class LocalidadeFilialComponent implements OnInit {
     bairro.cidade = cidade;
     bairro.nome = endereco.bairro;
 
-   
+
     return bairro;
   }
 
@@ -157,20 +158,20 @@ export class LocalidadeFilialComponent implements OnInit {
   }
 
   verficaForm() {
-    let tmp=false;
-    if(this.mercadoComponent.mercado.mercadoLocalidades.length != 0){
-      tmp=true;
+    let tmp = false;
+    if (this.mercadoComponent.mercado.mercadoLocalidades.length != 0) {
+      tmp = true;
     }
-    this.mercadoComponent.mercado.mercadoLocalidades.forEach(localidade=>{
-      if(!localidade.googlemapsLinks || localidade.googlemapsLinks ==="" || 
-      !localidade.rua || localidade.rua ==="" || !localidade.numero || localidade.numero===""){
-        tmp=false;
+    this.mercadoComponent.mercado.mercadoLocalidades.forEach(localidade => {
+      if (!localidade.googlemapsLinks || localidade.googlemapsLinks === "" ||
+        !localidade.rua || localidade.rua === "" || !localidade.numero || localidade.numero === "") {
+        tmp = false;
       }
     });
-   
-      return tmp;
-    
-    
+
+    return tmp;
+
+
   }
 
 
@@ -183,7 +184,7 @@ export class LocalidadeFilialComponent implements OnInit {
       googlemapsLinksTemp: [{ id: 0, value: '' }],
       mercadoServicos: [],
       bairro: this.enderecoTemp,
-      rua:this.ruaTemp,
+      rua: this.ruaTemp,
       //endereco: this.enderecoRuaTemp +" nº"+this.enderecoNumeroTemp +"/"+ this.enderecoComplementoTemp,
       servicosTemp: this.localidadeServicoTemp
     });
@@ -197,8 +198,12 @@ export class LocalidadeFilialComponent implements OnInit {
 
 
     this.mercadoComponent.mercado.mercadoLocalidades.forEach(localidade => {
-      if (localidade.rua)
+      console.log(localidade)
+      if (localidade.complemento) {
         localidade.endereco = localidade.rua + " nº" + localidade.numero + "/" + localidade.complemento;
+      } else {
+        localidade.endereco = localidade.rua + " nº" + localidade.numero ;
+      }
     });
     this.mercadoComponent.selectedTab = this.mercadoComponent.tabs.filter(tab => tab.key === 'servicos')[0];
     this.mercadoComponent.tabs.find(tab => tab.key === 'servicos').disabled = false;

@@ -7,6 +7,7 @@ import { HttpModule } from '@angular/http';
 import { MercadoService } from '../../services/mercado.service';
 import { PerfilMercadoModule } from '../perfil-mercado/perfil-mercado.module';
 import { ImageUtilService } from '../../services/image-util.service';
+import { NgxLoadingModule } from 'ngx-loading';
 import { MatCardModule, 
          MatIconModule, 
          MatToolbarModule, 
@@ -31,7 +32,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     MatOptionModule,
     MatSelectModule,
     ReactiveFormsModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    NgxLoadingModule.forRoot({})
   ],
   declarations: [ListaPerfilMercadoComponent],
   providers: [

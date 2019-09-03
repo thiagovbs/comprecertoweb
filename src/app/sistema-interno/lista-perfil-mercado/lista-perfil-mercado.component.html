@@ -32,7 +32,8 @@
                     </mat-form-field>
                 </div>
                 <div fxFlex.gt-sm="10" fxFlex.gt-xs="10" class="m-t-20 p-l-20 ">
-                    <mat-checkbox class="check-border" formControlName="ativar"  [value]="ativarMercado">Mostrar Inativos</mat-checkbox>
+                    <mat-checkbox class="check-border" formControlName="ativar" [value]="ativarMercado">Mostrar Inativos
+                    </mat-checkbox>
                 </div>
                 <div fxFlex.gt-sm="30" fxFlex.gt-xs="20" class="m-t-20">
                     <button mat-raised-button class="m-l-20"
@@ -54,4 +55,9 @@
     <mat-card-content fxLayout="row">
         <p> Pesquise os mercados cadastrados</p>
     </mat-card-content>
+
 </mat-card>
+<ngx-loading [show]="loading"
+[config]="{ primaryColour:'#009b89',secondaryColour:'#009b89',tertiaryColour:'#009b89'}"
+[template]="customLoadingTemplate">
+</ngx-loading>

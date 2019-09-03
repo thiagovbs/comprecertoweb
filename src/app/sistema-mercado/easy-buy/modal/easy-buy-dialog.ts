@@ -95,7 +95,7 @@ export class EasyBuyDialog {
       console.log(data.json())
       //this.pesquisarPedidosML();
     }, error => {
-     
+      this.loading = false;
       console.error(error.json());
       swal('Erro', `Houve algum problema para atualizar o status do pedido número ${pedido.idPedido}`, 'error');
     }, () => {

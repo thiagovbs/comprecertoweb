@@ -64,7 +64,7 @@
                 </div>   
                 <div fxFlex.gt-sm="40" fxFlex.gt-xs="40">
                   <mat-form-field class="example-full-width">
-                    <input matInput type="text" name="link" [(ngModel)]="localidade.complemento" [placeholder]="'Complemento'">
+                    <input matInput type="text" name="link" [value]="localidade.complemento || ' '" [placeholder]="'Complemento'">
                   </mat-form-field>
                 </div>                  
               </div>              

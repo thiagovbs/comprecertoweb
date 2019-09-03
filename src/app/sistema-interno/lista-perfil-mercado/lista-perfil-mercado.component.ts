@@ -25,6 +25,8 @@ export class ListaPerfilMercadoComponent implements OnInit {
   listaEstados: Estado[] = [];
   listaCidades: Cidade[] = [];
   listaBairros: Bairro[] = [];
+  customLoadingTemplate:any;
+  loading:boolean;
 
   constructor(
     private mercadoService: MercadoService,
@@ -97,10 +99,11 @@ export class ListaPerfilMercadoComponent implements OnInit {
   pesquisarMercados() {
     let fAtivo = this.formLocalidade.get('ativar').value;
     let bairro = this.formLocalidade.get('bairro').value.idBairro
-
+    this.loading = true
     if (bairro) {
       this.observable = this.mercadoService.getMercadosPorBairro(bairro, !fAtivo).subscribe(data => {
         this.mercados = data.json();
+        this.loading = false;
         if(this.mercados.length === 0){
           swal({
             title: 'Listagem de mercados',
