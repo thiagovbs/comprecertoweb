@@ -24,6 +24,14 @@ export class PedidoService {
     return this.http.get(`${environment.urlSpring}/pedido/mercadoLocalidade/${idMercadoLocalidade}`, { headers: hds, withCredentials: true });
   }
 
+  getPedidosMercado(idMercado) {
+    const hds = new Headers({
+      'Authorization': `Bearer ${localStorage.getItem('token')}`
+    });
+        /////////////////////////////////////////////////////////////
+    return this.http.get(`${environment.urlSpring}/pedido/mercado/${idMercado}`, { headers: hds, withCredentials: true });
+  }
+
   putPedido(pedido: Pedido) {
     const hds = new Headers({
       'Authorization': `Bearer ${localStorage.getItem('token')}`

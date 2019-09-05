@@ -5,6 +5,9 @@
                 <div fxFlex.gt-sm="40" fxFlex.gt-xs="40">
                     <mat-form-field class="m-r-0  m-t-10">
                         <mat-select placeholder="Filial" formControlName="filial">
+                                <mat-option [value]="todos">
+                                        Todos
+                                    </mat-option>
                             <mat-option *ngFor="let mercadoLocalidade of listaMercadoLocalidade" [value]="mercadoLocalidade.idMercadoLocalidade">
                                 {{mercadoLocalidade.bairro.nome}} - {{mercadoLocalidade.bairro.cidade.estado.sigla}}
                             </mat-option>
@@ -17,7 +20,7 @@
                
                 <div fxFlex.gt-sm="30" fxFlex.gt-xs="30" class="m-t-20 ">
                     <button mat-raised-button style="background-color:transparent; color:#fff; float: right; margin-right: 15%;"
-                        [disabled]="formLocalidade.invalid" (click)="pesquisarPedidosML()">PESQUISAR
+                        [disabled]="formLocalidade.invalid" (click)="pesquisarPedidos()">PESQUISAR
                     </button>
                 </div>
             </div>

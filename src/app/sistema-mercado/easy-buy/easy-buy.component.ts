@@ -15,6 +15,7 @@ import { MatPaginator } from '@angular/material';
 import { EasyBuyDialog } from './modal/easy-buy-dialog';
 import { Subject, timer, Subscription, Observable } from 'rxjs';
 import { takeUntil, take } from 'rxjs/operators';
+import { AuthenticationService } from '../../services/authentication.service';
 
 
 
@@ -53,6 +54,9 @@ export class EasyBuyComponent implements OnInit {
 
   listaMercadoLocalidade: MercadoLocalidade[] = [];
   idMercadoLocalidade: number;
+  idMercado: number;
+
+  todos: string = "todos";
   mercadoLocalidade: MercadoLocalidade;
   listaPedidos: Pedido[] = [];
   valorFrete: number = 0;
@@ -85,7 +89,8 @@ export class EasyBuyComponent implements OnInit {
   constructor(private mercadoService: MercadoService,
     private pedidoService: PedidoService,
     private formBuilder: FormBuilder,
-    public dialog: MatDialog) {
+    public dialog: MatDialog,
+    public auth: AuthenticationService) {
 
 
     this.formLocalidade = this.formBuilder.group({
@@ -106,9 +111,7 @@ export class EasyBuyComponent implements OnInit {
 
 
   ngOnInit() {
-
-
-    this.mercadoService.getMercadoLocalidade()
+    this.idMercado = this.auth.getUsuarioLoggedToken().user.mercado.idMercado;
 
     this.mercadoService.getMercadoLocalidade().subscribe(data => {
       console.log(data.json())
@@ -162,40 +165,60 @@ export class EasyBuyComponent implements OnInit {
 
 
 
-  pesquisarPedidosML() {
-    this.idMercadoLocalidade = this.formLocalidade.get('filial').value;
-    this.mercadoLocalidade = this.listaMercadoLocalidade.find(x => x.idMercadoLocalidade == this.idMercadoLocalidade);
+  pesquisarPedidos() {
+    if (this.formLocalidade.get('filial').value === "todos") {
+      this.listaPedidos = [];
 
-    this.valorFrete = this.mercadoLocalidade.valorFrete;
-    this.valorMinimoFrete = this.mercadoLocalidade.valorMinimo;
 
-    this.listaPedidos = [];
-    this.pedidoService.getPedidos(this.idMercadoLocalidade).subscribe(data => {
-      this.listaPedidos = data.json();
-      //console.log(data.json());
-      this.dataSource = new MatTableDataSource(data.json());
-     
-      this.dataSource.filterPredicate = this.tableFilter();
+      this.pedidoService.getPedidosMercado(this.idMercado).subscribe(data => {
+        this.listaPedidos = data.json();
+        //console.log(data.json());
+        this.dataSource = new MatTableDataSource(data.json());
 
-      this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort; this.dataSource.sort = this.sort;
+        this.dataSource.filterPredicate = this.tableFilter();
 
-    }, error => {
-      console.error(error.json());
-    });
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort; this.dataSource.sort = this.sort;
+
+      }, error => {
+        console.error(error.json());
+      });
+
+    } else {
+      this.idMercadoLocalidade = this.formLocalidade.get('filial').value;
+      this.mercadoLocalidade = this.listaMercadoLocalidade.find(x => x.idMercadoLocalidade == this.idMercadoLocalidade);
+
+      this.valorFrete = this.mercadoLocalidade.valorFrete;
+      this.valorMinimoFrete = this.mercadoLocalidade.valorMinimo;
+
+      this.listaPedidos = [];
+      this.pedidoService.getPedidos(this.idMercadoLocalidade).subscribe(data => {
+        this.listaPedidos = data.json();
+        //console.log(data.json());
+        this.dataSource = new MatTableDataSource(data.json());
+
+        this.dataSource.filterPredicate = this.tableFilter();
+
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort; this.dataSource.sort = this.sort;
+
+      }, error => {
+        console.error(error.json());
+      });
+    }
   }
 
   tableFilter(): (data: Pedido, filter: string) => boolean {
-    
+
     let filterFunction = function (data, filter): boolean {
       let entregaEnum2 = Entrega;
       let statusEnum2 = Status;
       let searchTerms = JSON.parse(filter);
-      
-       let dataPedido: String =new Date(data.dtCriacao).getDate()+ "/"+
-       (new Date(data.dtCriacao).getMonth()+1)+"/"+
-       new Date(data.dtCriacao).getFullYear();
-      
+
+      let dataPedido: String = new Date(data.dtCriacao).getDate() + "/" +
+        (new Date(data.dtCriacao).getMonth() + 1) + "/" +
+        new Date(data.dtCriacao).getFullYear();
+
       return data.usuario.nome.toLowerCase().indexOf(searchTerms.nome) !== -1
         && data.idPedido.toString().toLowerCase().indexOf(searchTerms.idPedido) !== -1
         && entregaEnum2[data.entrega].toLowerCase().indexOf(searchTerms.entrega) !== -1
@@ -217,7 +240,7 @@ export class EasyBuyComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
 
-      this.pesquisarPedidosML();
+      this.pesquisarPedidos();
     });
 
   }
@@ -233,20 +256,20 @@ export class EasyBuyComponent implements OnInit {
     this.timerSubscription = timer(0, interval).pipe(
       take(duration)
     ).subscribe(value =>
-      function render(){},
+      function render() { },
       err => { },
-      () => {        
-        if (this.mercadoLocalidade != undefined) {          
-          this.pesquisarPedidosML();
+      () => {
+        if (this.mercadoLocalidade != undefined) {
+          this.pesquisarPedidos();
         }
         this.resetTimer();
       }
     )
   }
 
- 
 
- 
+
+
 
 
 
