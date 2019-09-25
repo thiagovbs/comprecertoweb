@@ -35,7 +35,7 @@ export class LocalidadeFilialComponent implements OnInit {
   
     this.mercadoComponent.mercado.mercadoLocalidades.forEach(element => {
       let endereçoSplitted = element.endereco.split(/(?:(?:\ n\º))|(?:(?:\/))/);
-      console.log(endereçoSplitted)
+      console.log(element)
       element.rua = endereçoSplitted[0];
       element.numero = endereçoSplitted[1];
       
@@ -47,7 +47,6 @@ export class LocalidadeFilialComponent implements OnInit {
 
     });
   }
-
 
   buscarCep() {
     this.viacep.buscarPorCep(this.cep).then((endereco) => {
@@ -61,6 +60,7 @@ export class LocalidadeFilialComponent implements OnInit {
   }
 
   removeLocalidade(localidade: any): void {
+    console.log(localidade)
     const index = this.mercadoComponent.mercado.mercadoLocalidades.indexOf(localidade);
 
     if (index >= 0) {
@@ -151,7 +151,6 @@ export class LocalidadeFilialComponent implements OnInit {
   getServicos() {
     this.servicoService.getServicos().subscribe(data => {
       this.localidadeServicoTemp = data.json();
-      console.log(this.localidadeServicoTemp)
     }, error => {
       console.log(error);
     })

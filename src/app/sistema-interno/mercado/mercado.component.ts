@@ -107,8 +107,6 @@ export class MercadoComponent implements OnInit {
   getMercadoPorId() {
     this.mercadoService.getMercadoPorId(this.mercado.idMercado).subscribe(data => {
       this.mercado = data.json();
-      console.log( data.json());
-      
     }, error => {
       console.log(error.json());
     }, () => {
@@ -118,8 +116,7 @@ export class MercadoComponent implements OnInit {
         
         localidade.servicosTemp.forEach(servicoTemp => {
           
-          if (!servicoTemp.pacoteSelecionado || servicoTemp.pacoteSelecionado === null) {
-            
+          if (!servicoTemp.pacoteSelecionado || servicoTemp.pacoteSelecionado === null) {    
             servicoTemp.pacoteSelecionado = new PacoteServico();
           }
         });
