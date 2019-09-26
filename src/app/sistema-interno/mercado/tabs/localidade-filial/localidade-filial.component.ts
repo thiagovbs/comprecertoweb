@@ -35,7 +35,7 @@ export class LocalidadeFilialComponent implements OnInit {
   
     this.mercadoComponent.mercado.mercadoLocalidades.forEach(element => {
       let endereçoSplitted = element.endereco.split(/(?:(?:\ n\º))|(?:(?:\/))/);
-      console.log(element)
+      
       element.rua = endereçoSplitted[0];
       element.numero = endereçoSplitted[1];
       

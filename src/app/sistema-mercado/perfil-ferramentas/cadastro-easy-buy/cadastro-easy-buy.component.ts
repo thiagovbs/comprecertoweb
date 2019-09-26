@@ -19,7 +19,7 @@ export class CadastroEasyBuyComponent implements OnInit {
   frete: string;
   entrega: string = "";
   mercadoAtual: Mercado = new Mercado();
-  maskTelefone = ['(', /\d/, /\d/, ')', /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]
+  maskTelefone = ['(', /\d/, /\d/, ')', /\d/, /\d/, /\d/, /\d/,/\d/, '-', /\d/, /\d/, /\d/, /\d/]
   loading:boolean;
   isEntrega: boolean = false;
   isFrete: boolean = false;
@@ -41,7 +41,7 @@ export class CadastroEasyBuyComponent implements OnInit {
 
       for (let i = 0; i <= this.mercadoAtual.mercadoLocalidades.length; i++) {
         this.cadastroEasyBuyForm[i] = new FormGroup({
-          tel: new FormControl('', [Validators.required, Validators.pattern(/^\(\d{2}\)\d{4}-\d{4}$/)]),
+          tel: new FormControl('', [Validators.required, Validators.pattern(/^\(\d{2}\)\d{5}-\d{4}$/)]),
           vl_minimo: new FormControl({ value: 0, disabled: true }),
           tx_frete: new FormControl({ value: 0, disabled: true }),
           hr_maximo: new FormControl('', [Validators.required]),
@@ -157,7 +157,7 @@ export class CadastroEasyBuyComponent implements OnInit {
       this.mercadoAtual.mercadoLocalidades[this.atual].valorMinimo = null
       this.mercadoAtual.mercadoLocalidades[this.atual].valorFrete = null     
     }
-    console.log(this.mercadoAtual.mercadoLocalidades[this.atual])
+    
     if (telefone === "") {
       swal('Opa', `Campo de telefone em branco!`, 'warning');
     } else if (hr_maximo === "") {
@@ -172,6 +172,7 @@ export class CadastroEasyBuyComponent implements OnInit {
         swal('Inclusão', `Parabéns ${this.mercadoAtual.nomeFantasia}, esta localidade agora possui
          serviço de Easy Buy!`, 'success');
       }, error => {
+        
         this.loading = false;
         console.error(error.json());
       });

@@ -15,12 +15,13 @@
             </ng-template>
             <hr style="background:#009b89; margin-top:0.0009em;">
             <div class="demo-tab-content" class="card-tab">
+              
               <form novalidate [formGroup]="cadastroEasyBuyForm[l]">
                 <div fxLayout="row" fxLayoutWrap="wrap">
-                  <div fxFlex.gt-sm="20" fxFlex.gt-xs="20">
+                  <div fxFlex.gt-sm="10" fxFlex.gt-xs="100">
                     <label for="telefone">Telefone:</label>
                   </div>
-                  <div fxFlex.gt-sm="80" fxFlex.gt-xs="80">
+                  <div fxFlex.gt-sm="50" fxFlex.gt-xs="100" class="m-l-30">
                     <mat-form-field style="margin-top: -20px; ">
                       <input matInput type="text" formControlName="tel" [textMask]="{mask: maskTelefone}"
                         [value]="localidade.telefone || ''" />
@@ -36,7 +37,7 @@
                         Retirada</mat-chip>
                     </mat-chip-list>
                   </div>
-                  <div fxFlex.gt-sm="60" fxFlex.gt-xs="60" class="m-t-40" [class.block-frete]="!isEntrega">
+                  <div fxFlex.gt-sm="50" fxFlex.gt-xs="100" class="m-t-40" [class.block-frete]="!isEntrega">
                     <label for="hr_maximo">Horário máxímo para entrega no mesmo dia:</label>
                   </div>
                   <div fxFlex.gt-sm="40" fxFlex.gt-xs="40" class="m-t-40">
@@ -45,38 +46,38 @@
                         [value]="localidade.horarioMaximoEntrega" />
                     </mat-form-field>
                   </div>
-                  <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" class="m-t-40" [class.block-frete]="!isEntrega">
-                    <label for="frete">Valor do Frete:</label>
+                  <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" class="m-t-10" [class.block-frete]="!isEntrega">
+                    <label for="frete">Possui Frete?</label>
                     <mat-chip-list>
                       <mat-chip selected="{{isFrete && isEntrega}}" (click)="btnFrete($event)">Sim</mat-chip>
                       <mat-chip selected="{{!isFrete && isEntrega}}" (click)="btnFrete($event)">Não</mat-chip>
                     </mat-chip-list>
-
                   </div>
-                  <div fxFlex.gt-sm="70" fxFlex.gt-xs="70" class="m-t-30">
+                  <div fxFlex.gt-sm="40" fxFlex.gt-xs="100" class="m-t-30">
                     <label for="vlMinimoFrete">Valor mínimo para não cobrar frete:</label>
                   </div>
-                  <div fxFlex.gt-sm="30" fxFlex.gt-xs="30" class="m-t-30">
+                  <div fxFlex.gt-sm="50" fxFlex.gt-xs="30" class="m-t-30">
                     <mat-form-field style="margin-top: -20px;">
                       <input matInput currencyMask formControlName="vl_minimo"
                         [value]="localidade.valorMinimo | moedaPadrao"
                         [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',', align:'left'}" />
                     </mat-form-field>
                   </div>
-                  <div fxFlex.gt-sm="30" fxFlex.gt-xs="30" class="m-t-30">
+
+                  <div fxFlex.gt-sm="20" fxFlex.gt-xs="100" class="m-t-30">
                     <label for="tx_frete">Taxa do Frete:</label>
                   </div>
-                  <div fxFlex.gt-sm="70" fxFlex.gt-xs="70" class="m-t-30">
+                  <div fxFlex.gt-sm="60" fxFlex.gt-xs="100" class="m-t-30">
                     <mat-form-field style="margin-top: -20px;">
                       <input matInput currencyMask formControlName="tx_frete"
                         [value]="localidade.valorFrete | moedaPadrao"
                         [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',', align:'left'}" />
                     </mat-form-field>
                   </div>
-                  <div fxFlex.gt-sm="60" fxFlex.gt-xs="60" class="m-t-40">
+                  <div fxFlex.gt-sm="30" fxFlex.gt-xs="100" class="m-t-40">
                     <label for="hr_maximo">Horário máxímo para Retirada:</label>
                   </div>
-                  <div fxFlex.gt-sm="40" fxFlex.gt-xs="40" class="m-t-40">
+                  <div fxFlex.gt-sm="40" fxFlex.gt-xs="40" class="m-t-40 m-l-40">
                     <mat-form-field style="margin-top: -20px;">
                       <input matInput type="time" formControlName="hr_maximo" [value]="localidade.horarioMaximo" />
                     </mat-form-field>
