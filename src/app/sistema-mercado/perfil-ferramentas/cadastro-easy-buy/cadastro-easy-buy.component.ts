@@ -93,10 +93,10 @@ export class CadastroEasyBuyComponent implements OnInit {
       this.isFrete = false
       this.cadastroEasyBuyForm[this.atual].controls['tx_frete'].disable({ onlySelf: true })
       this.cadastroEasyBuyForm[this.atual].controls['vl_minimo'].disable({ onlySelf: true })
-      this.cadastroEasyBuyForm[this.atual].controls['hr_maximo_entrega'].disable({ onlySelf: true })
+      /* this.cadastroEasyBuyForm[this.atual].controls['hr_maximo_entrega'].disable({ onlySelf: true }) */
       this.cadastroEasyBuyForm[this.atual].get('vl_minimo').setValue(0);
       this.cadastroEasyBuyForm[this.atual].get('tx_frete').setValue(0);
-      this.cadastroEasyBuyForm[this.atual].get('hr_maximo_entrega').setValue(0);
+     /*  this.cadastroEasyBuyForm[this.atual].get('hr_maximo_entrega').setValue(0); */
     }
   }
 
